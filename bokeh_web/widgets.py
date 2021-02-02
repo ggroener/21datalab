@@ -2681,7 +2681,7 @@ class TimeSeriesWidget():
             #sort the limits to the end so that the lines are created first, then the band can take the same color
             newList = []
             for elem in newVars:
-                if elem.endswith("_limitMax") or elem.endswith("_limitMin"):
+                if elem.endswith("_limitMax") or elem.endswith("_limitMin") or elem.endswith("_expected"):
                     newList.append(elem)
                 else:
                     newList.insert(0,elem)
