@@ -117,7 +117,6 @@ def annotations_to_class_vector(annotations, times, tagsMap = {}, regionTag=None
 
 
 
-
 def annotations_to_vector(annotations, timeNode, inMap={}):
     """
         converts a list of annotations into a label vector containing
