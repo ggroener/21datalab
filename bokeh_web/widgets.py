@@ -3041,9 +3041,10 @@ class TimeSeriesWidget():
                 self.streamingInterval = self.plot.x_range.end - self.plot.x_range.start #.rangeEnd - self.rangeStart
                 self.logger.debug(f"new streaming interval: {self.streamingInterval}")
             #if self.server.get_settings()["autoScaleY"][".properties"]["value"] == True
-            self.autoAdjustY = self.server.get_mirror()["autoScaleY"][".properties"]["value"]
-            self.server.set_x_range(self.rangeStart,self.rangeEnd)
-            self.refresh_plot()
+            if not self.boxModifierVisible:
+                self.autoAdjustY = self.server.get_mirror()["autoScaleY"][".properties"]["value"]
+                self.server.set_x_range(self.rangeStart,self.rangeEnd)
+                self.refresh_plot()
 
         if eventType == "Reset":
             self.reset_plot_cb()
