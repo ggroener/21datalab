@@ -899,7 +899,7 @@ class TimeSeriesWidget():
 
         """
         self.logger.debug(f"observer_cb {data}")
-        if data["event"] == "timeSeriesWidget.variables" or data["event"] == "global.timeSeries.values":
+        if data["event"] == "timeSeriesWidget.variables" or data["event"] == "global.timeSeries.value":
             #refresh the lines
             if data["event"] == "timeSeriesWidget.variables":
                 self.server.get_selected_variables_sync() # get the new set of lines
@@ -3041,7 +3041,7 @@ class TimeSeriesWidget():
                 self.streamingInterval = self.plot.x_range.end - self.plot.x_range.start #.rangeEnd - self.rangeStart
                 self.logger.debug(f"new streaming interval: {self.streamingInterval}")
             #if self.server.get_settings()["autoScaleY"][".properties"]["value"] == True
-            if not self.boxModifierVisible:
+            if eventType=="LODEnd":# self.boxModifierVisible:
                 self.autoAdjustY = self.server.get_mirror()["autoScaleY"][".properties"]["value"]
                 self.server.set_x_range(self.rangeStart,self.rangeEnd)
                 self.refresh_plot()
