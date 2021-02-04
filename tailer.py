@@ -10,6 +10,7 @@ import logging
 import queue
 import requests
 import datetime
+import traceback
 
 def str_lim(obj,lim):
     stri = str(obj)
@@ -135,17 +136,26 @@ class FileTailer():
         buffer = ""
         if self.logger: self.logger.info(f"FileTailer.follow {self.fileName}")
         while self.running:
-            newLine = self.file.readline()
-            if not newLine:
-                time.sleep(self.timeout)
-            else:
-                buffer += newLine
-                if buffer.endswith('\n'):
-                    if self.cb:
-                        self.cb(buffer)
-                    buffer = ""#reset buffer
+            try:
+                newLine = self.file.readline()
+                if not newLine:
+                    time.sleep(self.timeout)
                 else:
-                    if self.logger: self.logger.info(f"FileTailer.follow. line not complete")
+                    buffer += newLine
+                    if buffer.endswith('\n'):
+                        if self.cb:
+                            self.cb(buffer)
+                        buffer = ""#reset buffer
+                    else:
+                        if self.logger: self.logger.info(f"FileTailer.follow. line not complete")
+            except Exception as ex:
+                msg = str(ex)+str(traceback.format_exc())
+                if self.logger:
+                    self.logger.error(f"FileTailer.follow  {msg}")
+                else:
+                    print(f"error FileTailer.follow {msg}")
+                time.sleep(self.timeout)
+
         self.file.close()
         if self.logger: self.logger.info(f"FileTailer.follow.threadFinish {self.fileName}")
 
