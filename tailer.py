@@ -118,7 +118,8 @@ class FileTailer():
         self.running = True
         self.cb = callback
         self.timeout = timeout
-        self.file = open(self.fileName, "r")
+        #self.file = open(self.fileName, "r")
+        self.reopen()
         self.logger = logger
         if self.logger:self.logger.info(f"FileTailer.init {self.fileName}")
 
@@ -131,6 +132,16 @@ class FileTailer():
             newLine = self.file.readline()
             if not newLine:
                 break
+    def reopen(self):
+        self.logger.debug(f"(re)open {self.fileName}")
+        if self.file:
+            self.file.close()
+        try:
+            self.file = open(self.fileName, "r")
+        except Exception as ex:
+            msg = str(ex) + str(traceback.format_exc())
+            if self.logger: self.logger.error(msg)
+
 
     def follow(self):
         buffer = ""
@@ -154,6 +165,7 @@ class FileTailer():
                     self.logger.error(f"FileTailer.follow  {msg}")
                 else:
                     print(f"error FileTailer.follow {msg}")
+                self.reopen()
                 time.sleep(self.timeout)
 
         self.file.close()
