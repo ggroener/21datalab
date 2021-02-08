@@ -118,8 +118,7 @@ class FileTailer():
         self.running = True
         self.cb = callback
         self.timeout = timeout
-        #self.file = open(self.fileName, "r")
-
+        self.file = None
         self.logger = logger
         self.reopen()
         if self.logger:self.logger.info(f"FileTailer.init {self.fileName}")
