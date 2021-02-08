@@ -1531,6 +1531,8 @@ class TimeSeriesWidget():
 
         self.build_second_y_axis()
 
+        self.show_hide_scroll_label() #it must be created at startup and then visible=True/False, the later add_layout did not work
+
         self.refresh_plot()
 
         #hook in the callback of the figure
@@ -1812,7 +1814,7 @@ class TimeSeriesWidget():
         self.streamingInterval = self.rangeEnd-self.rangeStart # this is the currently selected "zoom"
         self.streamingUpdateData = None
         self.streamingMode = True
-        self.__dispatch_function(self.show_scroll_label)
+        self.__dispatch_function(self.show_hide_scroll_label)
 
 
 
@@ -1821,21 +1823,24 @@ class TimeSeriesWidget():
     def stop_streaming(self):
         self.logger.debug("stop streaming")
         self.streamingMode = False
-        self.__dispatch_function(self.hide_scroll_label)
+        self.__dispatch_function(self.show_hide_scroll_label)
 
-    def show_scroll_label(self):
+    def show_hide_scroll_label(self):
+        self.logger.debug(f"show scroll label {self.width-165}, {self.height-50} {self.scrollLabel}, {self.streamingMode}")
+        #creation
         if not self.scrollLabel:
             self.scrollLabel = Label(x=self.width-165, y=self.height-50, x_units='screen', y_units='screen',
                   text=' auto scroll mode on ', text_font_size="12px", text_color=themes.textcolor,
                   border_line_color=themes.textcolor, border_line_alpha=1.0,
                   background_fill_color='black', background_fill_alpha=1.0)
+            if not self.streamingMode:
+                self.scrollLabel.visible = False
             self.plot.add_layout(self.scrollLabel)
-        self.scrollLabel.visible = True
-
-
-    def hide_scroll_label(self):
-        if self.scrollLabel:
+        if self.streamingMode:
+            self.scrollLabel.visible = True
+        else:
             self.scrollLabel.visible = False
+
 
     def annotation_drop_down_on_change_cb(self,attr,old,new):
         mytag = self.annotationDropDown.value
