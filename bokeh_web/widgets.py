@@ -850,7 +850,7 @@ class TimeSeriesWidget():
 
         self.eventLines = {}    #holding event line renderes and the columndatasources
         self.eventsVisible = False  #set true if events are currently turned on
-
+        self.scrollLabel = None
 
 
         self.__init_figure() #create the graphical output
@@ -1812,13 +1812,30 @@ class TimeSeriesWidget():
         self.streamingInterval = self.rangeEnd-self.rangeStart # this is the currently selected "zoom"
         self.streamingUpdateData = None
         self.streamingMode = True
+        self.__dispatch_function(self.show_scroll_label)
+
+
+
 
 
     def stop_streaming(self):
         self.logger.debug("stop streaming")
         self.streamingMode = False
+        self.__dispatch_function(self.hide_scroll_label)
+
+    def show_scroll_label(self):
+        if not self.scrollLabel:
+            self.scrollLabel = Label(x=self.width-165, y=self.height-50, x_units='screen', y_units='screen',
+                  text=' auto scroll mode on ', text_font_size="12px", text_color=themes.textcolor,
+                  border_line_color=themes.textcolor, border_line_alpha=1.0,
+                  background_fill_color='black', background_fill_alpha=1.0)
+            self.plot.add_layout(self.scrollLabel)
+        self.scrollLabel.visible = True
 
 
+    def hide_scroll_label(self):
+        if self.scrollLabel:
+            self.scrollLabel.visible = False
 
     def annotation_drop_down_on_change_cb(self,attr,old,new):
         mytag = self.annotationDropDown.value
@@ -2058,7 +2075,7 @@ class TimeSeriesWidget():
         """
 
         #check for variable/score update
-        if data["data"]["_eventInfo"]["startTime"] < self.plot.x_range.end / 1000:
+        if data["data"]["_eventInfo"]["startTime"] < self.plot.x_range.end / 1000 or self.streamingMode:
             for browsePath in data["data"]["_eventInfo"]["browsePaths"]:
                 if browsePath in self.lines and self.lines[browsePath].visible == True:
                     self.refresh_plot()
@@ -2085,7 +2102,7 @@ class TimeSeriesWidget():
                 if id in allEventIds:
                     return True # a currently visible event type is updated
 
-            if data["data"]["_eventInfo"]["startTime"]>self.plot.x_range.end/1000:
+            if not self.streamingMode and data["data"]["_eventInfo"]["startTime"]>self.plot.x_range.end/1000:
                 #the update is outside (to the right) of the visible area, so ignore
                 return False
             # now check if any of the ids are relevant
@@ -2639,7 +2656,7 @@ class TimeSeriesWidget():
         if not getData:
             self.logger.error(f"no data received")
             return
-        if self.rangeStart == None:
+        if self.rangeStart == None or self.streamingMode:
             mini,maxi = self.get_min_max_times(getData)
             #write it back
             self.rangeStart = mini#getData["__time"][0]
