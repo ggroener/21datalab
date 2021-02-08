@@ -119,8 +119,9 @@ class FileTailer():
         self.cb = callback
         self.timeout = timeout
         #self.file = open(self.fileName, "r")
-        self.reopen()
+
         self.logger = logger
+        self.reopen()
         if self.logger:self.logger.info(f"FileTailer.init {self.fileName}")
 
     def start(self):
@@ -133,7 +134,7 @@ class FileTailer():
             if not newLine:
                 break
     def reopen(self):
-        self.logger.debug(f"(re)open {self.fileName}")
+        if self.logger: self.logger.debug(f"(re)open {self.fileName}")
         if self.file:
             self.file.close()
         try:
