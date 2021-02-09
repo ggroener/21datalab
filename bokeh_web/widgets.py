@@ -2083,7 +2083,11 @@ class TimeSeriesWidget():
         if data["data"]["_eventInfo"]["startTime"] < self.plot.x_range.end / 1000 or self.streamingMode:
             for browsePath in data["data"]["_eventInfo"]["browsePaths"]:
                 if browsePath in self.lines and self.lines[browsePath].visible == True:
-                    self.refresh_plot()
+                    if (self.streamingMode and data["data"]["_eventInfo"]["startTime"] > self.plot.x_range.end/1000):
+                        appendingDataArrived = True
+                    else:
+                        appendingDataArrived = False
+                    self.refresh_plot(appendingDataArrived)
                     break
 
         allEventIds = [v["nodeId"] for k, v in self.eventLines.items()]
@@ -2626,7 +2630,7 @@ class TimeSeriesWidget():
 
 
 
-    def __plot_lines(self,newVars = None):
+    def __plot_lines(self,newVars = None,appendingDataArrived=False):
         """ plot the currently selected variables as lines, update the legend
             if newVars are given, we only plot them and leave the old
         """
@@ -2650,13 +2654,11 @@ class TimeSeriesWidget():
         variablesRequest = variables.copy()
         variablesRequest.append("__time")   #make sure we get the time included
         #self.logger.debug("@__plot_lines:self.variables, bins "+str(variablesRequest)+str( settings["bins"]))
-        if not self.streamingMode:
-            getData = self.server.get_data(variablesRequest,self.rangeStart,self.rangeEnd,settings["bins"]) # for debug
+        if self.streamingMode and appendingDataArrived:
+            getData = self.server.get_data(variablesRequest, -self.streamingInterval, None,self.server.get_settings()["bins"])
         else:
-            # avoid to send a different request between the streaming data requests, this causes "jagged" lines
-            # still not the perfec solution as zooming out now causes a short empty plot
-            getData = self.server.get_data(variablesRequest, -self.streamingInterval, None,
-                                                            self.server.get_settings()["bins"])  # for debug
+            getData = self.server.get_data(variablesRequest,self.rangeStart,self.rangeEnd,settings["bins"]) # for debug
+
         #self.logger.debug("GETDATA:"+str(getData))
         if not getData:
             self.logger.error(f"no data received")
@@ -2879,13 +2881,14 @@ class TimeSeriesWidget():
         self.plot.x_range.start = self.rangeStart
         self.plot.x_range.end   = self.rangeEnd
 
-    def refresh_plot(self):
+    def refresh_plot(self,appendingDataArrived = False):
         """
             # get data from the server and plot the lines
             # if the current zoom is out of range, we will resize it:
             # zoom back to max zoom level shift
             # or shift left /right to the max positions possible
             # if there are new variables, we will rebuild the whole plot
+            # appendingDataArrived: if set true and we are in streaming mode, we get the right-most data instead of the current zoom level
         """
         self.logger.debug("refresh_plot()")
         #have the variables changed?
@@ -2988,7 +2991,7 @@ class TimeSeriesWidget():
                 #return # wait for next event
 
 
-        data = self.__plot_lines(newLines) # the data contain all visible time series including the background
+        data = self.__plot_lines(newVars = newLines,appendingDataArrived=appendingDataArrived) # the data contain all visible time series including the background
         #todo: make this differential as well
         if self.server.get_settings()["background"]["hasBackground"]:
             self.refresh_backgrounds(data)
