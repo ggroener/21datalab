@@ -66,6 +66,14 @@ def random_forest(functionNode):
     # and will also take the ones which are not explicitly ignored and extend the tags list with it,so we
     # prepare:
 
+
+    if not tagsFilter:
+        tags = set()
+        for anno in annotations:
+            tags.update(anno.get_child("tags").get_value())
+        tagsFilter = list(tags)
+
+
     tagsMap = {tag:idx for idx,tag in enumerate(tagsFilter)}
     labels = mh.annotations_to_class_vector(annotations,times,regionTag="region",tagsMap=tagsMap,autoAdd=False)
     inputMask = numpy.isfinite(labels)
@@ -73,18 +81,29 @@ def random_forest(functionNode):
 
     trainingData = []
     # now grab the values from the columns
+    valuesMask = numpy.full(len(times),True,dtype=numpy.bool)
     for node in inputNodes:
         #values = numpy.asarray(node.get_value())
-        values = node.get_time_series(resampleTimes=times)["values"]
-        trainingData.append(list(values[inputMask]))
-    table = numpy.stack(trainingData, axis=0)
+        values = numpy.float32(node.get_time_series(resampleTimes=times)["values"])
+        #valuesMask = numpy.isfinite(values)
+        valuesMask = valuesMask & numpy.isfinite(values)
+        trainingData.append(values)
+
+    trainingDataFiltered = []
+    for t in trainingData:
+        trainingDataFiltered.append(list(t[valuesMask&inputMask]))
+
+
+    table = numpy.stack(trainingDataFiltered, axis=0)
+
+    logger.debug(f"Data quality: {numpy.count_nonzero(inputMask == True)} is good of {len(inputMask)}")
 
     progressNode.set_value(0.3)
     #
     # now fit the model
     #
     model =  RandomForestClassifier()
-    model.fit(table.T, labels[inputMask])
+    model.fit(table.T, labels[valuesMask&inputMask])
     progressNode.set_value(0.6)
     #
     # scoring
@@ -101,9 +120,20 @@ def random_forest(functionNode):
 
     # now grab the values from the columns
     scoreData = []
+    valuesMask = numpy.full(len(scoreTimes), True, dtype=numpy.bool)
     for node in inputNodes:
         data = node.get_time_series(resampleTimes=scoreTimes)["values"]
+        valuesMask = valuesMask & numpy.isfinite(data)
         scoreData.append(data)
+
+    scoreFiltered = []
+    for t in scoreData:
+        scoreFiltered.append(list(t[valuesMask]))
+
+    scoreData = scoreFiltered
+
+
+
 
     scoreTable = numpy.stack(scoreData, axis=0)
     score = model.predict(scoreTable.T)
