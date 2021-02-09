@@ -591,13 +591,14 @@ class Observer:
                 for k,v in self.eventQueues.items():
                     q = v["queue"]
                     qLen = q.qsize()
-                    #self.logger.debug(f"Queue {k}: len {qLen} {[q.queue[id] for id in range(qLen)]}")
+                    self.logger.debug(f"Queue {k}: len {qLen} {[q.queue[id] for id in range(qLen)]}")
             try:
                 now = time.time()
                 for eventIdentification,entry in self.eventQueues.items(): # entry is {"lasttimestampe": "queue":
                     #self.logger.debug(f"observer {id(self)} check queue of {eventIdentification} size: {entry['queue'].qsize()},last:{entry['lastTimeStamp']}, now:{now}, ready: {now > (entry['lastTimeStamp']+self.minWaitTime)}")
-                    if (not entry["queue"].empty()) and (now > (entry["lastTimeStamp"]+self.minWaitTime)):
-                        #send this event, the timeout was met, we pull the first event from the queue, trash the remaining ones
+                    if (not entry["queue"].empty()) and ((now > (entry["lastTimeStamp"]+self.minWaitTime) or "system.progress" in eventIdentification)):
+                        # for system.progress events there is not timeout, we always directly send the update
+                        # send this event, the timeout was met, we pull the first event from the queue, trash the remaining ones
                         """
                         old code
                         
@@ -2629,7 +2630,11 @@ class Model:
                     self.disable_observers()
                     controlNode.get_child("status").set_value("running")
                     controlNode.get_child("result")#.set_value("pending")
-                    controlNode.get_child("progress").set_value(0) #progress will always be observed even in disable observers
+                    if controlNode.get_child("progress").get_value()!=0:
+                        #we set the control progress only if necessary, otherwise we can get interleaved event yields:
+                        # the event queue always sends the first event of a kind, then flushes the queue and sends the same of a kind after a timeout
+                        # so having this progress = 0 event too often is not a good idea: we could get an interleaved "0" during a 0.1 0.2 from a plug in
+                        controlNode.get_child("progress").set_value(0) #progress will always be observed even in disable observers
                     #controlNode.get_child("signal").set_value("nosignal")
                     startTime = datetime.datetime.now()
                     controlNode.get_child("lastStartTime").set_value(startTime.isoformat())

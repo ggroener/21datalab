@@ -401,7 +401,7 @@ def disable_motif_change_size_observer(functionNode):
 def enable_motif_change_size_observer(functionNode,motif):
     observer = functionNode.get_parent().get_child("userChangeMotifSize")
     observer.get_child("enabled").set_value(False)
-    observer.get_child("targets").add_references([motif.get_child("startTime"),motif.get_child("endTime")],deleteAll=True)
+    observer.get_child("targets").add_references([motif.get_child("startTime")],deleteAll=True)
     observer.get_child("enabled").set_value(True)
 
 
@@ -431,32 +431,39 @@ def _create_annos_from_matches(annoFolder,matches,maxMatches=None):
 def create(functionNode):
     hide(functionNode) # if any is already visible, hide it
 
+    model = functionNode.get_model()
     logger = functionNode.get_logger()
     logger.debug("create_envelope()")
     motif = functionNode.get_parent().get_child("EnvelopeMiner").get_child("motif").get_target()
     widget = functionNode.get_parent().get_child("EnvelopeMiner").get_child("widget").get_target()
     name = motif.get_child("variable").get_target().get_name()
     defaults = functionNode.get_parent().get_child("defaultParameters").get_value()
+
     if motif and widget:
-        envelope = motif.create_child("envelope",type="folder")
-        envelope.create_child(name+"_limitMax",type="timeseries")
-        envelope.create_child(name+"_limitMin",type="timeseries")
-        envelope.create_child(name+"_expected",type="timeseries")
+        try:
+            model.disable_observers()
+            envelope = motif.create_child("envelope",type="folder")
+            envelope.create_child(name+"_limitMax",type="timeseries")
+            envelope.create_child(name+"_limitMin",type="timeseries")
+            envelope.create_child(name+"_expected",type="timeseries")
 
-        #adapt the sampling selection to the selected widget:
-        # we take the average sampling period *2 as the default and the 10*average sampling period as max
-        start = dates.date2secs(motif.get_child("startTime").get_value())
-        end = dates.date2secs(motif.get_child("endTime").get_value())
-        ts = motif.get_child("variable").get_target().get_time_series(start, end)
-        avr = (end-start)/len(ts["values"])
-        logger.debug(f"sampling period in motif: {avr}")
-        defaults["samplingPeriod"]=[avr,10*avr,2*avr]
+            #adapt the sampling selection to the selected widget:
+            # we take the average sampling period *2 as the default and the 10*average sampling period as max
+            start = dates.date2secs(motif.get_child("startTime").get_value())
+            end = dates.date2secs(motif.get_child("endTime").get_value())
+            ts = motif.get_child("variable").get_target().get_time_series(start, end)
+            avr = (end-start)/len(ts["values"])
+            logger.debug(f"sampling period in motif: {avr}")
+            defaults["samplingPeriod"]=[avr,10*avr,2*avr]
 
-        for k,v in defaults.items():#["samplingPeriod","filter","freedom","dynamicFreedom"]:
-            envelope.create_child(k,type="const",value=v[2],properties={"validation":{"limits":[v[0],v[1]]}})
-        if not _connect(motif,widget):
-            logger.error("can't connect motif envelope to widget")
+            for k,v in defaults.items():#["samplingPeriod","filter","freedom","dynamicFreedom"]:
+                envelope.create_child(k,type="const",value=v[2],properties={"validation":{"limits":[v[0],v[1]]}})
+        finally:
+            model.enable_observers()
+            if not _connect(motif,widget):
+                logger.error("can't connect motif envelope to widget")
         #also
+
 
     #override the value with better values
     #e.g the sampling period we take the average that we have and make 10 steps to the 10 times sampling rate
@@ -581,12 +588,14 @@ def hide(functionNode):
     disable_interaction_observer(functionNode)
     disable_motif_select_observer(functionNode)
     disable_motif_change_size_observer(functionNode)
+    show_motifs(functionNode,False)
     return _connect(motif,widget,False)
 
 def init(functionNode):
     logger = functionNode.get_logger()
     logger.debug("init")
     enable_motif_select_observer(functionNode)
+    show_motifs(functionNode,True)
     return True
 
 def delete(functionNode):
@@ -632,6 +641,7 @@ def jump(functionNode):
 
 
 def display_matches(functionNode,on=True):
+    return #Albert: we currently do not support display of annotations
     widget = functionNode.get_parent().get_child("EnvelopeMiner").get_child("widget").get_target()
 
     if on:
@@ -681,26 +691,47 @@ def _connect(motif,widget,connect=True):
         lMin = None
         exPe = None
         #children = motif.get_children()
-        for child in motif.get_child("envelope").get_children():
-            if "_limitMax" in child.get_name():
-                lMax = child
-            elif "_limitMin" in child.get_name():
-                lMin = child
-            elif "_expected" in child.get_name():
-                exPe = child
-        if connect:
-            if lMax and lMin:
-                if exPe:
-                    widget.get_child("selectedVariables").add_references([exPe,lMin,lMax],allowDuplicates=False)
-                else:
-                    widget.get_child("selectedVariables").add_references([lMin, lMax],allowDuplicates=False)
-        else:
-            #disconnect
-            elems = [elem for elem in [lMin,lMax,exPe] if elem] #remove the nones
-            if elems:
-                widget.get_child("selectedVariables").del_references(elems)
+        if motif.get_child("envelope"):
+            for child in motif.get_child("envelope").get_children():
+                if "_limitMax" in child.get_name():
+                    lMax = child
+                elif "_limitMin" in child.get_name():
+                    lMin = child
+                elif "_expected" in child.get_name():
+                    exPe = child
+            if connect:
+                if lMax and lMin:
+                    if exPe:
+                        widget.get_child("selectedVariables").add_references([exPe,lMin,lMax],allowDuplicates=False)
+                    else:
+                        widget.get_child("selectedVariables").add_references([lMin, lMax],allowDuplicates=False)
+            else:
+                #disconnect
+                elems = [elem for elem in [lMin,lMax,exPe] if elem] #remove the nones
+                if elems:
+                    widget.get_child("selectedVariables").del_references(elems)
         return True
     except Exception as ex:
         import traceback
         print(traceback.format_exc())
         return True
+
+def show_motifs(functionNode,show):
+
+    # switch off the motifs in the context menu
+    widget = functionNode.get_parent().get_child("EnvelopeMiner.widget").get_target()
+    visibleElements = widget.get_child("visibleElements").get_value()
+    if "motifs" not in visibleElements:
+        return
+
+    if show != visibleElements["motifs"]:
+        #must switch
+        visibleElements["motifs"]=show
+        widget.get_child("visibleElements").set_value(visibleElements)
+    return
+
+
+def enable_show_motifs(functionNode):
+    #switch on the motfs in the context menu
+    widget = functionNode.get_parent().get_child("EnvelopeMiner.widget").get_target()
+

@@ -850,7 +850,7 @@ class TimeSeriesWidget():
 
         self.eventLines = {}    #holding event line renderes and the columndatasources
         self.eventsVisible = False  #set true if events are currently turned on
-
+        self.scrollLabel = None
 
 
         self.__init_figure() #create the graphical output
@@ -903,7 +903,7 @@ class TimeSeriesWidget():
 
         """
         self.logger.debug(f"observer_cb {data}")
-        if data["event"] == "timeSeriesWidget.variables" or data["event"] == "global.timeSeries.values":
+        if data["event"] == "timeSeriesWidget.variables" or data["event"] == "global.timeSeries.value":
             #refresh the lines
             if data["event"] == "timeSeriesWidget.variables":
                 self.server.get_selected_variables_sync() # get the new set of lines
@@ -1531,6 +1531,8 @@ class TimeSeriesWidget():
 
         self.build_second_y_axis()
 
+        self.show_hide_scroll_label() #it must be created at startup and then visible=True/False, the later add_layout did not work
+
         self.refresh_plot()
 
         #hook in the callback of the figure
@@ -1812,12 +1814,32 @@ class TimeSeriesWidget():
         self.streamingInterval = self.rangeEnd-self.rangeStart # this is the currently selected "zoom"
         self.streamingUpdateData = None
         self.streamingMode = True
+        self.__dispatch_function(self.show_hide_scroll_label)
+
+
+
 
 
     def stop_streaming(self):
         self.logger.debug("stop streaming")
         self.streamingMode = False
+        self.__dispatch_function(self.show_hide_scroll_label)
 
+    def show_hide_scroll_label(self):
+        self.logger.debug(f"show scroll label {self.width-165}, {self.height-50} {self.scrollLabel}, {self.streamingMode}")
+        #creation
+        if not self.scrollLabel:
+            self.scrollLabel = Label(x=self.width-165, y=self.height-50, x_units='screen', y_units='screen',
+                  text=' auto scroll mode on ', text_font_size="12px", text_color=themes.textcolor,
+                  border_line_color=themes.textcolor, border_line_alpha=1.0,
+                  background_fill_color='black', background_fill_alpha=1.0)
+            if not self.streamingMode:
+                self.scrollLabel.visible = False
+            self.plot.add_layout(self.scrollLabel)
+        if self.streamingMode:
+            self.scrollLabel.visible = True
+        else:
+            self.scrollLabel.visible = False
 
 
     def annotation_drop_down_on_change_cb(self,attr,old,new):
@@ -2058,10 +2080,14 @@ class TimeSeriesWidget():
         """
 
         #check for variable/score update
-        if data["data"]["_eventInfo"]["startTime"] < self.plot.x_range.end / 1000:
+        if data["data"]["_eventInfo"]["startTime"] < self.plot.x_range.end / 1000 or self.streamingMode:
             for browsePath in data["data"]["_eventInfo"]["browsePaths"]:
                 if browsePath in self.lines and self.lines[browsePath].visible == True:
-                    self.refresh_plot()
+                    if (self.streamingMode and data["data"]["_eventInfo"]["startTime"] > self.plot.x_range.end/1000):
+                        appendingDataArrived = True
+                    else:
+                        appendingDataArrived = False
+                    self.refresh_plot(appendingDataArrived)
                     break
 
         allEventIds = [v["nodeId"] for k, v in self.eventLines.items()]
@@ -2085,7 +2111,7 @@ class TimeSeriesWidget():
                 if id in allEventIds:
                     return True # a currently visible event type is updated
 
-            if data["data"]["_eventInfo"]["startTime"]>self.plot.x_range.end/1000:
+            if not self.streamingMode and data["data"]["_eventInfo"]["startTime"]>self.plot.x_range.end/1000:
                 #the update is outside (to the right) of the visible area, so ignore
                 return False
             # now check if any of the ids are relevant
@@ -2604,7 +2630,7 @@ class TimeSeriesWidget():
 
 
 
-    def __plot_lines(self,newVars = None):
+    def __plot_lines(self,newVars = None,appendingDataArrived=False):
         """ plot the currently selected variables as lines, update the legend
             if newVars are given, we only plot them and leave the old
         """
@@ -2628,18 +2654,16 @@ class TimeSeriesWidget():
         variablesRequest = variables.copy()
         variablesRequest.append("__time")   #make sure we get the time included
         #self.logger.debug("@__plot_lines:self.variables, bins "+str(variablesRequest)+str( settings["bins"]))
-        if not self.streamingMode:
-            getData = self.server.get_data(variablesRequest,self.rangeStart,self.rangeEnd,settings["bins"]) # for debug
+        if self.streamingMode and appendingDataArrived:
+            getData = self.server.get_data(variablesRequest, -self.streamingInterval, None,self.server.get_settings()["bins"])
         else:
-            # avoid to send a different request between the streaming data requests, this causes "jagged" lines
-            # still not the perfec solution as zooming out now causes a short empty plot
-            getData = self.server.get_data(variablesRequest, -self.streamingInterval, None,
-                                                            self.server.get_settings()["bins"])  # for debug
+            getData = self.server.get_data(variablesRequest,self.rangeStart,self.rangeEnd,settings["bins"]) # for debug
+
         #self.logger.debug("GETDATA:"+str(getData))
         if not getData:
             self.logger.error(f"no data received")
             return
-        if self.rangeStart == None:
+        if self.rangeStart == None or self.streamingMode:
             mini,maxi = self.get_min_max_times(getData)
             #write it back
             self.rangeStart = mini#getData["__time"][0]
@@ -2685,7 +2709,7 @@ class TimeSeriesWidget():
             #sort the limits to the end so that the lines are created first, then the band can take the same color
             newList = []
             for elem in newVars:
-                if elem.endswith("_limitMax") or elem.endswith("_limitMin"):
+                if elem.endswith("_limitMax") or elem.endswith("_limitMin") or elem.endswith("_expected"):
                     newList.append(elem)
                 else:
                     newList.insert(0,elem)
@@ -2857,13 +2881,14 @@ class TimeSeriesWidget():
         self.plot.x_range.start = self.rangeStart
         self.plot.x_range.end   = self.rangeEnd
 
-    def refresh_plot(self):
+    def refresh_plot(self,appendingDataArrived = False):
         """
             # get data from the server and plot the lines
             # if the current zoom is out of range, we will resize it:
             # zoom back to max zoom level shift
             # or shift left /right to the max positions possible
             # if there are new variables, we will rebuild the whole plot
+            # appendingDataArrived: if set true and we are in streaming mode, we get the right-most data instead of the current zoom level
         """
         self.logger.debug("refresh_plot()")
         #have the variables changed?
@@ -2966,7 +2991,7 @@ class TimeSeriesWidget():
                 #return # wait for next event
 
 
-        data = self.__plot_lines(newLines) # the data contain all visible time series including the background
+        data = self.__plot_lines(newVars = newLines,appendingDataArrived=appendingDataArrived) # the data contain all visible time series including the background
         #todo: make this differential as well
         if self.server.get_settings()["background"]["hasBackground"]:
             self.refresh_backgrounds(data)
@@ -3045,9 +3070,10 @@ class TimeSeriesWidget():
                 self.streamingInterval = self.plot.x_range.end - self.plot.x_range.start #.rangeEnd - self.rangeStart
                 self.logger.debug(f"new streaming interval: {self.streamingInterval}")
             #if self.server.get_settings()["autoScaleY"][".properties"]["value"] == True
-            self.autoAdjustY = self.server.get_mirror()["autoScaleY"][".properties"]["value"]
-            self.server.set_x_range(self.rangeStart,self.rangeEnd)
-            self.refresh_plot()
+            if eventType=="LODEnd":# self.boxModifierVisible:
+                self.autoAdjustY = self.server.get_mirror()["autoScaleY"][".properties"]["value"]
+                self.server.set_x_range(self.rangeStart,self.rangeEnd)
+                self.refresh_plot()
 
         if eventType == "Reset":
             self.reset_plot_cb()

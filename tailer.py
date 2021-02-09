@@ -10,6 +10,7 @@ import logging
 import queue
 import requests
 import datetime
+import traceback
 
 def str_lim(obj,lim):
     stri = str(obj)
@@ -117,8 +118,9 @@ class FileTailer():
         self.running = True
         self.cb = callback
         self.timeout = timeout
-        self.file = open(self.fileName, "r")
+        self.file = None
         self.logger = logger
+        self.reopen()
         if self.logger:self.logger.info(f"FileTailer.init {self.fileName}")
 
     def start(self):
@@ -130,22 +132,42 @@ class FileTailer():
             newLine = self.file.readline()
             if not newLine:
                 break
+    def reopen(self):
+        if self.logger: self.logger.debug(f"(re)open {self.fileName}")
+        if self.file:
+            self.file.close()
+        try:
+            self.file = open(self.fileName, "r")
+        except Exception as ex:
+            msg = str(ex) + str(traceback.format_exc())
+            if self.logger: self.logger.error(msg)
+
 
     def follow(self):
         buffer = ""
         if self.logger: self.logger.info(f"FileTailer.follow {self.fileName}")
         while self.running:
-            newLine = self.file.readline()
-            if not newLine:
-                time.sleep(self.timeout)
-            else:
-                buffer += newLine
-                if buffer.endswith('\n'):
-                    if self.cb:
-                        self.cb(buffer)
-                    buffer = ""#reset buffer
+            try:
+                newLine = self.file.readline()
+                if not newLine:
+                    time.sleep(self.timeout)
                 else:
-                    if self.logger: self.logger.info(f"FileTailer.follow. line not complete")
+                    buffer += newLine
+                    if buffer.endswith('\n'):
+                        if self.cb:
+                            self.cb(buffer)
+                        buffer = ""#reset buffer
+                    else:
+                        if self.logger: self.logger.info(f"FileTailer.follow. line not complete")
+            except Exception as ex:
+                msg = str(ex)+str(traceback.format_exc())
+                if self.logger:
+                    self.logger.error(f"FileTailer.follow  {msg}")
+                else:
+                    print(f"error FileTailer.follow {msg}")
+                self.reopen()
+                time.sleep(self.timeout)
+
         self.file.close()
         if self.logger: self.logger.info(f"FileTailer.follow.threadFinish {self.fileName}")
 
