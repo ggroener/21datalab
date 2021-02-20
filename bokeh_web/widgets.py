@@ -1132,6 +1132,7 @@ class TimeSeriesWidget():
                                "upper":newData[var],
                                "lower":newData[minName],
                                "y":newData[var]} # is needed for the auto adjust y limits
+                        dic = self.insert_band_breaks(dic)
                     else:
                         #min is missing, can't process
                         continue
@@ -1142,6 +1143,63 @@ class TimeSeriesWidget():
                     self.columnData[var].data = dic #update
                 else:
                     self.columnData[var] = ColumnDataSource(dic)
+
+    def insert_band_breaks(self,band):
+        # we insert a break where any of the values of the bandDict values is numpy.nan
+        # the band dict has keys x,y,upper,lower, where y is the upper
+        fill = 0
+        # check start and end
+        for entry in ["x", "y", "upper", "lower"]:
+            band[entry] = numpy.asarray(band[entry], dtype=numpy.float64)
+
+        if ~numpy.isfinite(band["lower"][-1]) or ~numpy.isfinite(band["upper"][-1]):
+            band["upper"][-1] = fill
+            band["lower"][-1] = fill
+            band["y"][-1] = numpy.nan
+            band["x"][-1] = band["x"][-2]
+
+        if ~numpy.isfinite(band["lower"][0]) or ~numpy.isfinite(band["upper"][0]):
+            band["upper"][0] = fill
+            band["lower"][0] = fill
+            band["y"][0] = numpy.nan
+            band["x"][0] = band["x"][1]
+
+        inf1 = numpy.isfinite(band["lower"])
+        indices1 = numpy.where(~inf1)[0]
+        inf2 = numpy.isfinite(band["upper"])
+        indices2 = numpy.where(~inf2)[0]
+        indices = numpy.append(indices1, indices2)
+        indices = set(indices) - set([0, len(band["lower"]) - 1])
+        indices = numpy.asarray(list(indices))
+        indices = list(numpy.sort(indices))
+        # now we have a sorted list of indices where eiher lower or upper is nan/inf meaning this is a break
+        # for the break we do the following: we need the scheme as an example
+        # (t,v): (1,1),(2,2),(2,0),(3,0),(3,4),(4,5) etc 
+        # we have the data
+        # t= 1 2 3 4 5 6 7
+        # v= 1 2 n 4 5 6 7
+        # so we create
+        # t= 1 2 2 4 4 5 6 7
+        # v  1 2 0 0 4 5 6 7
+        print("indices", indices)
+
+        insertX = []
+        for indx in indices:
+            # add a start and convert the inf to a end of the break
+            band['x'][indx] = band['x'][indx + 1]
+            band['y'][indx] = numpy.nan
+            band["lower"][indx] = fill
+            band["upper"][indx] = fill
+
+            insertX.append(band['x'][indx - 1])
+
+            # now the inserts
+        band['x'] = numpy.insert(band['x'], indices, insertX)
+        band['y'] = numpy.insert(band['y'], indices, [numpy.nan] * len(insertX))
+        band['lower'] = numpy.insert(band['lower'], indices, [fill] * len(insertX))
+        band['upper'] = numpy.insert(band['upper'], indices, [fill] * len(insertX))
+
+        return band
 
 
     def sync_x_axis(self,times=None):
@@ -2750,7 +2808,7 @@ class TimeSeriesWidget():
                     if not thisLineColor:
                         thisLineColor = "gray"
                     band = Band(base='x', lower='lower', upper='upper', level=globalBandsLevel,fill_color = thisLineColor,
-                                fill_alpha=0.4, line_width=0,source = self.columnData[variableName])
+                                fill_alpha=0.4, line_width=0,source = self.columnData[variableName],name=variableName)
                     self.lines[variableName] = band
                     self.plot.add_layout(band)
                 continue
@@ -2948,8 +3006,15 @@ class TimeSeriesWidget():
 
             self.remove_renderers(renderers=extraDeleteRenderers,deleteFromLocal=True)# remove scores, expected, markers
 
-                #del self.columnData[lin] #delete the ColumnDataSource
-
+            #also remove extra lines which are not found in the renderes don'T know why
+            """
+            for delkey in self.find_extra_names_of_lines(deleteLines):
+                for key in self.lines:
+                    if key.endswith(delkey):
+                        self.lines[key].visible = False
+                        removeSelfLines.append(key)
+                        removeLegendKeys.append(key)
+            """ 
 
             #rebuild the legend is done at the end of the plot_lines
             for key in removeLegendKeys:
@@ -3706,20 +3771,30 @@ class TimeSeriesWidget():
         self.logger.debug("@find_motifs_of_line of line returns "+path+" => "+str(result))
         return result
 
-    def find_extra_renderers_of_lines(self,lines,markers=True,scores=True,expected=True):
-        if type(lines) is not list:
-            lines = [lines]
 
-        extraRenderes = []
+    def find_extra_names_of_lines(self,lines,markers=True,scores=True,expected=True,bands=True):
         deleteNames = []
         for line in lines:
             name = line.split('.')[-1]
             if scores:
-                deleteNames.append(name+"_score")
+                deleteNames.append(name + "_score")
             if expected:
-                deleteNames.append(name+"_expected")
+                deleteNames.append(name + "_expected")
             if markers:
                 deleteNames.append(name + "_marker")
+            if bands:
+                deleteNames.append(name + "_limitMax")
+                deleteNames.append(name + "_limitMin")
+                deleteNames.append(name + "_anomalyScore")
+            return deleteNames
+
+    def find_extra_renderers_of_lines(self,lines,markers=True,scores=True,expected=True,bands=True):
+        if type(lines) is not list:
+            lines = [lines]
+
+        extraRenderes = []
+        deleteNames = self.find_extra_names_of_lines(lines,markers,scores,expected,bands)
+
         for r in self.plot.renderers:
             if r.name and (r.name.split('.')[-1] in deleteNames):
                 extraRenderes.append(r)  # take the according score as well
