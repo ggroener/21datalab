@@ -21,7 +21,9 @@
             "9094074436304520942",
             "467181228673978707",
             "17205857613104500923",
-            "14597697627598099517"
+            "14597697627598099517",
+            "15618157695257689962",
+            "13365432842027942800"
         ],
         "parent": "0",
         "id": "1",
@@ -190,13 +192,13 @@
             "435",
             "477",
             "8037118344379379709",
-            "57832287729083089",
             "409",
             "367",
             "283",
             "325",
             "451",
-            "129"
+            "129",
+            "15447316580502486856"
         ],
         "forwardRefs": [],
         "value": "len 5",
@@ -369,7 +371,8 @@
         ],
         "backRefs": [
             "526",
-            "8268473328863278363"
+            "8268473328863278363",
+            "8646989336559792476"
         ],
         "forwardRefs": [],
         "value": null,
@@ -403,7 +406,10 @@
         ],
         "forwardRefs": [
             "120",
-            "121"
+            "121",
+            "11139946096929768602",
+            "1915369961507553121",
+            "11199507977167017442"
         ],
         "value": null,
         "browsePath": "root.visualization.workbench.selectedVariables"
@@ -418,7 +424,7 @@
             "13071347114919871021"
         ],
         "forwardRefs": [],
-        "value": "2015-02-11T15:18:00+01:00",
+        "value": "2015-02-14T22:24:12.408994+00:00",
         "browsePath": "root.visualization.workbench.startTime"
     },
     "131": {
@@ -431,7 +437,7 @@
             "13071347114919871021"
         ],
         "forwardRefs": [],
-        "value": "2015-02-18T08:34:00+01:00",
+        "value": "2015-02-16T00:15:20.775820+00:00",
         "browsePath": "root.visualization.workbench.endTime"
     },
     "132": {
@@ -496,8 +502,8 @@
             "12087524232013076239",
             "12525839204663670532",
             "12761865699925107392",
-            "1660366744481031556",
-            "83323160460624087"
+            "83323160460624087",
+            "375312402162626211"
         ],
         "backRefs": [
             "134",
@@ -5690,7 +5696,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 185,
+        "value": 193,
         "browsePath": "root.visualization.workbench.observerVariables.triggerCounter"
     },
     "645": {
@@ -5701,7 +5707,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:22:41.449193",
+        "value": "2021-02-20T21:16:19.853686",
         "browsePath": "root.visualization.workbench.observerVariables.lastTriggerTime"
     },
     "646": {
@@ -5914,7 +5920,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 9196,
+        "value": 9259,
         "browsePath": "root.visualization.workbench.observerStream.triggerCounter"
     },
     "663": {
@@ -5925,7 +5931,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:22:34.709679",
+        "value": "2021-02-20T21:19:55.351241",
         "browsePath": "root.visualization.workbench.observerStream.lastTriggerTime"
     },
     "664": {
@@ -8219,7 +8225,7 @@
             "scores": false,
             "background": false,
             "variables": true,
-            "motifs": false,
+            "motifs": true,
             "events": false
         },
         "browsePath": "root.visualization.workbench.visibleElements"
@@ -8245,7 +8251,9 @@
         "type": "referencer",
         "parent": "133",
         "children": [],
-        "backRefs": [],
+        "backRefs": [
+            "880137418186611137"
+        ],
         "forwardRefs": [],
         "value": null,
         "browsePath": "root.visualization.workbench.hasAnnotation.selectedAnnotations"
@@ -8289,7 +8297,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 1620,
+        "value": 1690,
         "browsePath": "root.visualization.workbench.observerAnnotations.triggerCounter"
     },
     "13646722735659859395": {
@@ -8300,7 +8308,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:22:31.771633",
+        "value": "2021-02-20T21:19:55.359240",
         "browsePath": "root.visualization.workbench.observerAnnotations.lastTriggerTime"
     },
     "12416654533870087467": {
@@ -8403,7 +8411,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 1779,
+        "value": 1924,
         "browsePath": "root.visualization.workbench.observerVisibleElements.triggerCounter"
     },
     "15683200324838571042": {
@@ -8414,7 +8422,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:22:41.188634",
+        "value": "2021-02-20T21:19:55.375237",
         "browsePath": "root.visualization.workbench.observerVisibleElements.lastTriggerTime"
     },
     "13071347114919871021": {
@@ -8733,7 +8741,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 12267,
+        "value": 12330,
         "browsePath": "root.visualization.workbench.observerValues.triggerCounter"
     },
     "5201468128014100031": {
@@ -8744,7 +8752,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:22:34.717676",
+        "value": "2021-02-20T21:19:55.351241",
         "browsePath": "root.visualization.workbench.observerValues.lastTriggerTime"
     },
     "10029816200158863035": {
@@ -8837,8 +8845,8 @@
         ],
         "forwardRefs": [],
         "value": {
-            "type": "time",
-            "tag": "busy"
+            "type": "motif",
+            "variable": "root.occupancyData.variables.Temperature"
         },
         "browsePath": "root.visualization.workbench.nextNewAnnotation"
     },
@@ -8881,7 +8889,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 69,
+        "value": 71,
         "browsePath": "root.visualization.workbench.observerNewAnnotation.triggerCounter"
     },
     "67741450388327913": {
@@ -8892,7 +8900,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-07-20T15:31:25.100150",
+        "value": "2021-02-20T21:13:53.187116",
         "browsePath": "root.visualization.workbench.observerNewAnnotation.lastTriggerTime"
     },
     "2805595053862460105": {
@@ -9101,11 +9109,17 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": {
+            "root.occupancyData.variables.Humidity": {
+                "lineColor": "#D9B100"
+            },
             "root.occupancyData.variables.Temperature": {
                 "lineColor": "#eba4fc"
             },
-            "root.occupancyData.variables.Humidity": {
-                "lineColor": "#D9B100"
+            "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_limitMax": {
+                "lineColor": "#cccccc"
+            },
+            "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_expected": {
+                "lineColor": "#eba4fc"
             }
         },
         "browsePath": "root.visualization.workbench.currentColors"
@@ -12016,7 +12030,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 20769,
+        "value": 20923,
         "browsePath": "root.system.progress.triggerCounter"
     },
     "10857910486653991896": {
@@ -12027,7 +12041,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:22:34.725677",
+        "value": "2021-02-20T21:16:25.028243",
         "browsePath": "root.system.progress.lastTriggerTime"
     },
     "16724694746718170912": {
@@ -12038,7 +12052,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [
-            "8039683095335665683"
+            "11221792079771077852"
         ],
         "value": null,
         "browsePath": "root.system.progress.targets"
@@ -12739,84 +12753,6 @@
         "value": false,
         "browsePath": "root.visualization.selfservice5.showMarker"
     },
-    "1660366744481031556": {
-        "id": "1660366744481031556",
-        "name": "0feeb379",
-        "type": "annotation",
-        "parent": "135",
-        "children": [
-            "2920127502609154322",
-            "16753490938037516784",
-            "14167798662185592540",
-            "4303969473532840571",
-            "57832287729083089"
-        ],
-        "backRefs": [
-            "12226988837753147426"
-        ],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379"
-    },
-    "2920127502609154322": {
-        "id": "2920127502609154322",
-        "name": "type",
-        "type": "const",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "motif",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.type"
-    },
-    "16753490938037516784": {
-        "id": "16753490938037516784",
-        "name": "startTime",
-        "type": "const",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "2015-02-13T08:04:25.053318+01:00",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.startTime"
-    },
-    "14167798662185592540": {
-        "id": "14167798662185592540",
-        "name": "endTime",
-        "type": "const",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "2015-02-13T17:59:19.342757+01:00",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.endTime"
-    },
-    "4303969473532840571": {
-        "id": "4303969473532840571",
-        "name": "tags",
-        "type": "const",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": [
-            "motif"
-        ],
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.tags"
-    },
-    "57832287729083089": {
-        "id": "57832287729083089",
-        "name": "variable",
-        "type": "referencer",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [
-            "120"
-        ],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.variable"
-    },
     "401335041852249076": {
         "id": "401335041852249076",
         "name": "motifMiner",
@@ -12876,9 +12812,7 @@
         "parent": "10998118072370379813",
         "children": [],
         "backRefs": [],
-        "forwardRefs": [
-            "1660366744481031556"
-        ],
+        "forwardRefs": [],
         "value": null,
         "browsePath": "root.motifMiner.MotifMiner.motif"
     },
@@ -13455,7 +13389,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [
-            "401335041852249076"
+            "401335041852249076",
+            "13365432842027942800"
         ],
         "value": null,
         "browsePath": "root.visualization.workbench.contextMenuPipelines"
@@ -17869,14 +17804,28 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": {
-            "busy": [
-                "busy_start",
-                "busy_end"
-            ],
-            "free": [
-                "free_start",
-                "free_end"
-            ]
+            "busy": {
+                "start": [
+                    "busy_start"
+                ],
+                "end": [
+                    "busy_end"
+                ],
+                "ignore": [
+                    "*"
+                ]
+            },
+            "free": {
+                "start": [
+                    "free_start"
+                ],
+                "end": [
+                    "free_end"
+                ],
+                "ignore": [
+                    "*"
+                ]
+            }
         },
         "browsePath": "root.new_events2State_daa4.eventSelection"
     },
@@ -18355,9 +18304,7 @@
         "type": "variable",
         "parent": "15599358538094682379",
         "children": [],
-        "backRefs": [
-            "16724694746718170912"
-        ],
+        "backRefs": [],
         "forwardRefs": [],
         "value": 0,
         "browsePath": "root.new_ThresholdScorer_b9dd.scoreAll.control.progress"
@@ -18547,5 +18494,2283 @@
         ],
         "value": null,
         "browsePath": "root.new_ThresholdScorer_b9dd.scoreAll.variables"
+    },
+    "15618157695257689962": {
+        "id": "15618157695257689962",
+        "name": "new_folder_7ddd",
+        "type": "folder",
+        "parent": "1",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_folder_7ddd"
+    },
+    "13365432842027942800": {
+        "id": "13365432842027942800",
+        "name": "new_envelopeMinerTemplate_87cf",
+        "type": "folder",
+        "parent": "1",
+        "children": [
+            "15395984749894658485",
+            "13781106677721148394",
+            "536126735754020329",
+            "8445855490063879944",
+            "5361855064579434698",
+            "9398403965893474150",
+            "5290839639004214780",
+            "6953592478150175740",
+            "17760191290285125779",
+            "8095751387546711236",
+            "15002837050541733580",
+            "6141988504925428372",
+            "8422512980599842541",
+            "6872705483342131220",
+            "201486361431509308",
+            "8319318136383982859"
+        ],
+        "backRefs": [
+            "15499764811511790654"
+        ],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf"
+    },
+    "15395984749894658485": {
+        "id": "15395984749894658485",
+        "name": "EnvelopeMiner",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "910868677616660212",
+            "8646989336559792476",
+            "2988594018444239161",
+            "16981004045442628755",
+            "16373789327723075606",
+            "16585596039323991072",
+            "1250568635019340297",
+            "16521047008548914458"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.envelope_miner",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner"
+    },
+    "910868677616660212": {
+        "id": "910868677616660212",
+        "name": "motif",
+        "type": "referencer",
+        "parent": "15395984749894658485",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "375312402162626211"
+        ],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.motif"
+    },
+    "8646989336559792476": {
+        "id": "8646989336559792476",
+        "name": "widget",
+        "type": "referencer",
+        "parent": "15395984749894658485",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "127"
+        ],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.widget"
+    },
+    "2988594018444239161": {
+        "id": "2988594018444239161",
+        "name": "annotations",
+        "type": "folder",
+        "parent": "15395984749894658485",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.annotations"
+    },
+    "16981004045442628755": {
+        "id": "16981004045442628755",
+        "name": "results",
+        "type": "variable",
+        "parent": "15395984749894658485",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": [
+            {
+                "startTime": "2015-02-13T06:32:18.714932+01:00",
+                "endTime": "2015-02-13T18:16:50.510341+01:00",
+                "match": 43.686090972222324,
+                "epochStart": 1423805538.714932,
+                "epochEnd": 1423847810.5103412,
+                "offset": -0.21000000000000085,
+                "format": "2015-02-13&nbsp&nbsp06:32:18&nbsp&nbsp(distance=0)"
+            },
+            {
+                "startTime": "2015-02-15T06:27:30.694703+01:00",
+                "endTime": "2015-02-15T18:12:02.490112+01:00",
+                "match": 64.67810208333364,
+                "epochStart": 1423978050.6947029,
+                "epochEnd": 1424020322.490112,
+                "offset": -1.0,
+                "format": "2015-02-15&nbsp&nbsp06:27:30&nbsp&nbsp(distance=5.21)"
+            },
+            {
+                "startTime": "2015-02-12T07:09:46.529678+01:00",
+                "endTime": "2015-02-12T18:54:18.325087+01:00",
+                "match": 268.8051104444447,
+                "epochStart": 1423721386.5296779,
+                "epochEnd": 1423763658.325087,
+                "offset": -0.5,
+                "format": "2015-02-12&nbsp&nbsp07:09:46&nbsp&nbsp(distance=55.9)"
+            },
+            {
+                "startTime": "2015-02-17T08:42:57.892999+01:00",
+                "endTime": "2015-02-17T20:27:29.688408+01:00",
+                "match": 376.95155069444434,
+                "epochStart": 1424158977.8929992,
+                "epochEnd": 1424201249.6884084,
+                "offset": -0.375,
+                "format": "2015-02-17&nbsp&nbsp08:42:57&nbsp&nbsp(distance=82.7)"
+            },
+            {
+                "startTime": "2015-02-16T08:10:18.098482+01:00",
+                "endTime": "2015-02-16T19:54:49.893892+01:00",
+                "match": 446.52341180555624,
+                "epochStart": 1424070618.0984824,
+                "epochEnd": 1424112889.8938916,
+                "offset": -0.6099999999999994,
+                "format": "2015-02-16&nbsp&nbsp08:10:18&nbsp&nbsp(distance=100)"
+            }
+        ],
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.results"
+    },
+    "16373789327723075606": {
+        "id": "16373789327723075606",
+        "name": "maxNumberOfMatches",
+        "type": "const",
+        "parent": "15395984749894658485",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.maxNumberOfMatches"
+    },
+    "16585596039323991072": {
+        "id": "16585596039323991072",
+        "name": "holeSize",
+        "type": "const",
+        "parent": "15395984749894658485",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 60,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.holeSize"
+    },
+    "1250568635019340297": {
+        "id": "1250568635019340297",
+        "name": "createAnnotations",
+        "type": "const",
+        "parent": "15395984749894658485",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": false,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.createAnnotations"
+    },
+    "16521047008548914458": {
+        "id": "16521047008548914458",
+        "name": "control",
+        "type": "folder",
+        "parent": "15395984749894658485",
+        "children": [
+            "7298084443877445151",
+            "4490852604339087986",
+            "15644586283978687391",
+            "18384202674833273590",
+            "3512668831415166518",
+            "6728032424579076733",
+            "3053032101220476891",
+            "5853873901430244599"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control"
+    },
+    "7298084443877445151": {
+        "id": "7298084443877445151",
+        "name": "status",
+        "type": "variable",
+        "parent": "16521047008548914458",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "finished",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.status"
+    },
+    "4490852604339087986": {
+        "id": "4490852604339087986",
+        "name": "progress",
+        "type": "variable",
+        "parent": "16521047008548914458",
+        "children": [],
+        "backRefs": [
+            "5690476730637088663"
+        ],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.progress"
+    },
+    "15644586283978687391": {
+        "id": "15644586283978687391",
+        "name": "result",
+        "type": "variable",
+        "parent": "16521047008548914458",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.result"
+    },
+    "18384202674833273590": {
+        "id": "18384202674833273590",
+        "name": "signal",
+        "type": "variable",
+        "parent": "16521047008548914458",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.signal"
+    },
+    "3512668831415166518": {
+        "id": "3512668831415166518",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "16521047008548914458",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 7,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.executionCounter"
+    },
+    "6728032424579076733": {
+        "id": "6728032424579076733",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "16521047008548914458",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.325945,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.lastExecutionDuration"
+    },
+    "3053032101220476891": {
+        "id": "3053032101220476891",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "16521047008548914458",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:16:24.587014",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.lastStartTime"
+    },
+    "5853873901430244599": {
+        "id": "5853873901430244599",
+        "name": "executionType",
+        "type": "const",
+        "parent": "16521047008548914458",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "threaded",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.executionType"
+    },
+    "13781106677721148394": {
+        "id": "13781106677721148394",
+        "name": "create",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "10940909372892548827"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.create",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create"
+    },
+    "10940909372892548827": {
+        "id": "10940909372892548827",
+        "name": "control",
+        "type": "folder",
+        "parent": "13781106677721148394",
+        "children": [
+            "5958150711976630288",
+            "7104058541466412226",
+            "17260534138291908476",
+            "7285761266145599170",
+            "1655517831767857165",
+            "5862401034392409872",
+            "2062215567352630157",
+            "10225907749672188044"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control"
+    },
+    "5958150711976630288": {
+        "id": "5958150711976630288",
+        "name": "status",
+        "type": "variable",
+        "parent": "10940909372892548827",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "finished",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.status"
+    },
+    "7104058541466412226": {
+        "id": "7104058541466412226",
+        "name": "progress",
+        "type": "variable",
+        "parent": "10940909372892548827",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.progress"
+    },
+    "17260534138291908476": {
+        "id": "17260534138291908476",
+        "name": "result",
+        "type": "variable",
+        "parent": "10940909372892548827",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.result"
+    },
+    "7285761266145599170": {
+        "id": "7285761266145599170",
+        "name": "signal",
+        "type": "variable",
+        "parent": "10940909372892548827",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.signal"
+    },
+    "1655517831767857165": {
+        "id": "1655517831767857165",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "10940909372892548827",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 1,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.executionCounter"
+    },
+    "5862401034392409872": {
+        "id": "5862401034392409872",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "10940909372892548827",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.166393,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.lastExecutionDuration"
+    },
+    "2062215567352630157": {
+        "id": "2062215567352630157",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "10940909372892548827",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:14:07.837502",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.lastStartTime"
+    },
+    "10225907749672188044": {
+        "id": "10225907749672188044",
+        "name": "executionType",
+        "type": "const",
+        "parent": "10940909372892548827",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.executionType"
+    },
+    "536126735754020329": {
+        "id": "536126735754020329",
+        "name": "update",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "16801548943743170709"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.update",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update"
+    },
+    "16801548943743170709": {
+        "id": "16801548943743170709",
+        "name": "control",
+        "type": "folder",
+        "parent": "536126735754020329",
+        "children": [
+            "5595247839556918532",
+            "10426941551034857667",
+            "3596140367889335473",
+            "8071465826189168919",
+            "12939507428335593847",
+            "6477643180315998121",
+            "10726384435446706546",
+            "17309094643141100030"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control"
+    },
+    "5595247839556918532": {
+        "id": "5595247839556918532",
+        "name": "status",
+        "type": "variable",
+        "parent": "16801548943743170709",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "finished",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.status"
+    },
+    "10426941551034857667": {
+        "id": "10426941551034857667",
+        "name": "progress",
+        "type": "variable",
+        "parent": "16801548943743170709",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.progress"
+    },
+    "3596140367889335473": {
+        "id": "3596140367889335473",
+        "name": "result",
+        "type": "variable",
+        "parent": "16801548943743170709",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.result"
+    },
+    "8071465826189168919": {
+        "id": "8071465826189168919",
+        "name": "signal",
+        "type": "variable",
+        "parent": "16801548943743170709",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.signal"
+    },
+    "12939507428335593847": {
+        "id": "12939507428335593847",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "16801548943743170709",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 10,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.executionCounter"
+    },
+    "6477643180315998121": {
+        "id": "6477643180315998121",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "16801548943743170709",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.008022,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.lastExecutionDuration"
+    },
+    "10726384435446706546": {
+        "id": "10726384435446706546",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "16801548943743170709",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:16:21.610439",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.lastStartTime"
+    },
+    "17309094643141100030": {
+        "id": "17309094643141100030",
+        "name": "executionType",
+        "type": "const",
+        "parent": "16801548943743170709",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.executionType"
+    },
+    "8445855490063879944": {
+        "id": "8445855490063879944",
+        "name": "show",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "17023738787307411274"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.show",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show"
+    },
+    "17023738787307411274": {
+        "id": "17023738787307411274",
+        "name": "control",
+        "type": "folder",
+        "parent": "8445855490063879944",
+        "children": [
+            "15972329099267838013",
+            "3529753790469468891",
+            "1332074910564325423",
+            "10244343168736761639",
+            "1016618808284824593",
+            "3373444762452716281",
+            "364189669889604981",
+            "15387810425626740299"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control"
+    },
+    "15972329099267838013": {
+        "id": "15972329099267838013",
+        "name": "status",
+        "type": "variable",
+        "parent": "17023738787307411274",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "finished",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.status"
+    },
+    "3529753790469468891": {
+        "id": "3529753790469468891",
+        "name": "progress",
+        "type": "variable",
+        "parent": "17023738787307411274",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.progress"
+    },
+    "1332074910564325423": {
+        "id": "1332074910564325423",
+        "name": "result",
+        "type": "variable",
+        "parent": "17023738787307411274",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.result"
+    },
+    "10244343168736761639": {
+        "id": "10244343168736761639",
+        "name": "signal",
+        "type": "variable",
+        "parent": "17023738787307411274",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.signal"
+    },
+    "1016618808284824593": {
+        "id": "1016618808284824593",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "17023738787307411274",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 6,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.executionCounter"
+    },
+    "3373444762452716281": {
+        "id": "3373444762452716281",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "17023738787307411274",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.025707,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.lastExecutionDuration"
+    },
+    "364189669889604981": {
+        "id": "364189669889604981",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "17023738787307411274",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:16:19.827979",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.lastStartTime"
+    },
+    "15387810425626740299": {
+        "id": "15387810425626740299",
+        "name": "executionType",
+        "type": "const",
+        "parent": "17023738787307411274",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.executionType"
+    },
+    "5361855064579434698": {
+        "id": "5361855064579434698",
+        "name": "hide",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "13301417216974449171"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.hide",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide"
+    },
+    "13301417216974449171": {
+        "id": "13301417216974449171",
+        "name": "control",
+        "type": "folder",
+        "parent": "5361855064579434698",
+        "children": [
+            "10231758423168264875",
+            "14460464271482540630",
+            "13981025719746574945",
+            "9289599860981864887",
+            "16761338905210568809",
+            "17525512158739285557",
+            "15794555938109145190",
+            "7005879798898104264"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control"
+    },
+    "10231758423168264875": {
+        "id": "10231758423168264875",
+        "name": "status",
+        "type": "variable",
+        "parent": "13301417216974449171",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "finished",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.status"
+    },
+    "14460464271482540630": {
+        "id": "14460464271482540630",
+        "name": "progress",
+        "type": "variable",
+        "parent": "13301417216974449171",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.progress"
+    },
+    "13981025719746574945": {
+        "id": "13981025719746574945",
+        "name": "result",
+        "type": "variable",
+        "parent": "13301417216974449171",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.result"
+    },
+    "9289599860981864887": {
+        "id": "9289599860981864887",
+        "name": "signal",
+        "type": "variable",
+        "parent": "13301417216974449171",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.signal"
+    },
+    "16761338905210568809": {
+        "id": "16761338905210568809",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "13301417216974449171",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 1,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.executionCounter"
+    },
+    "17525512158739285557": {
+        "id": "17525512158739285557",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "13301417216974449171",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.025233,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.lastExecutionDuration"
+    },
+    "15794555938109145190": {
+        "id": "15794555938109145190",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "13301417216974449171",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:14:56.311565",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.lastStartTime"
+    },
+    "7005879798898104264": {
+        "id": "7005879798898104264",
+        "name": "executionType",
+        "type": "const",
+        "parent": "13301417216974449171",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.executionType"
+    },
+    "9398403965893474150": {
+        "id": "9398403965893474150",
+        "name": "select",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "5473506133322427968"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.select",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select"
+    },
+    "5473506133322427968": {
+        "id": "5473506133322427968",
+        "name": "control",
+        "type": "folder",
+        "parent": "9398403965893474150",
+        "children": [
+            "12802736587964570122",
+            "4828012352039645968",
+            "7451863605045050748",
+            "11806623553803377539",
+            "11728982928258924076",
+            "3777283300360622518",
+            "12329676095258703536",
+            "4973729594806518701"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control"
+    },
+    "12802736587964570122": {
+        "id": "12802736587964570122",
+        "name": "status",
+        "type": "variable",
+        "parent": "5473506133322427968",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "finished",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.status"
+    },
+    "4828012352039645968": {
+        "id": "4828012352039645968",
+        "name": "progress",
+        "type": "variable",
+        "parent": "5473506133322427968",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.progress"
+    },
+    "7451863605045050748": {
+        "id": "7451863605045050748",
+        "name": "result",
+        "type": "variable",
+        "parent": "5473506133322427968",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.result"
+    },
+    "11806623553803377539": {
+        "id": "11806623553803377539",
+        "name": "signal",
+        "type": "variable",
+        "parent": "5473506133322427968",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.signal"
+    },
+    "11728982928258924076": {
+        "id": "11728982928258924076",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "5473506133322427968",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 1,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.executionCounter"
+    },
+    "3777283300360622518": {
+        "id": "3777283300360622518",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "5473506133322427968",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.00788,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.lastExecutionDuration"
+    },
+    "12329676095258703536": {
+        "id": "12329676095258703536",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "5473506133322427968",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:14:04.329251",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.lastStartTime"
+    },
+    "4973729594806518701": {
+        "id": "4973729594806518701",
+        "name": "executionType",
+        "type": "const",
+        "parent": "5473506133322427968",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.executionType"
+    },
+    "5290839639004214780": {
+        "id": "5290839639004214780",
+        "name": "delete",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "8984333596080959453"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.delete",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete"
+    },
+    "8984333596080959453": {
+        "id": "8984333596080959453",
+        "name": "control",
+        "type": "folder",
+        "parent": "5290839639004214780",
+        "children": [
+            "3554366323845374935",
+            "10237939300281341504",
+            "13351521313090512412",
+            "14986767210784934094",
+            "7728060072548599411",
+            "1049273138834092002",
+            "15180639075833959434",
+            "14368734911214322264"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control"
+    },
+    "3554366323845374935": {
+        "id": "3554366323845374935",
+        "name": "status",
+        "type": "variable",
+        "parent": "8984333596080959453",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "idle",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.status"
+    },
+    "10237939300281341504": {
+        "id": "10237939300281341504",
+        "name": "progress",
+        "type": "variable",
+        "parent": "8984333596080959453",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.progress"
+    },
+    "13351521313090512412": {
+        "id": "13351521313090512412",
+        "name": "result",
+        "type": "variable",
+        "parent": "8984333596080959453",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.result"
+    },
+    "14986767210784934094": {
+        "id": "14986767210784934094",
+        "name": "signal",
+        "type": "variable",
+        "parent": "8984333596080959453",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.signal"
+    },
+    "7728060072548599411": {
+        "id": "7728060072548599411",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "8984333596080959453",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.executionCounter"
+    },
+    "1049273138834092002": {
+        "id": "1049273138834092002",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "8984333596080959453",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.lastExecutionDuration"
+    },
+    "15180639075833959434": {
+        "id": "15180639075833959434",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "8984333596080959453",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "not yet",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.lastStartTime"
+    },
+    "14368734911214322264": {
+        "id": "14368734911214322264",
+        "name": "executionType",
+        "type": "const",
+        "parent": "8984333596080959453",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.executionType"
+    },
+    "6953592478150175740": {
+        "id": "6953592478150175740",
+        "name": "recreate",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "9708439409904238219"
+        ],
+        "backRefs": [
+            "12284240692947841098"
+        ],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.recreate",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate"
+    },
+    "9708439409904238219": {
+        "id": "9708439409904238219",
+        "name": "control",
+        "type": "folder",
+        "parent": "6953592478150175740",
+        "children": [
+            "12759103943022087848",
+            "3518479614759184210",
+            "10284186562347372385",
+            "12678350086651265045",
+            "996572515668042863",
+            "13187034999044242096",
+            "16512748328239666775",
+            "3939347481852313382"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control"
+    },
+    "12759103943022087848": {
+        "id": "12759103943022087848",
+        "name": "status",
+        "type": "variable",
+        "parent": "9708439409904238219",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "idle",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.status"
+    },
+    "3518479614759184210": {
+        "id": "3518479614759184210",
+        "name": "progress",
+        "type": "variable",
+        "parent": "9708439409904238219",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.progress"
+    },
+    "10284186562347372385": {
+        "id": "10284186562347372385",
+        "name": "result",
+        "type": "variable",
+        "parent": "9708439409904238219",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.result"
+    },
+    "12678350086651265045": {
+        "id": "12678350086651265045",
+        "name": "signal",
+        "type": "variable",
+        "parent": "9708439409904238219",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.signal"
+    },
+    "996572515668042863": {
+        "id": "996572515668042863",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "9708439409904238219",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.executionCounter"
+    },
+    "13187034999044242096": {
+        "id": "13187034999044242096",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "9708439409904238219",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.lastExecutionDuration"
+    },
+    "16512748328239666775": {
+        "id": "16512748328239666775",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "9708439409904238219",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "not yet",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.lastStartTime"
+    },
+    "3939347481852313382": {
+        "id": "3939347481852313382",
+        "name": "executionType",
+        "type": "const",
+        "parent": "9708439409904238219",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.executionType"
+    },
+    "17760191290285125779": {
+        "id": "17760191290285125779",
+        "name": "jump",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "10930673065095679265",
+            "7200214566059531214"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.jump",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump"
+    },
+    "10930673065095679265": {
+        "id": "10930673065095679265",
+        "name": "match",
+        "type": "variable",
+        "parent": "17760191290285125779",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 1,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.match"
+    },
+    "7200214566059531214": {
+        "id": "7200214566059531214",
+        "name": "control",
+        "type": "folder",
+        "parent": "17760191290285125779",
+        "children": [
+            "11982522621921946711",
+            "11221792079771077852",
+            "16018516539320915524",
+            "14276056619283594145",
+            "5396016117483618966",
+            "12560035391714496444",
+            "7762394691846726390",
+            "17487701601179972838"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control"
+    },
+    "11982522621921946711": {
+        "id": "11982522621921946711",
+        "name": "status",
+        "type": "variable",
+        "parent": "7200214566059531214",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "finished",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.status"
+    },
+    "11221792079771077852": {
+        "id": "11221792079771077852",
+        "name": "progress",
+        "type": "variable",
+        "parent": "7200214566059531214",
+        "children": [],
+        "backRefs": [
+            "16724694746718170912"
+        ],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.progress"
+    },
+    "16018516539320915524": {
+        "id": "16018516539320915524",
+        "name": "result",
+        "type": "variable",
+        "parent": "7200214566059531214",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.result"
+    },
+    "14276056619283594145": {
+        "id": "14276056619283594145",
+        "name": "signal",
+        "type": "variable",
+        "parent": "7200214566059531214",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.signal"
+    },
+    "5396016117483618966": {
+        "id": "5396016117483618966",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "7200214566059531214",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 45,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.executionCounter"
+    },
+    "12560035391714496444": {
+        "id": "12560035391714496444",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "7200214566059531214",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.039875,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.lastExecutionDuration"
+    },
+    "7762394691846726390": {
+        "id": "7762394691846726390",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "7200214566059531214",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:19:55.343341",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.lastStartTime"
+    },
+    "17487701601179972838": {
+        "id": "17487701601179972838",
+        "name": "executionType",
+        "type": "const",
+        "parent": "7200214566059531214",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.executionType"
+    },
+    "8095751387546711236": {
+        "id": "8095751387546711236",
+        "name": "init",
+        "type": "function",
+        "parent": "13365432842027942800",
+        "children": [
+            "16052479779280099215"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "functionPointer": "envelopemining.init",
+        "autoReload": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init"
+    },
+    "16052479779280099215": {
+        "id": "16052479779280099215",
+        "name": "control",
+        "type": "folder",
+        "parent": "8095751387546711236",
+        "children": [
+            "15366299843884050111",
+            "4286843979343803235",
+            "4020981240348151208",
+            "14795178916769297849",
+            "18105588745350698127",
+            "17843580754641325184",
+            "5893140455016266231",
+            "11904188744587348011"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control"
+    },
+    "15366299843884050111": {
+        "id": "15366299843884050111",
+        "name": "status",
+        "type": "variable",
+        "parent": "16052479779280099215",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "finished",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.status"
+    },
+    "4286843979343803235": {
+        "id": "4286843979343803235",
+        "name": "progress",
+        "type": "variable",
+        "parent": "16052479779280099215",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.progress"
+    },
+    "4020981240348151208": {
+        "id": "4020981240348151208",
+        "name": "result",
+        "type": "variable",
+        "parent": "16052479779280099215",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "ok",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.result"
+    },
+    "14795178916769297849": {
+        "id": "14795178916769297849",
+        "name": "signal",
+        "type": "variable",
+        "parent": "16052479779280099215",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "nosignal",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.signal"
+    },
+    "18105588745350698127": {
+        "id": "18105588745350698127",
+        "name": "executionCounter",
+        "type": "variable",
+        "parent": "16052479779280099215",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 2,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.executionCounter"
+    },
+    "17843580754641325184": {
+        "id": "17843580754641325184",
+        "name": "lastExecutionDuration",
+        "type": "variable",
+        "parent": "16052479779280099215",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.016449,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.lastExecutionDuration"
+    },
+    "5893140455016266231": {
+        "id": "5893140455016266231",
+        "name": "lastStartTime",
+        "type": "variable",
+        "parent": "16052479779280099215",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:15:22.661573",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.lastStartTime"
+    },
+    "11904188744587348011": {
+        "id": "11904188744587348011",
+        "name": "executionType",
+        "type": "const",
+        "parent": "16052479779280099215",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "async",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.executionType"
+    },
+    "15002837050541733580": {
+        "id": "15002837050541733580",
+        "name": "progress",
+        "type": "observer",
+        "parent": "13365432842027942800",
+        "children": [
+            "10754738291394000054",
+            "2150764611514302056",
+            "16345843991743999963",
+            "5690476730637088663",
+            "4200185888198536395",
+            "14954164883985338813",
+            "3964101246123832077",
+            "10360049979878461538",
+            "14529972058110959372",
+            "17620942806055125406"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress"
+    },
+    "10754738291394000054": {
+        "id": "10754738291394000054",
+        "name": "enabled",
+        "type": "const",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.enabled"
+    },
+    "2150764611514302056": {
+        "id": "2150764611514302056",
+        "name": "triggerCounter",
+        "type": "variable",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 154,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.triggerCounter"
+    },
+    "16345843991743999963": {
+        "id": "16345843991743999963",
+        "name": "lastTriggerTime",
+        "type": "variable",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:16:25.028243",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.lastTriggerTime"
+    },
+    "5690476730637088663": {
+        "id": "5690476730637088663",
+        "name": "targets",
+        "type": "referencer",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "4490852604339087986"
+        ],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.targets"
+    },
+    "4200185888198536395": {
+        "id": "4200185888198536395",
+        "name": "properties",
+        "type": "const",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": [
+            "value"
+        ],
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.properties"
+    },
+    "14954164883985338813": {
+        "id": "14954164883985338813",
+        "name": "onTriggerFunction",
+        "type": "referencer",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.onTriggerFunction"
+    },
+    "3964101246123832077": {
+        "id": "3964101246123832077",
+        "name": "triggerSourceId",
+        "type": "variable",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "4490852604339087986",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.triggerSourceId"
+    },
+    "10360049979878461538": {
+        "id": "10360049979878461538",
+        "name": "hasEvent",
+        "type": "const",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.hasEvent"
+    },
+    "14529972058110959372": {
+        "id": "14529972058110959372",
+        "name": "eventString",
+        "type": "const",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "envelopemining.progress",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.eventString"
+    },
+    "17620942806055125406": {
+        "id": "17620942806055125406",
+        "name": "eventData",
+        "type": "const",
+        "parent": "15002837050541733580",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": {
+            "text": "observer status update"
+        },
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.eventData"
+    },
+    "6141988504925428372": {
+        "id": "6141988504925428372",
+        "name": "userInteraction",
+        "type": "observer",
+        "parent": "13365432842027942800",
+        "children": [
+            "6326323032067010239",
+            "1649241524812838493",
+            "12742835478346514036",
+            "11274223787063617958",
+            "1057731146072995872",
+            "6695328003580515254",
+            "10555678027145257610",
+            "16255253939845978641",
+            "12635604797796176164",
+            "1836776010902687808"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction"
+    },
+    "6326323032067010239": {
+        "id": "6326323032067010239",
+        "name": "enabled",
+        "type": "const",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.enabled"
+    },
+    "1649241524812838493": {
+        "id": "1649241524812838493",
+        "name": "triggerCounter",
+        "type": "variable",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 62,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.triggerCounter"
+    },
+    "12742835478346514036": {
+        "id": "12742835478346514036",
+        "name": "lastTriggerTime",
+        "type": "variable",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:19:55.351241",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.lastTriggerTime"
+    },
+    "11274223787063617958": {
+        "id": "11274223787063617958",
+        "name": "targets",
+        "type": "referencer",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "11199507977167017442",
+            "1915369961507553121",
+            "11139946096929768602"
+        ],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.targets"
+    },
+    "1057731146072995872": {
+        "id": "1057731146072995872",
+        "name": "properties",
+        "type": "const",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": [
+            "value"
+        ],
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.properties"
+    },
+    "6695328003580515254": {
+        "id": "6695328003580515254",
+        "name": "onTriggerFunction",
+        "type": "referencer",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.onTriggerFunction"
+    },
+    "10555678027145257610": {
+        "id": "10555678027145257610",
+        "name": "triggerSourceId",
+        "type": "variable",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "11199507977167017442",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.triggerSourceId"
+    },
+    "16255253939845978641": {
+        "id": "16255253939845978641",
+        "name": "hasEvent",
+        "type": "const",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.hasEvent"
+    },
+    "12635604797796176164": {
+        "id": "12635604797796176164",
+        "name": "eventString",
+        "type": "const",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "global.timeSeries.values",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.eventString"
+    },
+    "1836776010902687808": {
+        "id": "1836776010902687808",
+        "name": "eventData",
+        "type": "const",
+        "parent": "6141988504925428372",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": {
+            "text": ""
+        },
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.eventData"
+    },
+    "8422512980599842541": {
+        "id": "8422512980599842541",
+        "name": "userSelectMotif",
+        "type": "observer",
+        "parent": "13365432842027942800",
+        "children": [
+            "2093794856165389082",
+            "166062941741105057",
+            "16102841080714055911",
+            "880137418186611137",
+            "11061461723691471131",
+            "11810888325949576203",
+            "5683767502355927380",
+            "9466988144708330117",
+            "12425096650387732834",
+            "15630235116005790912"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif"
+    },
+    "2093794856165389082": {
+        "id": "2093794856165389082",
+        "name": "enabled",
+        "type": "const",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.enabled"
+    },
+    "166062941741105057": {
+        "id": "166062941741105057",
+        "name": "triggerCounter",
+        "type": "variable",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 5,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.triggerCounter"
+    },
+    "16102841080714055911": {
+        "id": "16102841080714055911",
+        "name": "lastTriggerTime",
+        "type": "variable",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2021-02-20T21:14:02.987095",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.lastTriggerTime"
+    },
+    "880137418186611137": {
+        "id": "880137418186611137",
+        "name": "targets",
+        "type": "referencer",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "13000472620321332898"
+        ],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.targets"
+    },
+    "11061461723691471131": {
+        "id": "11061461723691471131",
+        "name": "properties",
+        "type": "const",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": [
+            "forwardRefs"
+        ],
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.properties"
+    },
+    "11810888325949576203": {
+        "id": "11810888325949576203",
+        "name": "onTriggerFunction",
+        "type": "referencer",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.onTriggerFunction"
+    },
+    "5683767502355927380": {
+        "id": "5683767502355927380",
+        "name": "triggerSourceId",
+        "type": "variable",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "13000472620321332898",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.triggerSourceId"
+    },
+    "9466988144708330117": {
+        "id": "9466988144708330117",
+        "name": "hasEvent",
+        "type": "const",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.hasEvent"
+    },
+    "12425096650387732834": {
+        "id": "12425096650387732834",
+        "name": "eventString",
+        "type": "const",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "envelopeMiner.selectMotif",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.eventString"
+    },
+    "15630235116005790912": {
+        "id": "15630235116005790912",
+        "name": "eventData",
+        "type": "const",
+        "parent": "8422512980599842541",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": {
+            "text": ""
+        },
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.eventData"
+    },
+    "6872705483342131220": {
+        "id": "6872705483342131220",
+        "name": "userChangeMotifSize",
+        "type": "observer",
+        "parent": "13365432842027942800",
+        "children": [
+            "7522711319488727571",
+            "4300069711345468034",
+            "1707087089573561331",
+            "84941035371750608",
+            "11909919207398831664",
+            "12284240692947841098",
+            "12528551381955884785",
+            "12350183316075938464",
+            "14572203395430649531",
+            "13717156650812082903"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize"
+    },
+    "7522711319488727571": {
+        "id": "7522711319488727571",
+        "name": "enabled",
+        "type": "const",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": true,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.enabled"
+    },
+    "4300069711345468034": {
+        "id": "4300069711345468034",
+        "name": "triggerCounter",
+        "type": "variable",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.triggerCounter"
+    },
+    "1707087089573561331": {
+        "id": "1707087089573561331",
+        "name": "lastTriggerTime",
+        "type": "variable",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.lastTriggerTime"
+    },
+    "84941035371750608": {
+        "id": "84941035371750608",
+        "name": "targets",
+        "type": "referencer",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "7662565652747735571"
+        ],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.targets"
+    },
+    "11909919207398831664": {
+        "id": "11909919207398831664",
+        "name": "properties",
+        "type": "const",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": [
+            "value"
+        ],
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.properties"
+    },
+    "12284240692947841098": {
+        "id": "12284240692947841098",
+        "name": "onTriggerFunction",
+        "type": "referencer",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "6953592478150175740"
+        ],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.onTriggerFunction"
+    },
+    "12528551381955884785": {
+        "id": "12528551381955884785",
+        "name": "triggerSourceId",
+        "type": "variable",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.triggerSourceId"
+    },
+    "12350183316075938464": {
+        "id": "12350183316075938464",
+        "name": "hasEvent",
+        "type": "const",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": false,
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.hasEvent"
+    },
+    "14572203395430649531": {
+        "id": "14572203395430649531",
+        "name": "eventString",
+        "type": "const",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "envelopeMiner.motifSize",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.eventString"
+    },
+    "13717156650812082903": {
+        "id": "13717156650812082903",
+        "name": "eventData",
+        "type": "const",
+        "parent": "6872705483342131220",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": {
+            "text": ""
+        },
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.eventData"
+    },
+    "201486361431509308": {
+        "id": "201486361431509308",
+        "name": "defaultParameters",
+        "type": "const",
+        "parent": "13365432842027942800",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": {
+            "filter": [
+                0,
+                20,
+                2
+            ],
+            "samplingPeriod": [
+                1,
+                60,
+                10
+            ],
+            "freedom": [
+                0,
+                1,
+                0.3
+            ],
+            "dynamicFreedom": [
+                0,
+                1,
+                0.5
+            ],
+            "numberSamples": [
+                1,
+                100,
+                1
+            ],
+            "step": [
+                0,
+                1,
+                0.1
+            ]
+        },
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.defaultParameters"
+    },
+    "8319318136383982859": {
+        "id": "8319318136383982859",
+        "name": "cockpit",
+        "type": "const",
+        "parent": "13365432842027942800",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "/customui/envelopeminer.htm",
+        "browsePath": "root.new_envelopeMinerTemplate_87cf.cockpit"
+    },
+    "375312402162626211": {
+        "id": "375312402162626211",
+        "name": "05ef0477",
+        "type": "annotation",
+        "parent": "135",
+        "children": [
+            "15259148056193297865",
+            "7662565652747735571",
+            "13456065225423445368",
+            "2187517884206317882",
+            "15447316580502486856",
+            "14442930726749968809"
+        ],
+        "backRefs": [
+            "910868677616660212"
+        ],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477"
+    },
+    "15259148056193297865": {
+        "id": "15259148056193297865",
+        "name": "type",
+        "type": "const",
+        "parent": "375312402162626211",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "motif",
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.type"
+    },
+    "7662565652747735571": {
+        "id": "7662565652747735571",
+        "name": "startTime",
+        "type": "const",
+        "parent": "375312402162626211",
+        "children": [],
+        "backRefs": [
+            "84941035371750608"
+        ],
+        "forwardRefs": [],
+        "value": "2015-02-13T06:55:21.515294+01:00",
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.startTime"
+    },
+    "13456065225423445368": {
+        "id": "13456065225423445368",
+        "name": "endTime",
+        "type": "const",
+        "parent": "375312402162626211",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "2015-02-13T18:39:43.705660+01:00",
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.endTime"
+    },
+    "2187517884206317882": {
+        "id": "2187517884206317882",
+        "name": "tags",
+        "type": "const",
+        "parent": "375312402162626211",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": [
+            "motif"
+        ],
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.tags"
+    },
+    "15447316580502486856": {
+        "id": "15447316580502486856",
+        "name": "variable",
+        "type": "referencer",
+        "parent": "375312402162626211",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "120"
+        ],
+        "value": null,
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.variable"
+    },
+    "14442930726749968809": {
+        "id": "14442930726749968809",
+        "name": "envelope",
+        "type": "folder",
+        "parent": "375312402162626211",
+        "children": [
+            "11199507977167017442",
+            "1915369961507553121",
+            "11139946096929768602",
+            "12158982784759448403",
+            "11173027192793608563",
+            "8411310550923974826",
+            "9857995406027962692",
+            "7738276934669765171",
+            "17651891220567645700"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope"
+    },
+    "11199507977167017442": {
+        "id": "11199507977167017442",
+        "name": "Temperature_limitMax",
+        "type": "timeseries",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [
+            "129",
+            "11274223787063617958"
+        ],
+        "forwardRefs": [],
+        "value": "None",
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_limitMax"
+    },
+    "1915369961507553121": {
+        "id": "1915369961507553121",
+        "name": "Temperature_limitMin",
+        "type": "timeseries",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [
+            "129",
+            "11274223787063617958"
+        ],
+        "forwardRefs": [],
+        "value": "None",
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_limitMin"
+    },
+    "11139946096929768602": {
+        "id": "11139946096929768602",
+        "name": "Temperature_expected",
+        "type": "timeseries",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [
+            "129",
+            "11274223787063617958"
+        ],
+        "forwardRefs": [],
+        "value": "None",
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_expected"
+    },
+    "12158982784759448403": {
+        "id": "12158982784759448403",
+        "name": "filter",
+        "type": "const",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 2,
+        "validation": {
+            "limits": [
+                0,
+                20
+            ]
+        },
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.filter"
+    },
+    "11173027192793608563": {
+        "id": "11173027192793608563",
+        "name": "samplingPeriod",
+        "type": "const",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 97.8513782622564,
+        "validation": {
+            "limits": [
+                60.031520406292245,
+                600.3152040629225
+            ]
+        },
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.samplingPeriod"
+    },
+    "8411310550923974826": {
+        "id": "8411310550923974826",
+        "name": "freedom",
+        "type": "const",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.64,
+        "validation": {
+            "limits": [
+                0,
+                1
+            ]
+        },
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.freedom"
+    },
+    "9857995406027962692": {
+        "id": "9857995406027962692",
+        "name": "dynamicFreedom",
+        "type": "const",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.5,
+        "validation": {
+            "limits": [
+                0,
+                1
+            ]
+        },
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.dynamicFreedom"
+    },
+    "7738276934669765171": {
+        "id": "7738276934669765171",
+        "name": "numberSamples",
+        "type": "const",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 432,
+        "validation": {
+            "limits": [
+                1,
+                100
+            ]
+        },
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.numberSamples"
+    },
+    "17651891220567645700": {
+        "id": "17651891220567645700",
+        "name": "step",
+        "type": "const",
+        "parent": "14442930726749968809",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 0.1,
+        "validation": {
+            "limits": [
+                0,
+                1
+            ]
+        },
+        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.step"
     }
 }
