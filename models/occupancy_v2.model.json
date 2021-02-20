@@ -406,10 +406,7 @@
         ],
         "forwardRefs": [
             "120",
-            "121",
-            "11139946096929768602",
-            "1915369961507553121",
-            "11199507977167017442"
+            "121"
         ],
         "value": null,
         "browsePath": "root.visualization.workbench.selectedVariables"
@@ -424,7 +421,7 @@
             "13071347114919871021"
         ],
         "forwardRefs": [],
-        "value": "2015-02-14T22:24:12.408994+00:00",
+        "value": "2015-02-11T15:18:00+01:00",
         "browsePath": "root.visualization.workbench.startTime"
     },
     "131": {
@@ -437,7 +434,7 @@
             "13071347114919871021"
         ],
         "forwardRefs": [],
-        "value": "2015-02-16T00:15:20.775820+00:00",
+        "value": "2015-02-18T08:34:00+01:00",
         "browsePath": "root.visualization.workbench.endTime"
     },
     "132": {
@@ -787,7 +784,9 @@
         "type": "variable",
         "parent": "223",
         "children": [],
-        "backRefs": [],
+        "backRefs": [
+            "16724694746718170912"
+        ],
         "forwardRefs": [],
         "value": 0,
         "browsePath": "root.logisticRegression.control.progress"
@@ -822,7 +821,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 155,
+        "value": 162,
         "browsePath": "root.logisticRegression.control.executionCounter"
     },
     "229": {
@@ -833,7 +832,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 0.038119,
+        "value": 0.062047,
         "browsePath": "root.logisticRegression.control.lastExecutionDuration"
     },
     "230": {
@@ -844,7 +843,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.553802",
+        "value": "2021-02-20T21:31:50.737755",
         "browsePath": "root.logisticRegression.control.lastStartTime"
     },
     "231": {
@@ -5696,7 +5695,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 193,
+        "value": 194,
         "browsePath": "root.visualization.workbench.observerVariables.triggerCounter"
     },
     "645": {
@@ -5707,7 +5706,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:16:19.853686",
+        "value": "2021-02-20T21:27:22.284802",
         "browsePath": "root.visualization.workbench.observerVariables.lastTriggerTime"
     },
     "646": {
@@ -5808,7 +5807,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 193,
+        "value": 200,
         "browsePath": "root.visualization.workbench.observerBack.triggerCounter"
     },
     "654": {
@@ -5819,7 +5818,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.583943",
+        "value": "2021-02-20T21:31:50.767805",
         "browsePath": "root.visualization.workbench.observerBack.lastTriggerTime"
     },
     "655": {
@@ -5920,7 +5919,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 9259,
+        "value": 9282,
         "browsePath": "root.visualization.workbench.observerStream.triggerCounter"
     },
     "663": {
@@ -5931,7 +5930,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:19:55.351241",
+        "value": "2021-02-20T21:27:20.104216",
         "browsePath": "root.visualization.workbench.observerStream.lastTriggerTime"
     },
     "664": {
@@ -6146,7 +6145,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 209,
+        "value": 216,
         "browsePath": "root.visualization.selfservice0.observerBack.triggerCounter"
     },
     "681": {
@@ -6157,7 +6156,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.583943",
+        "value": "2021-02-20T21:31:50.767805",
         "browsePath": "root.visualization.selfservice0.observerBack.lastTriggerTime"
     },
     "682": {
@@ -6484,7 +6483,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 10,
+        "value": 17,
         "browsePath": "root.visualization.selfservice1.observerBack.triggerCounter"
     },
     "708": {
@@ -6495,7 +6494,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.583943",
+        "value": "2021-02-20T21:31:50.767805",
         "browsePath": "root.visualization.selfservice1.observerBack.lastTriggerTime"
     },
     "709": {
@@ -6822,7 +6821,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 10,
+        "value": 17,
         "browsePath": "root.visualization.selfservice2.observerBack.triggerCounter"
     },
     "735": {
@@ -6833,7 +6832,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.583943",
+        "value": "2021-02-20T21:31:50.767805",
         "browsePath": "root.visualization.selfservice2.observerBack.lastTriggerTime"
     },
     "736": {
@@ -7160,7 +7159,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 10,
+        "value": 17,
         "browsePath": "root.visualization.selfservice3.observerBack.triggerCounter"
     },
     "762": {
@@ -7171,7 +7170,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.583943",
+        "value": "2021-02-20T21:31:50.767805",
         "browsePath": "root.visualization.selfservice3.observerBack.lastTriggerTime"
     },
     "763": {
@@ -7498,7 +7497,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 10,
+        "value": 17,
         "browsePath": "root.visualization.selfservice4.observerBack.triggerCounter"
     },
     "789": {
@@ -7509,7 +7508,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.583943",
+        "value": "2021-02-20T21:31:50.775826",
         "browsePath": "root.visualization.selfservice4.observerBack.lastTriggerTime"
     },
     "790": {
@@ -7836,7 +7835,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 10,
+        "value": 17,
         "browsePath": "root.visualization.selfservice5.observerBack.triggerCounter"
     },
     "816": {
@@ -7847,7 +7846,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.583943",
+        "value": "2021-02-20T21:31:50.767805",
         "browsePath": "root.visualization.selfservice5.observerBack.lastTriggerTime"
     },
     "817": {
@@ -8221,11 +8220,11 @@
         "forwardRefs": [],
         "value": {
             "thresholds": false,
-            "annotations": false,
+            "annotations": true,
             "scores": false,
             "background": false,
             "variables": true,
-            "motifs": true,
+            "motifs": false,
             "events": false
         },
         "browsePath": "root.visualization.workbench.visibleElements"
@@ -8297,7 +8296,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 1690,
+        "value": 1731,
         "browsePath": "root.visualization.workbench.observerAnnotations.triggerCounter"
     },
     "13646722735659859395": {
@@ -8308,7 +8307,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:19:55.359240",
+        "value": "2021-02-20T21:31:46.945907",
         "browsePath": "root.visualization.workbench.observerAnnotations.lastTriggerTime"
     },
     "12416654533870087467": {
@@ -8411,7 +8410,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 1924,
+        "value": 2068,
         "browsePath": "root.visualization.workbench.observerVisibleElements.triggerCounter"
     },
     "15683200324838571042": {
@@ -8422,7 +8421,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:19:55.375237",
+        "value": "2021-02-20T21:32:23.500417",
         "browsePath": "root.visualization.workbench.observerVisibleElements.lastTriggerTime"
     },
     "13071347114919871021": {
@@ -8741,7 +8740,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 12330,
+        "value": 12353,
         "browsePath": "root.visualization.workbench.observerValues.triggerCounter"
     },
     "5201468128014100031": {
@@ -8752,7 +8751,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:19:55.351241",
+        "value": "2021-02-20T21:27:20.104216",
         "browsePath": "root.visualization.workbench.observerValues.lastTriggerTime"
     },
     "10029816200158863035": {
@@ -8827,10 +8826,10 @@
         ],
         "forwardRefs": [],
         "value": {
-            "busy": true,
+            "busy": false,
             "region": false,
             "free": false,
-            "pattern_match": true
+            "pattern_match": false
         },
         "browsePath": "root.visualization.workbench.hasAnnotation.visibleTags"
     },
@@ -8845,8 +8844,8 @@
         ],
         "forwardRefs": [],
         "value": {
-            "type": "motif",
-            "variable": "root.occupancyData.variables.Temperature"
+            "type": "time",
+            "tag": "busy"
         },
         "browsePath": "root.visualization.workbench.nextNewAnnotation"
     },
@@ -8889,7 +8888,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 71,
+        "value": 72,
         "browsePath": "root.visualization.workbench.observerNewAnnotation.triggerCounter"
     },
     "67741450388327913": {
@@ -8900,7 +8899,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:13:53.187116",
+        "value": "2021-02-20T21:31:03.745073",
         "browsePath": "root.visualization.workbench.observerNewAnnotation.lastTriggerTime"
     },
     "2805595053862460105": {
@@ -9073,7 +9072,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2015-02-12T19:33:34.067568+01:00",
+        "value": "2015-02-12T21:52:44.341804+01:00",
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.019f278c.startTime"
     },
     "4285521271982171869": {
@@ -9113,12 +9112,6 @@
                 "lineColor": "#D9B100"
             },
             "root.occupancyData.variables.Temperature": {
-                "lineColor": "#eba4fc"
-            },
-            "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_limitMax": {
-                "lineColor": "#cccccc"
-            },
-            "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_expected": {
                 "lineColor": "#eba4fc"
             }
         },
@@ -11950,7 +11943,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2015-02-12T05:52:48.688654+01:00",
+        "value": "2015-02-12T07:44:36.014774+01:00",
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.9c911de0.startTime"
     },
     "9397435188946551075": {
@@ -12030,7 +12023,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 20923,
+        "value": 21002,
         "browsePath": "root.system.progress.triggerCounter"
     },
     "10857910486653991896": {
@@ -12041,7 +12034,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:16:25.028243",
+        "value": "2021-02-20T21:31:50.799802",
         "browsePath": "root.system.progress.lastTriggerTime"
     },
     "16724694746718170912": {
@@ -12052,7 +12045,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [
-            "11221792079771077852"
+            "225"
         ],
         "value": null,
         "browsePath": "root.system.progress.targets"
@@ -12219,7 +12212,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 61,
+        "value": 68,
         "browsePath": "root.system.relevantChanges.triggerCounter"
     },
     "12027250451543955530": {
@@ -12230,7 +12223,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-11-05T23:19:22.583943",
+        "value": "2021-02-20T21:31:50.767805",
         "browsePath": "root.system.relevantChanges.lastTriggerTime"
     },
     "13880253212629121141": {
@@ -18508,7 +18501,7 @@
     },
     "13365432842027942800": {
         "id": "13365432842027942800",
-        "name": "new_envelopeMinerTemplate_87cf",
+        "name": "envelope Miner",
         "type": "folder",
         "parent": "1",
         "children": [
@@ -18534,7 +18527,7 @@
         ],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf"
+        "browsePath": "root.envelope Miner"
     },
     "15395984749894658485": {
         "id": "15395984749894658485",
@@ -18556,7 +18549,7 @@
         "value": null,
         "functionPointer": "envelopemining.envelope_miner",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner"
+        "browsePath": "root.envelope Miner.EnvelopeMiner"
     },
     "910868677616660212": {
         "id": "910868677616660212",
@@ -18569,7 +18562,7 @@
             "375312402162626211"
         ],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.motif"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.motif"
     },
     "8646989336559792476": {
         "id": "8646989336559792476",
@@ -18582,7 +18575,7 @@
             "127"
         ],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.widget"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.widget"
     },
     "2988594018444239161": {
         "id": "2988594018444239161",
@@ -18593,7 +18586,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.annotations"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.annotations"
     },
     "16981004045442628755": {
         "id": "16981004045442628755",
@@ -18650,7 +18643,7 @@
                 "format": "2015-02-16&nbsp&nbsp08:10:18&nbsp&nbsp(distance=100)"
             }
         ],
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.results"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.results"
     },
     "16373789327723075606": {
         "id": "16373789327723075606",
@@ -18661,7 +18654,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.maxNumberOfMatches"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.maxNumberOfMatches"
     },
     "16585596039323991072": {
         "id": "16585596039323991072",
@@ -18672,7 +18665,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 60,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.holeSize"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.holeSize"
     },
     "1250568635019340297": {
         "id": "1250568635019340297",
@@ -18683,7 +18676,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": false,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.createAnnotations"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.createAnnotations"
     },
     "16521047008548914458": {
         "id": "16521047008548914458",
@@ -18703,7 +18696,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control"
     },
     "7298084443877445151": {
         "id": "7298084443877445151",
@@ -18714,7 +18707,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "finished",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.status"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control.status"
     },
     "4490852604339087986": {
         "id": "4490852604339087986",
@@ -18727,7 +18720,7 @@
         ],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.progress"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control.progress"
     },
     "15644586283978687391": {
         "id": "15644586283978687391",
@@ -18738,7 +18731,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.result"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control.result"
     },
     "18384202674833273590": {
         "id": "18384202674833273590",
@@ -18749,7 +18742,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.signal"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control.signal"
     },
     "3512668831415166518": {
         "id": "3512668831415166518",
@@ -18759,8 +18752,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 7,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.executionCounter"
+        "value": 9,
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control.executionCounter"
     },
     "6728032424579076733": {
         "id": "6728032424579076733",
@@ -18770,8 +18763,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 0.325945,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.lastExecutionDuration"
+        "value": 0.273465,
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control.lastExecutionDuration"
     },
     "3053032101220476891": {
         "id": "3053032101220476891",
@@ -18781,8 +18774,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:16:24.587014",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.lastStartTime"
+        "value": "2021-02-20T21:26:57.869200",
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control.lastStartTime"
     },
     "5853873901430244599": {
         "id": "5853873901430244599",
@@ -18793,7 +18786,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "threaded",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.EnvelopeMiner.control.executionType"
+        "browsePath": "root.envelope Miner.EnvelopeMiner.control.executionType"
     },
     "13781106677721148394": {
         "id": "13781106677721148394",
@@ -18808,7 +18801,7 @@
         "value": null,
         "functionPointer": "envelopemining.create",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create"
+        "browsePath": "root.envelope Miner.create"
     },
     "10940909372892548827": {
         "id": "10940909372892548827",
@@ -18828,7 +18821,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control"
+        "browsePath": "root.envelope Miner.create.control"
     },
     "5958150711976630288": {
         "id": "5958150711976630288",
@@ -18839,7 +18832,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "finished",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.status"
+        "browsePath": "root.envelope Miner.create.control.status"
     },
     "7104058541466412226": {
         "id": "7104058541466412226",
@@ -18850,7 +18843,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.progress"
+        "browsePath": "root.envelope Miner.create.control.progress"
     },
     "17260534138291908476": {
         "id": "17260534138291908476",
@@ -18861,7 +18854,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.result"
+        "browsePath": "root.envelope Miner.create.control.result"
     },
     "7285761266145599170": {
         "id": "7285761266145599170",
@@ -18872,7 +18865,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.signal"
+        "browsePath": "root.envelope Miner.create.control.signal"
     },
     "1655517831767857165": {
         "id": "1655517831767857165",
@@ -18883,7 +18876,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 1,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.executionCounter"
+        "browsePath": "root.envelope Miner.create.control.executionCounter"
     },
     "5862401034392409872": {
         "id": "5862401034392409872",
@@ -18894,7 +18887,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0.166393,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.lastExecutionDuration"
+        "browsePath": "root.envelope Miner.create.control.lastExecutionDuration"
     },
     "2062215567352630157": {
         "id": "2062215567352630157",
@@ -18905,7 +18898,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "2021-02-20T21:14:07.837502",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.lastStartTime"
+        "browsePath": "root.envelope Miner.create.control.lastStartTime"
     },
     "10225907749672188044": {
         "id": "10225907749672188044",
@@ -18916,7 +18909,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.create.control.executionType"
+        "browsePath": "root.envelope Miner.create.control.executionType"
     },
     "536126735754020329": {
         "id": "536126735754020329",
@@ -18931,7 +18924,7 @@
         "value": null,
         "functionPointer": "envelopemining.update",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update"
+        "browsePath": "root.envelope Miner.update"
     },
     "16801548943743170709": {
         "id": "16801548943743170709",
@@ -18951,7 +18944,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control"
+        "browsePath": "root.envelope Miner.update.control"
     },
     "5595247839556918532": {
         "id": "5595247839556918532",
@@ -18962,7 +18955,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "finished",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.status"
+        "browsePath": "root.envelope Miner.update.control.status"
     },
     "10426941551034857667": {
         "id": "10426941551034857667",
@@ -18973,7 +18966,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.progress"
+        "browsePath": "root.envelope Miner.update.control.progress"
     },
     "3596140367889335473": {
         "id": "3596140367889335473",
@@ -18984,7 +18977,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.result"
+        "browsePath": "root.envelope Miner.update.control.result"
     },
     "8071465826189168919": {
         "id": "8071465826189168919",
@@ -18995,7 +18988,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.signal"
+        "browsePath": "root.envelope Miner.update.control.signal"
     },
     "12939507428335593847": {
         "id": "12939507428335593847",
@@ -19006,7 +18999,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 10,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.executionCounter"
+        "browsePath": "root.envelope Miner.update.control.executionCounter"
     },
     "6477643180315998121": {
         "id": "6477643180315998121",
@@ -19017,7 +19010,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0.008022,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.lastExecutionDuration"
+        "browsePath": "root.envelope Miner.update.control.lastExecutionDuration"
     },
     "10726384435446706546": {
         "id": "10726384435446706546",
@@ -19028,7 +19021,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "2021-02-20T21:16:21.610439",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.lastStartTime"
+        "browsePath": "root.envelope Miner.update.control.lastStartTime"
     },
     "17309094643141100030": {
         "id": "17309094643141100030",
@@ -19039,7 +19032,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.update.control.executionType"
+        "browsePath": "root.envelope Miner.update.control.executionType"
     },
     "8445855490063879944": {
         "id": "8445855490063879944",
@@ -19054,7 +19047,7 @@
         "value": null,
         "functionPointer": "envelopemining.show",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show"
+        "browsePath": "root.envelope Miner.show"
     },
     "17023738787307411274": {
         "id": "17023738787307411274",
@@ -19074,7 +19067,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control"
+        "browsePath": "root.envelope Miner.show.control"
     },
     "15972329099267838013": {
         "id": "15972329099267838013",
@@ -19085,7 +19078,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "finished",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.status"
+        "browsePath": "root.envelope Miner.show.control.status"
     },
     "3529753790469468891": {
         "id": "3529753790469468891",
@@ -19096,7 +19089,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.progress"
+        "browsePath": "root.envelope Miner.show.control.progress"
     },
     "1332074910564325423": {
         "id": "1332074910564325423",
@@ -19107,7 +19100,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.result"
+        "browsePath": "root.envelope Miner.show.control.result"
     },
     "10244343168736761639": {
         "id": "10244343168736761639",
@@ -19118,7 +19111,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.signal"
+        "browsePath": "root.envelope Miner.show.control.signal"
     },
     "1016618808284824593": {
         "id": "1016618808284824593",
@@ -19129,7 +19122,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 6,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.executionCounter"
+        "browsePath": "root.envelope Miner.show.control.executionCounter"
     },
     "3373444762452716281": {
         "id": "3373444762452716281",
@@ -19140,7 +19133,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0.025707,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.lastExecutionDuration"
+        "browsePath": "root.envelope Miner.show.control.lastExecutionDuration"
     },
     "364189669889604981": {
         "id": "364189669889604981",
@@ -19151,7 +19144,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "2021-02-20T21:16:19.827979",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.lastStartTime"
+        "browsePath": "root.envelope Miner.show.control.lastStartTime"
     },
     "15387810425626740299": {
         "id": "15387810425626740299",
@@ -19162,7 +19155,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.show.control.executionType"
+        "browsePath": "root.envelope Miner.show.control.executionType"
     },
     "5361855064579434698": {
         "id": "5361855064579434698",
@@ -19177,7 +19170,7 @@
         "value": null,
         "functionPointer": "envelopemining.hide",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide"
+        "browsePath": "root.envelope Miner.hide"
     },
     "13301417216974449171": {
         "id": "13301417216974449171",
@@ -19197,7 +19190,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control"
+        "browsePath": "root.envelope Miner.hide.control"
     },
     "10231758423168264875": {
         "id": "10231758423168264875",
@@ -19208,7 +19201,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "finished",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.status"
+        "browsePath": "root.envelope Miner.hide.control.status"
     },
     "14460464271482540630": {
         "id": "14460464271482540630",
@@ -19219,7 +19212,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.progress"
+        "browsePath": "root.envelope Miner.hide.control.progress"
     },
     "13981025719746574945": {
         "id": "13981025719746574945",
@@ -19230,7 +19223,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.result"
+        "browsePath": "root.envelope Miner.hide.control.result"
     },
     "9289599860981864887": {
         "id": "9289599860981864887",
@@ -19241,7 +19234,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.signal"
+        "browsePath": "root.envelope Miner.hide.control.signal"
     },
     "16761338905210568809": {
         "id": "16761338905210568809",
@@ -19251,8 +19244,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 1,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.executionCounter"
+        "value": 2,
+        "browsePath": "root.envelope Miner.hide.control.executionCounter"
     },
     "17525512158739285557": {
         "id": "17525512158739285557",
@@ -19262,8 +19255,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 0.025233,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.lastExecutionDuration"
+        "value": 0.02391,
+        "browsePath": "root.envelope Miner.hide.control.lastExecutionDuration"
     },
     "15794555938109145190": {
         "id": "15794555938109145190",
@@ -19273,8 +19266,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:14:56.311565",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.lastStartTime"
+        "value": "2021-02-20T21:27:22.268871",
+        "browsePath": "root.envelope Miner.hide.control.lastStartTime"
     },
     "7005879798898104264": {
         "id": "7005879798898104264",
@@ -19285,7 +19278,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.hide.control.executionType"
+        "browsePath": "root.envelope Miner.hide.control.executionType"
     },
     "9398403965893474150": {
         "id": "9398403965893474150",
@@ -19300,7 +19293,7 @@
         "value": null,
         "functionPointer": "envelopemining.select",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select"
+        "browsePath": "root.envelope Miner.select"
     },
     "5473506133322427968": {
         "id": "5473506133322427968",
@@ -19320,7 +19313,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control"
+        "browsePath": "root.envelope Miner.select.control"
     },
     "12802736587964570122": {
         "id": "12802736587964570122",
@@ -19331,7 +19324,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "finished",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.status"
+        "browsePath": "root.envelope Miner.select.control.status"
     },
     "4828012352039645968": {
         "id": "4828012352039645968",
@@ -19342,7 +19335,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.progress"
+        "browsePath": "root.envelope Miner.select.control.progress"
     },
     "7451863605045050748": {
         "id": "7451863605045050748",
@@ -19353,7 +19346,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.result"
+        "browsePath": "root.envelope Miner.select.control.result"
     },
     "11806623553803377539": {
         "id": "11806623553803377539",
@@ -19364,7 +19357,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.signal"
+        "browsePath": "root.envelope Miner.select.control.signal"
     },
     "11728982928258924076": {
         "id": "11728982928258924076",
@@ -19375,7 +19368,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 1,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.executionCounter"
+        "browsePath": "root.envelope Miner.select.control.executionCounter"
     },
     "3777283300360622518": {
         "id": "3777283300360622518",
@@ -19386,7 +19379,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0.00788,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.lastExecutionDuration"
+        "browsePath": "root.envelope Miner.select.control.lastExecutionDuration"
     },
     "12329676095258703536": {
         "id": "12329676095258703536",
@@ -19397,7 +19390,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "2021-02-20T21:14:04.329251",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.lastStartTime"
+        "browsePath": "root.envelope Miner.select.control.lastStartTime"
     },
     "4973729594806518701": {
         "id": "4973729594806518701",
@@ -19408,7 +19401,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.select.control.executionType"
+        "browsePath": "root.envelope Miner.select.control.executionType"
     },
     "5290839639004214780": {
         "id": "5290839639004214780",
@@ -19423,7 +19416,7 @@
         "value": null,
         "functionPointer": "envelopemining.delete",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete"
+        "browsePath": "root.envelope Miner.delete"
     },
     "8984333596080959453": {
         "id": "8984333596080959453",
@@ -19443,7 +19436,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control"
+        "browsePath": "root.envelope Miner.delete.control"
     },
     "3554366323845374935": {
         "id": "3554366323845374935",
@@ -19454,7 +19447,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "idle",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.status"
+        "browsePath": "root.envelope Miner.delete.control.status"
     },
     "10237939300281341504": {
         "id": "10237939300281341504",
@@ -19465,7 +19458,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.progress"
+        "browsePath": "root.envelope Miner.delete.control.progress"
     },
     "13351521313090512412": {
         "id": "13351521313090512412",
@@ -19476,7 +19469,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.result"
+        "browsePath": "root.envelope Miner.delete.control.result"
     },
     "14986767210784934094": {
         "id": "14986767210784934094",
@@ -19487,7 +19480,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.signal"
+        "browsePath": "root.envelope Miner.delete.control.signal"
     },
     "7728060072548599411": {
         "id": "7728060072548599411",
@@ -19498,7 +19491,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.executionCounter"
+        "browsePath": "root.envelope Miner.delete.control.executionCounter"
     },
     "1049273138834092002": {
         "id": "1049273138834092002",
@@ -19509,7 +19502,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.lastExecutionDuration"
+        "browsePath": "root.envelope Miner.delete.control.lastExecutionDuration"
     },
     "15180639075833959434": {
         "id": "15180639075833959434",
@@ -19520,7 +19513,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "not yet",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.lastStartTime"
+        "browsePath": "root.envelope Miner.delete.control.lastStartTime"
     },
     "14368734911214322264": {
         "id": "14368734911214322264",
@@ -19531,7 +19524,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.delete.control.executionType"
+        "browsePath": "root.envelope Miner.delete.control.executionType"
     },
     "6953592478150175740": {
         "id": "6953592478150175740",
@@ -19548,7 +19541,7 @@
         "value": null,
         "functionPointer": "envelopemining.recreate",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate"
+        "browsePath": "root.envelope Miner.recreate"
     },
     "9708439409904238219": {
         "id": "9708439409904238219",
@@ -19568,7 +19561,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control"
+        "browsePath": "root.envelope Miner.recreate.control"
     },
     "12759103943022087848": {
         "id": "12759103943022087848",
@@ -19579,7 +19572,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "idle",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.status"
+        "browsePath": "root.envelope Miner.recreate.control.status"
     },
     "3518479614759184210": {
         "id": "3518479614759184210",
@@ -19590,7 +19583,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.progress"
+        "browsePath": "root.envelope Miner.recreate.control.progress"
     },
     "10284186562347372385": {
         "id": "10284186562347372385",
@@ -19601,7 +19594,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.result"
+        "browsePath": "root.envelope Miner.recreate.control.result"
     },
     "12678350086651265045": {
         "id": "12678350086651265045",
@@ -19612,7 +19605,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.signal"
+        "browsePath": "root.envelope Miner.recreate.control.signal"
     },
     "996572515668042863": {
         "id": "996572515668042863",
@@ -19623,7 +19616,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.executionCounter"
+        "browsePath": "root.envelope Miner.recreate.control.executionCounter"
     },
     "13187034999044242096": {
         "id": "13187034999044242096",
@@ -19634,7 +19627,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.lastExecutionDuration"
+        "browsePath": "root.envelope Miner.recreate.control.lastExecutionDuration"
     },
     "16512748328239666775": {
         "id": "16512748328239666775",
@@ -19645,7 +19638,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "not yet",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.lastStartTime"
+        "browsePath": "root.envelope Miner.recreate.control.lastStartTime"
     },
     "3939347481852313382": {
         "id": "3939347481852313382",
@@ -19656,7 +19649,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.recreate.control.executionType"
+        "browsePath": "root.envelope Miner.recreate.control.executionType"
     },
     "17760191290285125779": {
         "id": "17760191290285125779",
@@ -19672,7 +19665,7 @@
         "value": null,
         "functionPointer": "envelopemining.jump",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump"
+        "browsePath": "root.envelope Miner.jump"
     },
     "10930673065095679265": {
         "id": "10930673065095679265",
@@ -19683,7 +19676,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 1,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.match"
+        "browsePath": "root.envelope Miner.jump.match"
     },
     "7200214566059531214": {
         "id": "7200214566059531214",
@@ -19703,7 +19696,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control"
+        "browsePath": "root.envelope Miner.jump.control"
     },
     "11982522621921946711": {
         "id": "11982522621921946711",
@@ -19714,7 +19707,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "finished",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.status"
+        "browsePath": "root.envelope Miner.jump.control.status"
     },
     "11221792079771077852": {
         "id": "11221792079771077852",
@@ -19722,12 +19715,10 @@
         "type": "variable",
         "parent": "7200214566059531214",
         "children": [],
-        "backRefs": [
-            "16724694746718170912"
-        ],
+        "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.progress"
+        "browsePath": "root.envelope Miner.jump.control.progress"
     },
     "16018516539320915524": {
         "id": "16018516539320915524",
@@ -19738,7 +19729,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.result"
+        "browsePath": "root.envelope Miner.jump.control.result"
     },
     "14276056619283594145": {
         "id": "14276056619283594145",
@@ -19749,7 +19740,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.signal"
+        "browsePath": "root.envelope Miner.jump.control.signal"
     },
     "5396016117483618966": {
         "id": "5396016117483618966",
@@ -19759,8 +19750,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 45,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.executionCounter"
+        "value": 66,
+        "browsePath": "root.envelope Miner.jump.control.executionCounter"
     },
     "12560035391714496444": {
         "id": "12560035391714496444",
@@ -19770,8 +19761,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 0.039875,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.lastExecutionDuration"
+        "value": 0.031122,
+        "browsePath": "root.envelope Miner.jump.control.lastExecutionDuration"
     },
     "7762394691846726390": {
         "id": "7762394691846726390",
@@ -19781,8 +19772,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:19:55.343341",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.lastStartTime"
+        "value": "2021-02-20T21:27:20.088717",
+        "browsePath": "root.envelope Miner.jump.control.lastStartTime"
     },
     "17487701601179972838": {
         "id": "17487701601179972838",
@@ -19793,7 +19784,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.jump.control.executionType"
+        "browsePath": "root.envelope Miner.jump.control.executionType"
     },
     "8095751387546711236": {
         "id": "8095751387546711236",
@@ -19808,7 +19799,7 @@
         "value": null,
         "functionPointer": "envelopemining.init",
         "autoReload": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init"
+        "browsePath": "root.envelope Miner.init"
     },
     "16052479779280099215": {
         "id": "16052479779280099215",
@@ -19828,7 +19819,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control"
+        "browsePath": "root.envelope Miner.init.control"
     },
     "15366299843884050111": {
         "id": "15366299843884050111",
@@ -19839,7 +19830,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "finished",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.status"
+        "browsePath": "root.envelope Miner.init.control.status"
     },
     "4286843979343803235": {
         "id": "4286843979343803235",
@@ -19850,7 +19841,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.progress"
+        "browsePath": "root.envelope Miner.init.control.progress"
     },
     "4020981240348151208": {
         "id": "4020981240348151208",
@@ -19861,7 +19852,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "ok",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.result"
+        "browsePath": "root.envelope Miner.init.control.result"
     },
     "14795178916769297849": {
         "id": "14795178916769297849",
@@ -19872,7 +19863,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "nosignal",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.signal"
+        "browsePath": "root.envelope Miner.init.control.signal"
     },
     "18105588745350698127": {
         "id": "18105588745350698127",
@@ -19882,8 +19873,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 2,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.executionCounter"
+        "value": 3,
+        "browsePath": "root.envelope Miner.init.control.executionCounter"
     },
     "17843580754641325184": {
         "id": "17843580754641325184",
@@ -19893,8 +19884,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 0.016449,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.lastExecutionDuration"
+        "value": 0.008002,
+        "browsePath": "root.envelope Miner.init.control.lastExecutionDuration"
     },
     "5893140455016266231": {
         "id": "5893140455016266231",
@@ -19904,8 +19895,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:15:22.661573",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.lastStartTime"
+        "value": "2021-02-20T21:23:49.217731",
+        "browsePath": "root.envelope Miner.init.control.lastStartTime"
     },
     "11904188744587348011": {
         "id": "11904188744587348011",
@@ -19916,7 +19907,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "async",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.init.control.executionType"
+        "browsePath": "root.envelope Miner.init.control.executionType"
     },
     "15002837050541733580": {
         "id": "15002837050541733580",
@@ -19938,7 +19929,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress"
+        "browsePath": "root.envelope Miner.progress"
     },
     "10754738291394000054": {
         "id": "10754738291394000054",
@@ -19949,7 +19940,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.enabled"
+        "browsePath": "root.envelope Miner.progress.enabled"
     },
     "2150764611514302056": {
         "id": "2150764611514302056",
@@ -19959,8 +19950,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 154,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.triggerCounter"
+        "value": 198,
+        "browsePath": "root.envelope Miner.progress.triggerCounter"
     },
     "16345843991743999963": {
         "id": "16345843991743999963",
@@ -19970,8 +19961,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:16:25.028243",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.lastTriggerTime"
+        "value": "2021-02-20T21:26:58.150664",
+        "browsePath": "root.envelope Miner.progress.lastTriggerTime"
     },
     "5690476730637088663": {
         "id": "5690476730637088663",
@@ -19984,7 +19975,7 @@
             "4490852604339087986"
         ],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.targets"
+        "browsePath": "root.envelope Miner.progress.targets"
     },
     "4200185888198536395": {
         "id": "4200185888198536395",
@@ -19997,7 +19988,7 @@
         "value": [
             "value"
         ],
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.properties"
+        "browsePath": "root.envelope Miner.progress.properties"
     },
     "14954164883985338813": {
         "id": "14954164883985338813",
@@ -20008,7 +19999,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.onTriggerFunction"
+        "browsePath": "root.envelope Miner.progress.onTriggerFunction"
     },
     "3964101246123832077": {
         "id": "3964101246123832077",
@@ -20019,7 +20010,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "4490852604339087986",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.triggerSourceId"
+        "browsePath": "root.envelope Miner.progress.triggerSourceId"
     },
     "10360049979878461538": {
         "id": "10360049979878461538",
@@ -20030,7 +20021,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.hasEvent"
+        "browsePath": "root.envelope Miner.progress.hasEvent"
     },
     "14529972058110959372": {
         "id": "14529972058110959372",
@@ -20041,7 +20032,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "envelopemining.progress",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.eventString"
+        "browsePath": "root.envelope Miner.progress.eventString"
     },
     "17620942806055125406": {
         "id": "17620942806055125406",
@@ -20054,7 +20045,7 @@
         "value": {
             "text": "observer status update"
         },
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.progress.eventData"
+        "browsePath": "root.envelope Miner.progress.eventData"
     },
     "6141988504925428372": {
         "id": "6141988504925428372",
@@ -20076,7 +20067,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction"
+        "browsePath": "root.envelope Miner.userInteraction"
     },
     "6326323032067010239": {
         "id": "6326323032067010239",
@@ -20086,8 +20077,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.enabled"
+        "value": false,
+        "browsePath": "root.envelope Miner.userInteraction.enabled"
     },
     "1649241524812838493": {
         "id": "1649241524812838493",
@@ -20097,8 +20088,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 62,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.triggerCounter"
+        "value": 85,
+        "browsePath": "root.envelope Miner.userInteraction.triggerCounter"
     },
     "12742835478346514036": {
         "id": "12742835478346514036",
@@ -20108,8 +20099,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:19:55.351241",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.lastTriggerTime"
+        "value": "2021-02-20T21:27:20.104216",
+        "browsePath": "root.envelope Miner.userInteraction.lastTriggerTime"
     },
     "11274223787063617958": {
         "id": "11274223787063617958",
@@ -20124,7 +20115,7 @@
             "11139946096929768602"
         ],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.targets"
+        "browsePath": "root.envelope Miner.userInteraction.targets"
     },
     "1057731146072995872": {
         "id": "1057731146072995872",
@@ -20137,7 +20128,7 @@
         "value": [
             "value"
         ],
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.properties"
+        "browsePath": "root.envelope Miner.userInteraction.properties"
     },
     "6695328003580515254": {
         "id": "6695328003580515254",
@@ -20148,7 +20139,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.onTriggerFunction"
+        "browsePath": "root.envelope Miner.userInteraction.onTriggerFunction"
     },
     "10555678027145257610": {
         "id": "10555678027145257610",
@@ -20159,7 +20150,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "11199507977167017442",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.triggerSourceId"
+        "browsePath": "root.envelope Miner.userInteraction.triggerSourceId"
     },
     "16255253939845978641": {
         "id": "16255253939845978641",
@@ -20170,7 +20161,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.hasEvent"
+        "browsePath": "root.envelope Miner.userInteraction.hasEvent"
     },
     "12635604797796176164": {
         "id": "12635604797796176164",
@@ -20181,7 +20172,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "global.timeSeries.values",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.eventString"
+        "browsePath": "root.envelope Miner.userInteraction.eventString"
     },
     "1836776010902687808": {
         "id": "1836776010902687808",
@@ -20194,7 +20185,7 @@
         "value": {
             "text": ""
         },
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userInteraction.eventData"
+        "browsePath": "root.envelope Miner.userInteraction.eventData"
     },
     "8422512980599842541": {
         "id": "8422512980599842541",
@@ -20216,7 +20207,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif"
+        "browsePath": "root.envelope Miner.userSelectMotif"
     },
     "2093794856165389082": {
         "id": "2093794856165389082",
@@ -20226,8 +20217,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.enabled"
+        "value": false,
+        "browsePath": "root.envelope Miner.userSelectMotif.enabled"
     },
     "166062941741105057": {
         "id": "166062941741105057",
@@ -20237,8 +20228,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 5,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.triggerCounter"
+        "value": 7,
+        "browsePath": "root.envelope Miner.userSelectMotif.triggerCounter"
     },
     "16102841080714055911": {
         "id": "16102841080714055911",
@@ -20248,8 +20239,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:14:02.987095",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.lastTriggerTime"
+        "value": "2021-02-20T21:24:21.573757",
+        "browsePath": "root.envelope Miner.userSelectMotif.lastTriggerTime"
     },
     "880137418186611137": {
         "id": "880137418186611137",
@@ -20262,7 +20253,7 @@
             "13000472620321332898"
         ],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.targets"
+        "browsePath": "root.envelope Miner.userSelectMotif.targets"
     },
     "11061461723691471131": {
         "id": "11061461723691471131",
@@ -20275,7 +20266,7 @@
         "value": [
             "forwardRefs"
         ],
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.properties"
+        "browsePath": "root.envelope Miner.userSelectMotif.properties"
     },
     "11810888325949576203": {
         "id": "11810888325949576203",
@@ -20286,7 +20277,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.onTriggerFunction"
+        "browsePath": "root.envelope Miner.userSelectMotif.onTriggerFunction"
     },
     "5683767502355927380": {
         "id": "5683767502355927380",
@@ -20297,7 +20288,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "13000472620321332898",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.triggerSourceId"
+        "browsePath": "root.envelope Miner.userSelectMotif.triggerSourceId"
     },
     "9466988144708330117": {
         "id": "9466988144708330117",
@@ -20308,7 +20299,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.hasEvent"
+        "browsePath": "root.envelope Miner.userSelectMotif.hasEvent"
     },
     "12425096650387732834": {
         "id": "12425096650387732834",
@@ -20319,7 +20310,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "envelopeMiner.selectMotif",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.eventString"
+        "browsePath": "root.envelope Miner.userSelectMotif.eventString"
     },
     "15630235116005790912": {
         "id": "15630235116005790912",
@@ -20332,7 +20323,7 @@
         "value": {
             "text": ""
         },
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userSelectMotif.eventData"
+        "browsePath": "root.envelope Miner.userSelectMotif.eventData"
     },
     "6872705483342131220": {
         "id": "6872705483342131220",
@@ -20354,7 +20345,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize"
+        "browsePath": "root.envelope Miner.userChangeMotifSize"
     },
     "7522711319488727571": {
         "id": "7522711319488727571",
@@ -20364,8 +20355,8 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": true,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.enabled"
+        "value": false,
+        "browsePath": "root.envelope Miner.userChangeMotifSize.enabled"
     },
     "4300069711345468034": {
         "id": "4300069711345468034",
@@ -20376,7 +20367,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": 0,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.triggerCounter"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.triggerCounter"
     },
     "1707087089573561331": {
         "id": "1707087089573561331",
@@ -20387,7 +20378,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.lastTriggerTime"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.lastTriggerTime"
     },
     "84941035371750608": {
         "id": "84941035371750608",
@@ -20400,7 +20391,7 @@
             "7662565652747735571"
         ],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.targets"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.targets"
     },
     "11909919207398831664": {
         "id": "11909919207398831664",
@@ -20413,7 +20404,7 @@
         "value": [
             "value"
         ],
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.properties"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.properties"
     },
     "12284240692947841098": {
         "id": "12284240692947841098",
@@ -20426,7 +20417,7 @@
             "6953592478150175740"
         ],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.onTriggerFunction"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.onTriggerFunction"
     },
     "12528551381955884785": {
         "id": "12528551381955884785",
@@ -20437,7 +20428,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": null,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.triggerSourceId"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.triggerSourceId"
     },
     "12350183316075938464": {
         "id": "12350183316075938464",
@@ -20448,7 +20439,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": false,
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.hasEvent"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.hasEvent"
     },
     "14572203395430649531": {
         "id": "14572203395430649531",
@@ -20459,7 +20450,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "envelopeMiner.motifSize",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.eventString"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.eventString"
     },
     "13717156650812082903": {
         "id": "13717156650812082903",
@@ -20472,7 +20463,7 @@
         "value": {
             "text": ""
         },
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.userChangeMotifSize.eventData"
+        "browsePath": "root.envelope Miner.userChangeMotifSize.eventData"
     },
     "201486361431509308": {
         "id": "201486361431509308",
@@ -20514,7 +20505,7 @@
                 0.1
             ]
         },
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.defaultParameters"
+        "browsePath": "root.envelope Miner.defaultParameters"
     },
     "8319318136383982859": {
         "id": "8319318136383982859",
@@ -20525,7 +20516,7 @@
         "backRefs": [],
         "forwardRefs": [],
         "value": "/customui/envelopeminer.htm",
-        "browsePath": "root.new_envelopeMinerTemplate_87cf.cockpit"
+        "browsePath": "root.envelope Miner.cockpit"
     },
     "375312402162626211": {
         "id": "375312402162626211",
@@ -20636,11 +20627,10 @@
         "parent": "14442930726749968809",
         "children": [],
         "backRefs": [
-            "129",
             "11274223787063617958"
         ],
         "forwardRefs": [],
-        "value": "None",
+        "value": "len 4",
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_limitMax"
     },
     "1915369961507553121": {
@@ -20650,11 +20640,10 @@
         "parent": "14442930726749968809",
         "children": [],
         "backRefs": [
-            "129",
             "11274223787063617958"
         ],
         "forwardRefs": [],
-        "value": "None",
+        "value": "len 4",
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_limitMin"
     },
     "11139946096929768602": {
@@ -20664,11 +20653,10 @@
         "parent": "14442930726749968809",
         "children": [],
         "backRefs": [
-            "129",
             "11274223787063617958"
         ],
         "forwardRefs": [],
-        "value": "None",
+        "value": "len 4",
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_expected"
     },
     "12158982784759448403": {
