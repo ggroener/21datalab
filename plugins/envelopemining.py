@@ -623,20 +623,25 @@ def jump(functionNode):
         match = {}
         match["epochStart"] = dates.date2secs(motif.get_child("startTime").get_value())
         match["epochEnd"] = dates.date2secs(motif.get_child("endTime").get_value())
-        update(functionNode) # re-write the band: ! the match will not 100% align in time with the motif: this is because we are searching for motif only with a given step
+        #update(functionNode) # re-write the band: ! the match will not 100% align in time with the motif: this is because we are searching for motif only with a given step
 
 
     else:
         results = functionNode.get_parent().get_child("EnvelopeMiner").get_child("results").get_value()
         match = results[matchIndex]
 
-        update(functionNode,startTime=match["epochStart"])
+        #update(functionNode,startTime=match["epochStart"])
 
     middle = match["epochStart"]+(match["epochEnd"]-match["epochStart"])/2
     newStart = middle - (widgetEndTime-widgetStartTime)/2
     newEnd = middle + (widgetEndTime - widgetStartTime) / 2
     widget.get_child("startTime").set_value(dates.epochToIsoString(newStart))
     widget.get_child("endTime").set_value(dates.epochToIsoString(newEnd))
+
+    if matchIndex == -1:
+        update(functionNode)
+    else:
+        update(functionNode, startTime=match["epochStart"])
     return True
 
 
