@@ -9,6 +9,15 @@ import streaming
 import json
 
 
+# these are the weight in x and y direction giving the amout of freedom we create in the envelope
+# higher factor means higher freedom
+# the "freedom" is given by the user in %
+# for y: in % of the difference of min and max of the motif
+# for x: in % of the lenght of the motif
+# these factors here are applied additionally
+factorX = 0.2
+factorY = 0.5
+
 # use a list to avoid loading of this in the model as template
 mycontrol = [copy.deepcopy(__functioncontrolfolder)]
 mycontrol[0]["children"][-1]["value"]="threaded"
@@ -542,9 +551,28 @@ def update(functionNode,startTime=0):
 
 
     diff = max(data)-min(data)
-    upper = data+diff*freedom
-    lower = data-diff*freedom
+    upper = data+diff*freedom*factorY # add x% of the diff to the upper
+    lower = data-diff*freedom*factorY
     expect = data
+
+    #now also shift left and right to make it equally "wide" as "high"
+
+    if 1:
+        shift = int(float(len(times))*freedom*factorX)
+        fillMax = numpy.min(upper)
+        fillMin = numpy.max(lower)
+
+        right = numpy.append(upper[shift:],[fillMax]*shift)
+        left = numpy.append([fillMax]*shift,upper[:-shift])
+        upper = numpy.max([left,upper,right],axis=0)
+
+        right = numpy.append(lower[shift:],[fillMin]*shift)
+        left = numpy.append([fillMin]*shift,lower[:-shift])
+        lower = numpy.min([left,lower,right],axis=0)
+
+
+
+
     #xxx todo dynamic freedom
 
     model=functionNode.get_model() #get the model Api
