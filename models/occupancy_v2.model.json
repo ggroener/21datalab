@@ -198,7 +198,8 @@
             "325",
             "451",
             "129",
-            "15447316580502486856"
+            "15447316580502486856",
+            "3229937401433843555"
         ],
         "forwardRefs": [],
         "value": "len 5",
@@ -4426,7 +4427,8 @@
         "parent": "491",
         "children": [
             "493",
-            "494"
+            "494",
+            "5193329874034768799"
         ],
         "backRefs": [],
         "forwardRefs": [],
@@ -4467,7 +4469,8 @@
             "512",
             "516",
             "520",
-            "524"
+            "524",
+            "13209267952271824892"
         ],
         "backRefs": [],
         "forwardRefs": [],
@@ -8410,7 +8413,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 2068,
+        "value": 2070,
         "browsePath": "root.visualization.workbench.observerVisibleElements.triggerCounter"
     },
     "15683200324838571042": {
@@ -8421,7 +8424,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2021-02-20T21:32:23.500417",
+        "value": "2021-02-20T22:30:24.264379",
         "browsePath": "root.visualization.workbench.observerVisibleElements.lastTriggerTime"
     },
     "13071347114919871021": {
@@ -13539,7 +13542,8 @@
             "367",
             "283",
             "325",
-            "451"
+            "451",
+            "3229937401433843555"
         ],
         "forwardRefs": [],
         "value": "len 5",
@@ -15371,7 +15375,7 @@
     "248633775581280492": {
         "id": "248633775581280492",
         "name": "expert",
-        "type": "folder",
+        "type": "widget",
         "parent": "13",
         "children": [
             "104384126447479009",
@@ -15406,9 +15410,18 @@
             "7808617581515926201",
             "10291538291474616981",
             "1025947110241074687",
-            "16276396278130298785"
+            "16276396278130298785",
+            "17004523601349069339",
+            "17268172566331745854",
+            "1700501127018070689",
+            "4175605594549383374",
+            "7345061209511017459",
+            "10405390342121084232",
+            "17657587987784542200"
         ],
-        "backRefs": [],
+        "backRefs": [
+            "3980971686617586979"
+        ],
         "forwardRefs": [],
         "value": null,
         "browsePath": "root.visualization.expert"
@@ -15532,7 +15545,7 @@
         "value": {
             "thresholds": true,
             "annotations": true,
-            "scores": true,
+            "scores": false,
             "background": false,
             "variables": true,
             "motifs": false
@@ -15948,7 +15961,10 @@
             "4889155215430129024",
             "10995332838511237480"
         ],
-        "forwardRefs": [],
+        "forwardRefs": [
+            "120",
+            "8103713051491286640"
+        ],
         "value": null,
         "browsePath": "root.visualization.expert.selectedVariables"
     },
@@ -16121,7 +16137,7 @@
             "5430129298633584562"
         ],
         "forwardRefs": [],
-        "value": null,
+        "value": "2015-02-11T15:20:00+01:00",
         "browsePath": "root.visualization.expert.startTime"
     },
     "9627622868652224910": {
@@ -16134,7 +16150,7 @@
             "5430129298633584562"
         ],
         "forwardRefs": [],
-        "value": null,
+        "value": "2015-02-18T08:34:00+01:00",
         "browsePath": "root.visualization.expert.endTime"
     },
     "7969094153488976415": {
@@ -20630,7 +20646,7 @@
             "11274223787063617958"
         ],
         "forwardRefs": [],
-        "value": "len 4",
+        "value": "len 5",
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_limitMax"
     },
     "1915369961507553121": {
@@ -20643,7 +20659,7 @@
             "11274223787063617958"
         ],
         "forwardRefs": [],
-        "value": "len 4",
+        "value": "len 5",
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_limitMin"
     },
     "11139946096929768602": {
@@ -20656,7 +20672,7 @@
             "11274223787063617958"
         ],
         "forwardRefs": [],
-        "value": "len 4",
+        "value": "len 5",
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.Temperature_expected"
     },
     "12158982784759448403": {
@@ -20760,5 +20776,152 @@
             ]
         },
         "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.05ef0477.envelope.step"
+    },
+    "5193329874034768799": {
+        "id": "5193329874034768799",
+        "name": "expert",
+        "type": "const",
+        "parent": "492",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "expert.html",
+        "browsePath": "root.deployment.ui.layout.expert"
+    },
+    "13209267952271824892": {
+        "id": "13209267952271824892",
+        "name": "expert",
+        "type": "folder",
+        "parent": "499",
+        "children": [
+            "9868585764429054442",
+            "3980971686617586979",
+            "13689729378715268174"
+        ],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": null,
+        "browsePath": "root.deployment.ui.components.expert"
+    },
+    "9868585764429054442": {
+        "id": "9868585764429054442",
+        "name": "enabled",
+        "type": "const",
+        "parent": "13209267952271824892",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": true,
+        "browsePath": "root.deployment.ui.components.expert.enabled"
+    },
+    "3980971686617586979": {
+        "id": "3980971686617586979",
+        "name": "model",
+        "type": "referencer",
+        "parent": "13209267952271824892",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [
+            "248633775581280492"
+        ],
+        "value": null,
+        "browsePath": "root.deployment.ui.components.expert.model"
+    },
+    "13689729378715268174": {
+        "id": "13689729378715268174",
+        "name": "settings",
+        "type": "const",
+        "parent": "13209267952271824892",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": {
+            "port": 5007
+        },
+        "browsePath": "root.deployment.ui.components.expert.settings"
+    },
+    "17004523601349069339": {
+        "id": "17004523601349069339",
+        "name": "theme",
+        "type": "const",
+        "parent": "248633775581280492",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "dark",
+        "browsePath": "root.visualization.expert.theme"
+    },
+    "17268172566331745854": {
+        "id": "17268172566331745854",
+        "name": "widgetType",
+        "type": "const",
+        "parent": "248633775581280492",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "timeSeriesWidget",
+        "browsePath": "root.visualization.expert.widgetType"
+    },
+    "1700501127018070689": {
+        "id": "1700501127018070689",
+        "name": "timeZone",
+        "type": "const",
+        "parent": "248633775581280492",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": "Europe/Berlin",
+        "browsePath": "root.visualization.expert.timeZone"
+    },
+    "4175605594549383374": {
+        "id": "4175605594549383374",
+        "name": "bins",
+        "type": "const",
+        "parent": "248633775581280492",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 300,
+        "browsePath": "root.visualization.expert.bins"
+    },
+    "7345061209511017459": {
+        "id": "7345061209511017459",
+        "name": "currentColors",
+        "type": "const",
+        "parent": "248633775581280492",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": {
+            "root.occupancyData.variables.Temperature": {
+                "lineColor": "#D9B100"
+            },
+            "root.thresholdScorer.output.scores.Temperature_score": {
+                "lineColor": "red"
+            }
+        },
+        "browsePath": "root.visualization.expert.currentColors"
+    },
+    "10405390342121084232": {
+        "id": "10405390342121084232",
+        "name": "width",
+        "type": "const",
+        "parent": "248633775581280492",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 1500,
+        "browsePath": "root.visualization.expert.width"
+    },
+    "17657587987784542200": {
+        "id": "17657587987784542200",
+        "name": "height",
+        "type": "const",
+        "parent": "248633775581280492",
+        "children": [],
+        "backRefs": [],
+        "forwardRefs": [],
+        "value": 800,
+        "browsePath": "root.visualization.expert.height"
     }
 }

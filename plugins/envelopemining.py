@@ -429,7 +429,7 @@ def _create_annos_from_matches(annoFolder,matches,maxMatches=None):
 
 
 def create(functionNode):
-    hide(functionNode) # if any is already visible, hide it
+    #hide(functionNode) # if any is already visible, hide it
 
     model = functionNode.get_model()
     logger = functionNode.get_logger()
@@ -581,14 +581,15 @@ def show(functionNode):
     enable_motif_change_size_observer(functionNode,motif)
     return _connect(motif,widget)
 
-def hide(functionNode):
+def hide_motif(functionNode):
     display_matches(functionNode,False)
-    motif = functionNode.get_parent().get_child("EnvelopeMiner").get_child("motif").get_target()
+
     widget = functionNode.get_parent().get_child("EnvelopeMiner").get_child("widget").get_target()
     disable_interaction_observer(functionNode)
     disable_motif_select_observer(functionNode)
     disable_motif_change_size_observer(functionNode)
-    show_motifs(functionNode,False)
+    #show_motifs(functionNode,False)
+    motif = functionNode.get_parent().get_child("EnvelopeMiner").get_child("motif").get_target()
     return _connect(motif,widget,False)
 
 def init(functionNode):
@@ -599,7 +600,7 @@ def init(functionNode):
     return True
 
 def delete(functionNode):
-    hide(functionNode)
+    hide_motif(functionNode)
     motif = functionNode.get_parent().get_child("EnvelopeMiner").get_child("motif").get_target()
     motif.get_child("envelope").delete()
     #remove all envelope info from the motif
@@ -678,7 +679,7 @@ def select(functionNode):
         return False
     motifPointer = functionNode.get_parent().get_child("EnvelopeMiner").get_child("motif")
     if motifPointer.get_target():
-        hide(functionNode)
+        hide_motif(functionNode)
     motifPointer.add_references(newMotif,deleteAll=True)
 
     return True
@@ -740,3 +741,7 @@ def enable_show_motifs(functionNode):
     #switch on the motfs in the context menu
     widget = functionNode.get_parent().get_child("EnvelopeMiner.widget").get_target()
 
+
+def hide(functionNode):
+    hide_motif(functionNode)
+    show_motifs(functionNode, False)
