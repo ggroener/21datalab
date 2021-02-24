@@ -1152,6 +1152,10 @@ class TimeSeriesWidget():
         for entry in ["x", "y", "upper", "lower"]:
             band[entry] = numpy.asarray(band[entry], dtype=numpy.float64)
 
+        if len(band["lower"])==0 or len(band["upper"])==0:
+            return band
+
+
         if ~numpy.isfinite(band["lower"][-1]) or ~numpy.isfinite(band["upper"][-1]):
             band["upper"][-1] = fill
             band["lower"][-1] = fill
