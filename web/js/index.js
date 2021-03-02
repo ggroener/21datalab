@@ -2157,6 +2157,7 @@ function confirm_dialog(title,text,buttonText,confirmCallback,parameter)
 function set_all_icon_of_submenu(menuarray)
 {
 
+    if (menuarray.length == 0) return menuarray;
     var active = 0;
     var total = 0;
 

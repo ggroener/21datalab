@@ -194,12 +194,7 @@
         "name": "newAnnotations",
         "type": "folder",
         "parent": "133",
-        "children": [
-            "16138084141055348268",
-            "12761865699925107392",
-            "1660366744481031556",
-            "14200580607556292096"
-        ],
+        "children": [],
         "backRefs": [
             "12416654533870087467",
             "25998318472993105"
@@ -499,7 +494,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 1650,
+        "value": 1250,
         "browsePath": "root.visualization.workbench.width"
     },
     "555": {
@@ -996,7 +991,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 1120,
+        "value": 1124,
         "browsePath": "root.visualization.workbench.observerAnnotations.triggerCounter"
     },
     "13646722735659859395": {
@@ -1007,7 +1002,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-10-30T09:49:34.316068",
+        "value": "2021-03-02T16:04:25.655948",
         "browsePath": "root.visualization.workbench.observerAnnotations.lastTriggerTime"
     },
     "12416654533870087467": {
@@ -1442,80 +1437,6 @@
         "value": "timeSeriesWidget.newAnnotation",
         "browsePath": "root.visualization.workbench.observerNewAnnotation.eventString"
     },
-    "16138084141055348268": {
-        "id": "16138084141055348268",
-        "name": "e3fe7e81",
-        "type": "annotation",
-        "parent": "135",
-        "children": [
-            "9848338881281889674",
-            "11144821826506830546",
-            "15896751894278977439",
-            "13868077855402323566",
-            "8037118344379379709"
-        ],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.e3fe7e81"
-    },
-    "9848338881281889674": {
-        "id": "9848338881281889674",
-        "name": "type",
-        "type": "const",
-        "parent": "16138084141055348268",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "threshold",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.e3fe7e81.type"
-    },
-    "11144821826506830546": {
-        "id": "11144821826506830546",
-        "name": "min",
-        "type": "const",
-        "parent": "16138084141055348268",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": 22.128921238140023,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.e3fe7e81.min"
-    },
-    "15896751894278977439": {
-        "id": "15896751894278977439",
-        "name": "max",
-        "type": "const",
-        "parent": "16138084141055348268",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": 22.647922679926065,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.e3fe7e81.max"
-    },
-    "13868077855402323566": {
-        "id": "13868077855402323566",
-        "name": "tags",
-        "type": "const",
-        "parent": "16138084141055348268",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": [
-            "threshold"
-        ],
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.e3fe7e81.tags"
-    },
-    "8037118344379379709": {
-        "id": "8037118344379379709",
-        "name": "variable",
-        "type": "referencer",
-        "parent": "16138084141055348268",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.e3fe7e81.variable"
-    },
     "12147370381272489885": {
         "id": "12147370381272489885",
         "name": "currentColors",
@@ -1677,80 +1598,6 @@
         "forwardRefs": [],
         "value": "system.progress",
         "browsePath": "root.system.progress.eventString"
-    },
-    "12761865699925107392": {
-        "id": "12761865699925107392",
-        "name": "2a08747b",
-        "type": "annotation",
-        "parent": "135",
-        "children": [
-            "2371729366435571616",
-            "2428065858957381585",
-            "12678201186290113715",
-            "8645534284337143559",
-            "6467217534375322357"
-        ],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.2a08747b"
-    },
-    "2371729366435571616": {
-        "id": "2371729366435571616",
-        "name": "type",
-        "type": "const",
-        "parent": "12761865699925107392",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "threshold",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.2a08747b.type"
-    },
-    "2428065858957381585": {
-        "id": "2428065858957381585",
-        "name": "min",
-        "type": "const",
-        "parent": "12761865699925107392",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": 26.405763942931262,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.2a08747b.min"
-    },
-    "12678201186290113715": {
-        "id": "12678201186290113715",
-        "name": "max",
-        "type": "const",
-        "parent": "12761865699925107392",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": 32.445182879377434,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.2a08747b.max"
-    },
-    "8645534284337143559": {
-        "id": "8645534284337143559",
-        "name": "tags",
-        "type": "const",
-        "parent": "12761865699925107392",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": [
-            "threshold"
-        ],
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.2a08747b.tags"
-    },
-    "6467217534375322357": {
-        "id": "6467217534375322357",
-        "name": "variable",
-        "type": "referencer",
-        "parent": "12761865699925107392",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.2a08747b.variable"
     },
     "16946385616039162617": {
         "id": "16946385616039162617",
@@ -1940,80 +1787,6 @@
         "value": false,
         "browsePath": "root.visualization.workbench.showMarker"
     },
-    "1660366744481031556": {
-        "id": "1660366744481031556",
-        "name": "0feeb379",
-        "type": "annotation",
-        "parent": "135",
-        "children": [
-            "2920127502609154322",
-            "16753490938037516784",
-            "14167798662185592540",
-            "4303969473532840571",
-            "57832287729083089"
-        ],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379"
-    },
-    "2920127502609154322": {
-        "id": "2920127502609154322",
-        "name": "type",
-        "type": "const",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "motif",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.type"
-    },
-    "16753490938037516784": {
-        "id": "16753490938037516784",
-        "name": "startTime",
-        "type": "const",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "2015-02-13T08:04:25.053318+01:00",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.startTime"
-    },
-    "14167798662185592540": {
-        "id": "14167798662185592540",
-        "name": "endTime",
-        "type": "const",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "2015-02-13T17:59:19.342757+01:00",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.endTime"
-    },
-    "4303969473532840571": {
-        "id": "4303969473532840571",
-        "name": "tags",
-        "type": "const",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": [
-            "motif"
-        ],
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.tags"
-    },
-    "57832287729083089": {
-        "id": "57832287729083089",
-        "name": "variable",
-        "type": "referencer",
-        "parent": "1660366744481031556",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.0feeb379.variable"
-    },
     "15499764811511790654": {
         "id": "15499764811511790654",
         "name": "contextMenuPipelines",
@@ -2045,80 +1818,6 @@
             "end": "2018-02-12T00:00:00+01:00"
         },
         "browsePath": "root.visualization.workbench.backgroundHighlight"
-    },
-    "14200580607556292096": {
-        "id": "14200580607556292096",
-        "name": "7031040a",
-        "type": "annotation",
-        "parent": "135",
-        "children": [
-            "1390039788928114957",
-            "11341657152110864451",
-            "15807258065267222944",
-            "4607530475235414296",
-            "10691456585566057755"
-        ],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.7031040a"
-    },
-    "1390039788928114957": {
-        "id": "1390039788928114957",
-        "name": "type",
-        "type": "const",
-        "parent": "14200580607556292096",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": "threshold",
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.7031040a.type"
-    },
-    "11341657152110864451": {
-        "id": "11341657152110864451",
-        "name": "min",
-        "type": "const",
-        "parent": "14200580607556292096",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": 20.39922775616083,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.7031040a.min"
-    },
-    "15807258065267222944": {
-        "id": "15807258065267222944",
-        "name": "max",
-        "type": "const",
-        "parent": "14200580607556292096",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": 20.948431387808043,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.7031040a.max"
-    },
-    "4607530475235414296": {
-        "id": "4607530475235414296",
-        "name": "tags",
-        "type": "const",
-        "parent": "14200580607556292096",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": [
-            "threshold"
-        ],
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.7031040a.tags"
-    },
-    "10691456585566057755": {
-        "id": "10691456585566057755",
-        "name": "variable",
-        "type": "referencer",
-        "parent": "14200580607556292096",
-        "children": [],
-        "backRefs": [],
-        "forwardRefs": [],
-        "value": null,
-        "browsePath": "root.visualization.workbench.hasAnnotation.newAnnotations.7031040a.variable"
     },
     "600134431294461625": {
         "id": "600134431294461625",
@@ -3478,7 +3177,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": 73,
+        "value": 77,
         "browsePath": "root.visualization.expert.observerAnnotations.triggerCounter"
     },
     "7141718113078038395": {
@@ -3489,7 +3188,7 @@
         "children": [],
         "backRefs": [],
         "forwardRefs": [],
-        "value": "2020-10-30T09:49:34.317753",
+        "value": "2021-03-02T16:04:25.655948",
         "browsePath": "root.visualization.expert.observerAnnotations.lastTriggerTime"
     },
     "3893737263005185798": {
@@ -4404,7 +4103,7 @@
             "145"
         ],
         "forwardRefs": [],
-        "value": "None",
+        "value": "len 5",
         "browsePath": "root.logistic_regression.classification_result"
     }
 }

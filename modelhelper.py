@@ -68,7 +68,7 @@ def annotations_to_class_vector(annotations, times, tagsMap = {}, regionTag=None
 
     if tagsMap != {}:
         #find the highestNumer
-        maxClassId = max([v for k,v in tagsMap.items()])
+        maxClassId = max([int(v) for k,v in tagsMap.items()])
     else:
         maxClassId = -1
 
