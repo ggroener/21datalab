@@ -618,14 +618,19 @@ def all(path):
                     includeBackGround = data["includeBackGround"]
                 else:
                     includeBackGround = None
-                if "includeIntervalLimits":#we include one more data point left and right of the actal start and end time
+
+                if "includeIntervalLimits" in data :#we include one more data point left and right of the actal start and end time
                     includeIntervalLimits = True
                 else:
                     includeIntervalLimits = False
 
+                if "includeAllNan" in data:
+                    includeAllNan = data["includeAllNan"]
+                else:
+                    includeAllNan = False
                 try:
                     #result = m.get_timeseries_table(data["nodes"],startTime=startTime,endTime=endTime,noBins=int(data["bins"]),includeTimeStamps=includeTimeStamps,format="dict",includeBackGround=includeBackGround)
-                    result = m.time_series_get_table(data["nodes"], start=startTime, end=endTime, noBins=int(data["bins"]), format="flat",toList=True,includeIntervalLimits=includeIntervalLimits)
+                    result = m.time_series_get_table(data["nodes"], start=startTime, end=endTime, noBins=int(data["bins"]), format="flat",toList=True,includeIntervalLimits=includeIntervalLimits, includeAllNan=includeAllNan)
                     if type(result) != type(None):
                         if includeTimeStamps:
                             pass #XXX todo: include the timestamps converted to a certain format

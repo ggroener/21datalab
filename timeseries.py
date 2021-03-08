@@ -167,7 +167,7 @@ class TimeSeries:
     def get_len(self):
         return self.lastValidIndex+1
 
-    def get(self, start=None, end=None, copy=False, resampleTimes = None, noBins = None, includeIntervalLimits = False, resampleMethod = None):
+    def get(self, start=None, end=None, copy=False, resampleTimes = None, noBins = None, includeIntervalLimits = False, resampleMethod = None, includeAllNan = False):
         """
 
             request data and resample it
@@ -191,7 +191,8 @@ class TimeSeries:
                     "samplehold" sample and hold
                     "linear": linear interpolation
                     "linearfill": linear interpolation and also interpolate "nan" or "inf" values in the original data
-
+                includeAllNan: if set true, we will return all existing nan in the requested interval no matter if they match the resampling
+                               ... currently only supported for "bin" queries (typically from the UI)
 
             Return [dict]
                  {"values":[..],"__time":[...]}
@@ -255,6 +256,13 @@ class TimeSeries:
                         else:
                             takeIndices = numpy.arange(startIndex, endIndex) #arange excludes the last
 
+                        if includeAllNan:
+                            #now look in the full data between start and end and find all Nans there, add those indices to the total take indices
+                            nanIndices = numpy.where(~numpy.isfinite(self.values[startIndex:endIndex]))[0] + startIndex
+                            takeIndices = numpy.append(takeIndices,nanIndices)
+                            takeIndices = numpy.unique(takeIndices) #unique: sort and remove dublicates
+
+
                         times = self.times[takeIndices]
                         values = self.values[takeIndices]
 
@@ -282,6 +290,8 @@ class TimeSeries:
             else:
                 times=numpy.asarray([])
                 values=numpy.asarray([])
+
+
 
 
             if copy:
@@ -392,7 +402,7 @@ class TimeSeriesTable:
     def set(self,name,values = None,times = None):
         return self.store[name].set(values,times)
 
-    def get_table(self, names, start=None, end=None, copy=False, resampleTimes=None, noBins = None, includeIntervalLimits=False,resampleMethod = None):
+    def get_table(self, names, start=None, end=None, copy=False, resampleTimes=None, noBins = None, includeIntervalLimits=False,resampleMethod = None, includeAllNan = False):
         """
             returns raw data dict with {name:{"values":[..],"__time":[...], "name2":{"values":[..], "__time":[..]
         """
@@ -401,7 +411,14 @@ class TimeSeriesTable:
         result = {}
         for name in names:
             if name in self.store:
-                result[name]=self.store[name].get(start=start,end=end,copy=copy,resampleTimes=resampleTimes,noBins=noBins,includeIntervalLimits=includeIntervalLimits,resampleMethod=resampleMethod)
+                includeNan = False
+                if includeAllNan == True:
+                    includeNan = True
+                if type(includeAllNan) is list:
+                    #it is a selection list:
+                    if name in includeAllNan:
+                        includeNan = True
+                result[name]=self.store[name].get(start=start,end=end,copy=copy,resampleTimes=resampleTimes,noBins=noBins,includeIntervalLimits=includeIntervalLimits,resampleMethod=resampleMethod,includeAllNan=includeNan)
         return result
 
 

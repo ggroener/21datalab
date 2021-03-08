@@ -3571,7 +3571,8 @@ class Model:
                               format="default",
                               toList = False,
                               resampleMethod = None,
-                              copy=True):
+                              copy=True,
+                              includeAllNan=False):
         """
             get a time series table from variables (nodes of type "timeseries").
 
@@ -3595,6 +3596,9 @@ class Model:
                 includeIntervalLimits [bool]: if set to true, we will include one more data point each left and right of the requested time
 
                 format:  [enum] "default", "flat", see return description
+
+                includeAllNan: if set to true, we will return all nan in the data even if they don't match the resampling
+                                we can also give a list of nodes for which we want the nans
 
 
                 resampleMethod [enum]:
@@ -3663,7 +3667,11 @@ class Model:
 
                 varIds[varId]=var #remeber it for later
 
-            table = self.ts.get_table(list(varIds.keys()), start=start, end=end, copy=copy, resampleTimes=resampleTimes, noBins = noBins, includeIntervalLimits=includeIntervalLimits,resampleMethod=resampleMethod)
+                if type(includeAllNan) is list:
+                    #convert to ids
+                    includeAllNan = self.get_id(includeAllNan)
+
+            table = self.ts.get_table(list(varIds.keys()), start=start, end=end, copy=copy, resampleTimes=resampleTimes, noBins = noBins, includeIntervalLimits=includeIntervalLimits,resampleMethod=resampleMethod,includeAllNan=includeAllNan)
 
         #now wrap back the descriptor to the query, if is was a browsepath, we return and browsepath, if is was an id, we return id
         # make some formatting

@@ -525,14 +525,21 @@ class TimeSeriesWidgetDataServer():
             start=start/1000
         if end:
             end=end/1000
+
+        #include the nans for _limitMin, _limitMax _expected
+        includeAllNan = [var for var in varList if (var.endswith("_limitMin") or var.endswith("_limitMax") or var.endswith("_expected")) ]
+        if includeAllNan == []:
+            includeAllNan = False
         body = {
             "nodes": varList,
              "startTime" : start,
              "endTime" :   end,
             "bins":bins,
             "includeTimeStamps": "02:00",
-            "includeIntervalLimits" : True
+            "includeIntervalLimits" : True,
+            "includeAllNan":includeAllNan
         }
+        #("includeallnan",includeAllNan)
         r=self.__web_call("POST","_getdata",body)
         if not r:
             return None
