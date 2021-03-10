@@ -884,11 +884,12 @@ class Model:
 
         return copy.deepcopy(nodes)
 
-    def __get_node_with_children_pretty(self,id,depth = None,ignore = []):
+    def __get_node_with_children_pretty(self,id,depth = None,ignore = [],select={}):
         """
             recursive helper for get_branch_pretty
             args:
                 nodes: the nodes so far
+                select {dict}: {id:[property,property]] for the given desc we only return the given property
 
         """
 
@@ -898,35 +899,48 @@ class Model:
 
         node = self.model[id]
         #create my properties
-        props = {k: copy.deepcopy(v) for k, v in node.items() if k not in ["value", "backRefs", "children", "object"]}
-        if node["type"] not in ["file", "column","timeseries"]:
-            # we also take the value then
-            props["value"] = copy.deepcopy(node["value"])
+        if id in select:
+            #special handling - we copy only some stuff
+            props = {k: copy.deepcopy(v) for k, v in node.items() if (k in select[id]) or (k in ["name","id"])}
+        else:
+            props = {k: copy.deepcopy(v) for k, v in node.items() if k not in ["value", "backRefs", "children", "object"]}
+            if node["type"] not in ["file", "column","timeseries"]:
+                # we also take the value then
+                props["value"] = copy.deepcopy(node["value"])
+
         if node["type"] == "referencer" and (depth is None or depth>0):
-            #tt = utils.Profiling("get leaves")
-            leaves = self.get_leaves_ids(id)
-            #print(tt)
-            #tt.start("get leaves data")
-            forwards = [self.get_browse_path(leaf) for leaf in leaves]
-            props["leaves"]=forwards
-            #tt.lap("1")
+
+            #for the referencers, we take a lot of infos of the leaves as well as default, or if selected
+
             props["targets"] = [self.get_browse_path(id) for id in self.model[id]["forwardRefs"]]
-            props["leavesIds"]=leaves
-            props["leavesValues"] = [self.get_value(id) if self.model[id]["type"] not in ["file","column","timeseries"] else None for id in leaves]
-            #tt.lap("2")
-            validation = []
-            props["leavesProperties"]={}
-            for id in leaves:
-                prop = self.get_node_info(id,includeLongValues=False)
-                if "validation" in prop:
-                    validation.append(prop["validation"])
-                else:
-                    validation.append(None)
-                props["leavesProperties"][id]=prop
-                props["leavesProperties"][id]["browsePath"]=self.get_browse_path(id)
-            #tt.lap("3")
-            props["leavesValidation"] = validation
-            #print(tt)
+
+            if (not (id in select)) or any(["leaves" in selectKey for selectKey in select[id]]):
+
+                leaves = self.get_leaves_ids(id)
+                #print(tt)
+                #tt.start("get leaves data")
+                forwards = [self.get_browse_path(leaf) for leaf in leaves]
+                props["leaves"]=forwards
+                #tt.lap("1")
+
+                props["leavesIds"]=leaves
+                if (not (id in select)) or ("leavesValues" in select[id]):
+                    props["leavesValues"] = [self.get_value(id) if self.model[id]["type"] not in ["file","column","timeseries"] else None for id in leaves]
+                #tt.lap("2")
+                validation = []
+                if (not (id in select)) or ("leavesProperties" in select[id]) or ("leavesValidation" in select[id]):
+                    props["leavesProperties"]={}
+                    for id in leaves:
+                        prop = self.get_node_info(id,includeLongValues=False)
+                        if "validation" in prop:
+                            validation.append(prop["validation"])
+                        else:
+                            validation.append(None)
+                        props["leavesProperties"][id]=prop
+                        props["leavesProperties"][id]["browsePath"]=self.get_browse_path(id)
+                    #tt.lap("3")
+                    props["leavesValidation"] = validation
+                #print(tt)
         #make sure we have the browsepath on board
         if "browsePath" not in props:
             props["browsePath"]=self.get_browse_path(id)
@@ -943,9 +957,92 @@ class Model:
                     #self.logger.debug(f"ignore {childPath}")
                     pass
                 else:
-                    result[self.model[childId]["name"]]=self.__get_node_with_children_pretty(childId,nextDepth,ignore)
+                    result[self.model[childId]["name"]]=self.__get_node_with_children_pretty(childId,nextDepth,ignore,select)
         #print(t)
         return result
+
+
+    def get_context_menu(self,desc):
+        """
+            get the data needed for the context menu, this is a helper for the UI
+            Args:
+                desc: the descriptor of the widget for which we want the context menu data
+            Returns:
+                all needed data to create a context menu, syntax is like get_branch_pretty
+
+        """
+
+        with self.lock:
+            id = self.__get_id(desc)
+            if not id: return None
+            start = time.time()
+
+            #for the following nodes we only take one property, remove all other info
+            takeOnly = {"hasAnnotation.tags":["value"],
+                        "hasAnnotation.visibleTags":["value"],
+                        "hasAnnotation.colors":["value"],
+                        "hasEvents.visibleEvents":["value"],
+                        "hasEvents.colors":["value"],
+                        "selectedVariables":["leavesIds","id"],
+                        "contextMenuPipelines":["id","targets"],
+                        "contextMenuFunctions" :["id","targets"],
+                        "selectableVariables":["forwardRefs"],
+                        "selectedVariables":["leaves","leavesIds"],
+                        "scoreVariables":["leaves"]
+                         }
+
+            takeOnly = {self.__get_id(id+"."+k):v for k,v in takeOnly.items()}
+
+
+
+
+            data = self.__get_node_with_children_pretty(id,depth=100,ignore = ["observer",
+                                                                               "hasAnnotation.anno",
+                                                                               "hasAnnotation.new",
+                                                                               "hasEvents.events",
+                                                                               ".table",
+                                                                               "utton",
+                                                                               "scoreMap",
+                                                                               "theme",
+                                                                               "timeZone",
+                                                                               "startTime","endTime",
+                                                                               "bins",
+                                                                               "widgetType",
+                                                                               "hasHover",
+                                                                               "hasThreshold",
+                                                                               "hasSelection",
+                                                                               "width",
+                                                                               "height",
+                                                                               "controlPosition",
+                                                                               "hasStreaming",
+                                                                               "scoreMap",
+                                                                               "theme",
+                                                                               "nextNewAnnotation",
+                                                                               "backgroundHighlight",
+                                                                               "lineColors",
+                                                                               "hasBackground",
+                                                                               "backgroundMap"],
+                                                            select=takeOnly)
+            print("context bracnh took ",time.time()-start)
+            #now reduce the result further
+            #context menue pipelines
+            if "contextMenuFunctions" in data:
+                #remove all leaves info
+                deleteKeys = [key for key in data["contextMenuFunctions"][".properties"] if "leaves" in key]
+                for delKey in deleteKeys:
+                    del data["contextMenuFunctions"][".properties"][delKey]
+
+            if "contextMenuPipelines" in data:
+                # remove all leaves info
+                deleteKeys = [key for key in data["contextMenuPipelines"][".properties"] if "leaves" in key]
+                for delKey in deleteKeys:
+                    del data["contextMenuPipelines"][".properties"][delKey]
+
+
+
+            print("context bracnh end ", time.time() - start)
+            return data
+
 
 
 
@@ -960,6 +1057,7 @@ class Model:
             Args:
                 desc [string] the root node to start from
                 depth [int] the depth to look into
+
         """
         with self.lock:
             #p=utils.Profiling("get_branch_pretty")
@@ -1333,6 +1431,7 @@ class Model:
             Returns:
                 True/False for success
         """
+        changed = False
         with self.lock:
             fromId = self.get_id(referencerDesc)
             if not fromId:
@@ -1359,8 +1458,11 @@ class Model:
                         continue # ignore this forwards ref, we have it already
                 self.model[toId]["backRefs"].append(fromId)
                 self.model[fromId]["forwardRefs"].append(toId)
-            self.__notify_observers(fromId,"forwardRefs")
+                changed = True
+            if changed:
+                self.__notify_observers(fromId,"forwardRefs")
             return True
+
 
     def lock_model(self):
         self.lock.acquire()
@@ -1431,6 +1533,7 @@ class Model:
             Returns:
                 True/False for success
         """
+        changed = False
         with self.lock:
             fromId = self.get_id(sourceDesc)
             if not fromId:
@@ -1453,13 +1556,18 @@ class Model:
                     while toId in self.model[fromId]["forwardRefs"]: # maybe multiple entries
                         self.model[fromId]["forwardRefs"].remove(toId)
                         self.model[toId]["backRefs"].remove(fromId)
+                        changed = True
                 else:
                     # we delete only one entry
                     if toId in self.model[fromId]["forwardRefs"]:
                         self.model[fromId]["forwardRefs"].remove(toId)
                         self.model[toId]["backRefs"].remove(fromId)
-            self.__notify_observers(fromId,"forwardRefs")
+                        changed = True
+            if changed:
+                self.__notify_observers(fromId,"forwardRefs")
         return True
+
+
 
 
     def remove_forward_ref(self,sourceDesc,targetDesc):
