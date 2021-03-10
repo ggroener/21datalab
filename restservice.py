@@ -415,6 +415,13 @@ def all(path):
             responseCode = 200
 
 
+        elif (str(path) == "_getcontextmenu") and str(flask.request.method) in ["POST","GET"]:
+            logger.debug(f"get branch pretty {data}")
+            if type(data) is str:
+                mymodel = m.get_context_menu(data)
+            response = json.dumps(mymodel, indent=4)  # some pretty printing for debug
+            responseCode = 200
+
         elif (str(path) == "pipelines") and str(flask.request.method) in ["GET"]:
             logger.debug("execute get pipelines")
             try:

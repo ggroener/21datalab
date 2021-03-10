@@ -551,9 +551,10 @@ function hook_context_menu(divId,modelPath)
 function show_context_menu(e,modelPath)
 {
    console.log("show_context_menu() ",modelPath);
-   var query = {"node":modelPath,"depth":100,"ignore":["observer","hasAnnotation.anno","hasAnnotation.new"]}
+   var query = {"node":modelPath,"depth":100,"ignore":["observer","hasAnnotation.anno","hasAnnotation.new","hasEvents.events",".table"]}
     //get the current state from the backend
-   http_post("_getbranchpretty",JSON.stringify(query), e,null, function(obj,status,data,params)
+   //http_post("_getbranchpretty",JSON.stringify(query), e,null, function(obj,status,data,params)
+   http_post("_getcontextmenu",modelPath, e,null, function(obj,status,data,params)
         {
             if (status==200)
             {
