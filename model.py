@@ -1023,7 +1023,7 @@ class Model:
                                                                                "hasBackground",
                                                                                "backgroundMap"],
                                                             select=takeOnly)
-            print("context bracnh took ",time.time()-start)
+            #print("context bracnh took ",time.time()-start)
             #now reduce the result further
             #context menue pipelines
             if "contextMenuFunctions" in data:
@@ -1040,7 +1040,7 @@ class Model:
 
 
 
-            print("context bracnh end ", time.time() - start)
+            #print("context bracnh end ", time.time() - start)
             return data
 
 
