@@ -1517,8 +1517,17 @@ class Model:
                 else:
                     #this node is not a colum, can still hold huge data
                     model[nodeId] = copy.deepcopy(nodeDict)  # values can be list, dict and deeper objects nodeDict
+                if "value" in model[nodeId]:
+                    import numbers
+                    try:
+                        if isinstance(model[nodeId]["value"], numbers.Number):
+                            if not (numpy.all(numpy.isfinite(model[nodeId]["value"]))):
+                                model[nodeId]["value"] = None
+                    except Exception as e:
+                        self.logger.error(f"problem in get_model_for_web {e}")
+                        
                 model[nodeId]["browsePath"] = self.get_browse_path(nodeId) #also add the browsepath
-        self.logger.debug(f"{p}")
+        #self.logger.debug(f"get model for weg took{p}")
         return model
 
 
