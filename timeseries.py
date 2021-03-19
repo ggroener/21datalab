@@ -167,6 +167,12 @@ class TimeSeries:
     def get_len(self):
         return self.lastValidIndex+1
 
+    def get_last_time_stamp(self):
+        if self.lastValidIndex != -1:
+            return self.times[self.lastValidIndex]
+        else:
+            return None
+
     def get(self, start=None, end=None, copy=False, resampleTimes = None, noBins = None, includeIntervalLimits = False, resampleMethod = None, includeAllNan = False):
         """
 
@@ -213,10 +219,13 @@ class TimeSeries:
                     # we support the -start time, endtime = None, typically used for streaming
                     # to query interval from the end
                     # get the last time and subtract the query time
-                    lastTime = self.times[lastValidIndex]
-                    start = lastTime + start  # look back from the end, note that start is negative
-                    if start < 0:
+                    if lastValidIndex == -1:
                         start = 0
+                    else:
+                        lastTime = self.times[lastValidIndex]
+                        start = lastTime + start  # look back from the end, note that start is negative
+                        if start < 0:
+                            start = 0
                 startIndex = numpy.searchsorted(self.get_times(), start,"left") #the first index to take
             else:
                 startIndex = 0
@@ -409,6 +418,29 @@ class TimeSeriesTable:
         if not type(names) is list:
             names = [names]
         result = {}
+
+        #we are handling here a special case of a time query for the "end" of data via end=None, start =-time
+        # we must cover the case where the requested variables have different end times, we will use the one with the newest data a a reference for all of them
+
+
+        if (type(end) is type(None)) and (not type(start) is type(None)):
+            #this is a streaming request, get the newest possible time point of all vars
+            lastsraw = [self.store[name].get_last_time_stamp() for name in names if name in self.store]
+            lasts = []
+            for last in lastsraw:
+                 if type(last) is type(None):
+                     continue
+                 if numpy.isfinite(last):
+                     lasts.append(last)
+            if lasts != []:
+                end = numpy.max(lasts)
+                start = end + start #(start was negative)
+            else:
+                #all are empty, the store.get will handle this
+                pass
+
+
+
         for name in names:
             if name in self.store:
                 includeNan = False
