@@ -1375,7 +1375,7 @@ class TimeSeriesWidget():
                     r.visible = False
 
         if self.showAnnotations and createdTimeAnnos != []:
-            self.show_annotations(createdTimeAnnos) # this will put them to the plot renderes
+            self.show_annotations(createdTimeAnnos,fetch=False) # this will put them to the plot renderes
 
         #self.show_annotations()
 
@@ -3391,15 +3391,17 @@ class TimeSeriesWidget():
         #now we have all bokeh objects in the self.annotations
         self.logger.debug("init_annotations.. done")
 
-    def show_annotations(self, annoIdFilter=[]):
+    def show_annotations(self, annoIdFilter=[],fetch=True):
         """
             show annotations and hide annotations according to their tags (compare with visibleTags
         """
 
         self.logger.debug("show_annotations()")
         self.showAnnotations = True
-
-        mirror = self.server.fetch_mirror()
+        if fetch:
+            mirror = self.server.fetch_mirror()
+        else:
+            mirror = self.server.get_mirror()
         allowedTags = mirror["hasAnnotation"]["visibleTags"][".properties"]["value"]
         self.showAnnotationTags = [tag for tag in allowedTags if allowedTags[tag]]
         self.logger.debug(f"show annotation tags {self.showAnnotationTags}")
