@@ -128,10 +128,20 @@ class FileTailer():
         self.thread.start()
 
     def flush(self):
-        while True:
-            newLine = self.file.readline()
-            if not newLine:
-                break
+        if self.logger: self.logger.debug(f"flush {self.fileName}")
+        counter = 0
+        try:
+            while True:
+                newLine = self.file.readline()
+                counter +=1
+                if not newLine:
+                    break
+        except Exception as ex:
+            msg = str(ex) + str(traceback.format_exc())
+            if self.logger: self.logger.error(msg)
+            
+        if self.logger: self.logger.debug(f"flushed {counter} lines of {self.fileName}")
+        
     def reopen(self):
         if self.logger: self.logger.debug(f"(re)open {self.fileName}")
         if self.file:
@@ -166,6 +176,7 @@ class FileTailer():
                 else:
                     print(f"error FileTailer.follow {msg}")
                 self.reopen()
+                self.flush()
                 time.sleep(self.timeout)
 
         self.file.close()
