@@ -6,21 +6,21 @@ import glob
 import signal
 import argparse
 import logging
-#from logging.handlers import RotatingFileHandler
+# from logging.handlers import RotatingFileHandler
 import queue
 import requests
 import datetime
 import traceback
 
-def str_lim(obj,lim):
+
+def str_lim(obj, lim):
     stri = str(obj)
-    stri=stri.replace('\n','')
-    if len(stri)>lim:
-        half = round(lim/2)
-        return stri[:half]+"..."+stri[-half:]
+    stri = stri.replace('\n', '')
+    if len(stri) > lim:
+        half = round(lim / 2)
+        return stri[:half] + "..." + stri[-half:]
     else:
         return stri
-
 
 
 class DirWatcher():
@@ -31,7 +31,8 @@ class DirWatcher():
         d.start()
         d.stop()
     """
-    def __init__(self,dir,timeout=1,lastModified=None,callback=None,logger=None):
+
+    def __init__(self, dir, timeout=1, lastModified=None, callback=None, logger=None):
         """
             Args
                 dir [string]: the full path including wildcards like c:\temp\logs\2020_applog*.log
@@ -54,20 +55,20 @@ class DirWatcher():
         start = time.time()
         files = glob.glob(self.dir)
 
-        #now filter by last modified time
+        # now filter by last modified time
         now = time.time()
         filteredNames = []
         changeTimes = []
 
         if self.files != [] and not self.lastModified:
-            if set(self.files)==set(files):
+            if set(self.files) == set(files):
                 totalTime = time.time() - start
                 if self.logger: self.logger.debug(f"DirWatcher.get_files shortcut in {totalTime} {len(files)}files")
                 return self.files
         for name in files:
-            changeTime = now-os.path.getmtime(name)
+            changeTime = now - os.path.getmtime(name)
 
-            if (self.lastModified and changeTime<self.lastModified) or (not self.lastModified):
+            if (self.lastModified and changeTime < self.lastModified) or (not self.lastModified):
                 filteredNames.append(name)
                 changeTimes.append(changeTime)
 
@@ -77,7 +78,7 @@ class DirWatcher():
         for index in indices:
             sortedNames.append(filteredNames[index])
 
-        totalTime = time.time()-start
+        totalTime = time.time() - start
         if self.logger: self.logger.debug(f"DirWatcher.get_files processed in {totalTime} {len(sortedNames)} files")
 
         return sortedNames
@@ -86,21 +87,22 @@ class DirWatcher():
         self.files = self.get_files()
         if self.files:
             self.callback(self.files[0])
-        #now start the thread for repeated check for new files only if we have a wildcard in the name
+        # now start the thread for repeated check for new files only if we have a wildcard in the name
         if "*" in self.dir or "?" in self.dir:
             self.running = True
             self.thread = threading.Thread(target=self.follow)
             self.thread.start()
         else:
-            if self.logger: self.logger.info(f"DirWatcher.start we DONT start the watch thread, as there is only one file")
+            if self.logger: self.logger.info(
+                f"DirWatcher.start we DONT start the watch thread, as there is only one file")
 
     def follow(self):
-        if self.logger : self.logger.info(f"DirWatcher.start thread")
+        if self.logger: self.logger.info(f"DirWatcher.start thread")
         while self.running:
             newList = self.get_files()
             if newList:
-                if not self.files or newList[0]!=self.files[0]:
-                    #the file name that has changed last has changed, this is a new log file:
+                if not self.files or newList[0] != self.files[0]:
+                    # the file name that has changed last has changed, this is a new log file:
                     self.callback(newList[0])
                 self.files = newList
             time.sleep(self.timeout)
@@ -113,7 +115,7 @@ class DirWatcher():
 
 class FileTailer():
 
-    def __init__(self,fileName,timeout =1,callback=None,logger=None):
+    def __init__(self, fileName, timeout=1, callback=None, logger=None):
         self.fileName = fileName
         self.running = True
         self.cb = callback
@@ -121,17 +123,27 @@ class FileTailer():
         self.file = None
         self.logger = logger
         self.reopen()
-        if self.logger:self.logger.info(f"FileTailer.init {self.fileName}")
+        if self.logger: self.logger.info(f"FileTailer.init {self.fileName}")
 
     def start(self):
-        self.thread = threading.Thread(target = self.follow)
+        self.thread = threading.Thread(target=self.follow)
         self.thread.start()
 
     def flush(self):
-        while True:
-            newLine = self.file.readline()
-            if not newLine:
-                break
+        if self.logger: self.logger.debug(f"flush {self.fileName}")
+        counter = 0
+        try:
+            while True:
+                newLine = self.file.readline()
+                counter += 1
+                if not newLine:
+                    break
+        except Exception as ex:
+            msg = str(ex) + str(traceback.format_exc())
+            if self.logger: self.logger.error(msg)
+
+        if self.logger: self.logger.debug(f"flushed {counter} lines of {self.fileName}")
+
     def reopen(self):
         if self.logger: self.logger.debug(f"(re)open {self.fileName}")
         if self.file:
@@ -141,7 +153,6 @@ class FileTailer():
         except Exception as ex:
             msg = str(ex) + str(traceback.format_exc())
             if self.logger: self.logger.error(msg)
-
 
     def follow(self):
         buffer = ""
@@ -156,16 +167,17 @@ class FileTailer():
                     if buffer.endswith('\n'):
                         if self.cb:
                             self.cb(buffer)
-                        buffer = ""#reset buffer
+                        buffer = ""  # reset buffer
                     else:
                         if self.logger: self.logger.info(f"FileTailer.follow. line not complete")
             except Exception as ex:
-                msg = str(ex)+str(traceback.format_exc())
+                msg = str(ex) + str(traceback.format_exc())
                 if self.logger:
                     self.logger.error(f"FileTailer.follow  {msg}")
                 else:
                     print(f"error FileTailer.follow {msg}")
                 self.reopen()
+                self.flush()
                 time.sleep(self.timeout)
 
         self.file.close()
@@ -181,8 +193,9 @@ class FileTailer():
     def get_full_file_name(self):
         return self.fileName
 
+
 class LogFileFollower():
-    def __init__(self,dir,dirUpdatePeriod = 10,fileUpdatePeriod=1,callback = None,flushFirstFile = True,logger=None):
+    def __init__(self, dir, dirUpdatePeriod=10, fileUpdatePeriod=1, callback=None, flushFirstFile=True, logger=None):
         self.dir = dir
         self.dirUpdatePeriod = dirUpdatePeriod
         self.fileUpdatePeriod = fileUpdatePeriod
@@ -190,40 +203,44 @@ class LogFileFollower():
         self.currentLogFile = None
         self.flushFirstFile = flushFirstFile
         self.fileWatcher = None
-        self.dirWatcher =None
+        self.dirWatcher = None
         self.logger = logger
 
     def start(self):
-        if self.logger:self.logger.info("LogFileFollower.start ")
-        self.dirWatcher = DirWatcher(self.dir,timeout=self.dirUpdatePeriod,callback=self.on_log_file_changed,logger=self.logger)
+        if self.logger: self.logger.info("LogFileFollower.start ")
+        self.dirWatcher = DirWatcher(self.dir, timeout=self.dirUpdatePeriod, callback=self.on_log_file_changed,
+                                     logger=self.logger)
         self.dirWatcher.start()
 
-    def on_new_log_line(self,line):
-        if self.logger: self.logger.debug(f"LogFileFollower.on_new_log_line ({self.fileWatcher.get_file_name()}): {str_lim(line,100)} ")
+    def on_new_log_line(self, line):
+        if self.logger: self.logger.debug(
+            f"LogFileFollower.on_new_log_line ({self.fileWatcher.get_file_name()}): {str_lim(line,100)} ")
         if self.dataCb:
             self.dataCb(line)
 
-    def on_log_file_changed(self,name):
+    def on_log_file_changed(self, name):
         if self.logger: self.logger.debug(f"LogFileFollower.on_log_file_changed to {name}")
 
         if self.fileWatcher:
             self.fileWatcher.stop()
-            self.fileWatcher = FileTailer(name,timeout = self.fileUpdatePeriod,callback=self.on_new_log_line,logger=self.logger)
+            self.fileWatcher = FileTailer(name, timeout=self.fileUpdatePeriod, callback=self.on_new_log_line,
+                                          logger=self.logger)
         else:
-            #this is the first
-            self.fileWatcher = FileTailer(name,timeout = self.fileUpdatePeriod,callback=self.on_new_log_line,logger=self.logger)
+            # this is the first
+            self.fileWatcher = FileTailer(name, timeout=self.fileUpdatePeriod, callback=self.on_new_log_line,
+                                          logger=self.logger)
             if self.flushFirstFile:
-                self.fileWatcher.flush() #pull all previous lines
+                self.fileWatcher.flush()  # pull all previous lines
         self.fileWatcher.start()
-
 
     def stop(self):
         self.dirWatcher.stop()
         if self.fileWatcher:
             self.fileWatcher.stop()
 
+
 class HTTPOut():
-    def __init__(self,url,logger=None,retryPeriod = 1,httpTimeout=20,maxRetries=None):
+    def __init__(self, url, logger=None, retryPeriod=1, httpTimeout=20, maxRetries=None):
         """
             Args.
                 url: the target url
@@ -244,16 +261,17 @@ class HTTPOut():
         self.maxRetries = maxRetries
 
     def start(self):
-        self.thread = threading.Thread(target = self.run)
+        self.thread = threading.Thread(target=self.run)
         self.thread.start()
 
-    def __call(self,msg):
+    def __call(self, msg):
         start = time.time()
         try:
             res = requests.post(self.url, data=msg, timeout=self.httpTimeout)
             duration = time.time() - start
             if res.status_code < 400:
-                if self.logger:self.logger.debug(f"successfully called out to {self.url} in {duration} s, responseCode {res.status_code}")
+                if self.logger: self.logger.debug(
+                    f"successfully called out to {self.url} in {duration} s, responseCode {res.status_code}")
                 return True
         except Exception as ex:
             duration = time.time() - start
@@ -261,13 +279,13 @@ class HTTPOut():
             pass
         return False
 
-    def send(self,msg):
+    def send(self, msg):
         self.q.put(msg)
-        if self.logger: self.logger.debug(f"HTTPOut.send for enqueue, quque size {self.q.qsize()}, msg: {str_lim(msg,100)}")
-
+        if self.logger: self.logger.debug(
+            f"HTTPOut.send for enqueue, quque size {self.q.qsize()}, msg: {str_lim(msg,100)}")
 
     def run(self):
-        if self.logger:self.logger.info(f"HTTPOut.thread start")
+        if self.logger: self.logger.info(f"HTTPOut.thread start")
         self.running = True
         while self.running:
             try:
@@ -279,15 +297,18 @@ class HTTPOut():
                 if not result:
                     retries = self.maxRetries
                     if not retries:
-                        if self.logger: self.logger.warning(f"HTTPOut retries exhausted, discard this packet, queue size {self.q.qsize()}")
-                    while retries!=0 and not result and self.running:
-                        if retries>0:
-                            retries=retries-1
-                        if retries==0:
-                            if self.logger: self.logger.warning( f"HTTPOut retry {retries}/{self.maxRetries} exhausted, discard this packet, queue size {self.q.qsize()}")
+                        if self.logger: self.logger.warning(
+                            f"HTTPOut retries exhausted, discard this packet, queue size {self.q.qsize()}")
+                    while retries != 0 and not result and self.running:
+                        if retries > 0:
+                            retries = retries - 1
+                        if retries == 0:
+                            if self.logger: self.logger.warning(
+                                f"HTTPOut retry {retries}/{self.maxRetries} exhausted, discard this packet, queue size {self.q.qsize()}")
                         else:
-                            if self.logger: self.logger.warning(f"HTTPOut retry {retries}/{self.maxRetries}, queue size {self.q.qsize()}")
-                            result = self.__call(msg) #retry
+                            if self.logger: self.logger.warning(
+                                f"HTTPOut retry {retries}/{self.maxRetries}, queue size {self.q.qsize()}")
+                            result = self.__call(msg)  # retry
 
             except Exception as ex:
                 if self.logger: self.logger.error(f"HTTPOut.run {ex}")
@@ -298,10 +319,10 @@ class HTTPOut():
         if self.logger: self.logger.info(f"HTTPOut.stop()")
         self.running = False
 
+
 if __name__ == "__main__":
 
-
-    #make a logger
+    # make a logger
     logger = logging.getLogger("Tailer")
     handler = logging.StreamHandler()
     formatter = logging.Formatter('%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
@@ -317,7 +338,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--dirtimeout', help='time in seconds how often we check for new files', default=10, type=float)
-    parser.add_argument('--filetimeout',help='timeout to check for new line in the currently watched file',default = 1, type =float)
+    parser.add_argument('--filetimeout', help='timeout to check for new line in the currently watched file', default=1,
+                        type=float)
     parser.add_argument('dir', help='filepath with match pattern or direct path to file', nargs='?', default=None)
     args = parser.parse_args()
 
@@ -325,21 +347,26 @@ if __name__ == "__main__":
     def on_log(data):
         print(f"on log {data}")
 
+
     print(f"start sniffing of {args.dir} with dirtimeout {args.dirtimeout} {args.filetimeout}")
-    l = LogFileFollower(args.dir,fileUpdatePeriod=args.filetimeout,dirUpdatePeriod=args.dirtimeout,callback=on_log,logger=logger)
+    l = LogFileFollower(args.dir, fileUpdatePeriod=args.filetimeout, dirUpdatePeriod=args.dirtimeout, callback=on_log,
+                        logger=logger)
     l.start()
 
-
     running = True
+
+
     def handler(signum, frame):
         global running
         print('gracefully exit..')
         l.stop()
         running = False
+
+
     signal.signal(signal.SIGINT, handler)
 
     while running:
-        #hang here until ctrl break via sighandler
+        # hang here until ctrl break via sighandler
         time.sleep(1)
 
 
