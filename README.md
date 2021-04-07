@@ -14,7 +14,6 @@ The framework is prepared to run on edge, desktop or cloud. The core software is
 * install python 3.6, recommended https://www.anaconda.com/
 * clone this repo into a folder named 21datalab (e.g. git clone https://github.com/smartyal/21datalab.git 21datalab)
 * run 21datalab/scripts/install.bat
-* fix the venv/activate.bat for windows, change in the file delims=:" to delims=:." (see also install.bat)
 * a venv is created, the needed pip packages are installed and the web packages are installed
 * webpackages used
   * web/modules/bootstrap (MIT License): get the latest bootstrap dist https://getbootstrap.com/, place it here directly 
