@@ -14,7 +14,7 @@ Further reading:
 The framework is prepared to run on edge, desktop or cloud and is a microservice architecure. The core software is based on python 3.6. Currently, only the source-code version is available
 ## setup
 * install python 3.6, recommended https://www.anaconda.com/
-* clone this repo into a folder named 21datalab (e.g. git clone https://github.com/smartyal/21datalab.git %21datalab)
+* clone this repo into a folder named 21datalab (e.g. git clone https://github.com/smartyal/21datalab.git 21datalab)
 * run 21datalab/scripts/install.bat
 * a venv is created, the needed pip packages are installed and the web packages are installed
 * webpackages used
