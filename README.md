@@ -1,17 +1,15 @@
 # 21datalab
-This project is an open source initiative for self-service analytics in industrial applications. It focusses on the collaboration between data scientists and expert users/operators. It will cover
+This project is an open source initiative for self-service analytics in industrial applications. It focusses on the empowering of domain experts to use data science. It covers
 * import and handling of data
-* OPC-UA connectivity
-* data modelling 
-* API to implement machine learning
-* microservice architecture
+* data modelling and data semantic
+* APIs for extensions and custom plug-ins
 * interactive graphical widgets for simple self-service analytics
 Further reading:
 * project website: http://21data.io
 * architecture: https://docs.google.com/document/d/1wRY5CCxqMQUc9PZoYwd0hGqGEIbNxXPm5Qt8GsjM-l8/edit?usp=sharing
 
 # system requirements
-The framework is prepared to run on edge, desktop or cloud and is a microservice architecure. The core software is based on python 3.6. Currently, only the source-code version is available
+The framework is prepared to run on edge, desktop or cloud. The core software is based on python 3.6
 ## setup
 * install python 3.6, recommended https://www.anaconda.com/
 * clone this repo into a folder named 21datalab (e.g. git clone https://github.com/smartyal/21datalab.git 21datalab)
