@@ -67,6 +67,7 @@ cd %mypath%
 rmdir /s/q temp
 
 rem finally fix the active.bat ! change delims=:" to delims=:."
+python fix_activate.py
 
 :exit
  
