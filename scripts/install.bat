@@ -64,7 +64,7 @@ rename "jquery-ui-1.12.1" "jquery-ui"
 
 cd %mypath%
 
-del /F/Q temp
+rmdir /s/q temp
 
 rem finally fix the active.bat ! change delims=:" to delims=:."
 
