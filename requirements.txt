@@ -45,7 +45,7 @@ ptyprocess==0.6.0         # via pexpect, terminado
  
  
 python-dateutil==2.8.0    # via -r requirements.in (line 8), bokeh, jupyter-client
-pyyaml==5.3               # via bokeh
+pyyaml==5.4               # via bokeh
  
  
  
