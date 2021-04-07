@@ -5,8 +5,8 @@ set mypath=%~dp0
 REM git clone https://github.com/smartyal/21datalab.git %mypath%21datalab
 REM create virtual environment for this project
 python -m venv %mypath%..\venv
-%mypath%..\venv\Scripts\pip.exe pip install --upgrade pip
-%mypath%..\venv\Scripts\pip.exe install -r %mypath%\21datalab\requirements.txt
+REM %mypath%..\venv\Scripts\pip.exe install --upgrade pip
+%mypath%..\venv\Scripts\pip.exe install -r %mypath%..\requirements.txt
 
 REM download the web packages
 REM goto exit
@@ -52,7 +52,7 @@ tar xopf %mypath%temp\supercontext.zip -C %mypath%..\web\modules
 
 cd %mypath%..\web\modules
 
-rename "bootstrap-5.0.0-beta3-dist" bootstrap
+rename "bootstrap-4.5.0-dist" bootstrap
 rename "bootstrap-select-1.13.14" "bootstrap-select"
 rename "bootstrap-navbar-sidebar-4.0.2" "bootstrap-navbar-sidebar"
 rename "bootswatch-4.6.0" bootswatch"
@@ -66,7 +66,7 @@ cd %mypath%
 
 del /F/Q temp
 
-rem finally fix the active.bat !
+rem finally fix the active.bat ! change delims=:" to delims=:."
 
 :exit
  
