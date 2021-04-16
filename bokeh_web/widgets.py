@@ -247,29 +247,7 @@ class TimeSeriesWidgetDataServer():
     def get_path(self):
         return self.path
 
-    def load_annotations(self):
-        self.logger.debug("load_annotations")
-        if (self.settings["hasAnnotation"] == True) or (self.settings["hasThreshold"] == True):
-            response = self.__web_call("post","_get",[self.path+"."+"hasAnnotation"])
-            annotationsInfo = get_const_nodes_as_dict(response[0]["children"])
-            self.settings.update(annotationsInfo)
-            #now get all annotations
-            nodes = self.__web_call("post","_getleaves",self.path+".hasAnnotation.annotations")
-            self.logger.debug("ANNOTATIONS"+json.dumps(nodes,indent=4))
-            #now parse the stuff and build up our information
-            self.annotations={}
-            for node in nodes:
-                if node["type"]=="annotation":
-                    self.annotations[node["browsePath"]]=get_const_nodes_as_dict(node["children"])
 
-                    if "startTime" in self.annotations[node["browsePath"]]:
-                        self.annotations[node["browsePath"]]["startTime"] = date2secs(self.annotations[node["browsePath"]]["startTime"])*1000
-                    if "endTime" in self.annotations[node["browsePath"]]:
-                        self.annotations[node["browsePath"]]["endTime"] = date2secs(self.annotations[node["browsePath"]]["endTime"]) * 1000
-                    if self.annotations[node["browsePath"]]["type"] in ["threshold","motif"]:
-                        #we also pick the target, only the first!
-                        self.annotations[node["browsePath"]]["variable"]=self.annotations[node["browsePath"]]["variable"][0]
-            self.logger.debug("server annotations" + json.dumps(self.annotations, indent=4))
 
 
     def update_background_info_from_mirror(self):
@@ -320,10 +298,10 @@ class TimeSeriesWidgetDataServer():
         #for node in nodes:
         #    self.selectedVariables.append(node["browsePath"])
         #get the selectable
-        nodes = self.__web_call('POST',"_getleaves",self.path+'.selectableVariables')
-        self.selectableVariables = []
-        for node in nodes:
-            self.selectableVariables.append(node["browsePath"])
+        #nodes = self.__web_call('POST',"_getleaves",self.path+'.selectableVariables')
+        #self.selectableVariables = []
+        #for node in nodes:
+        #    self.selectableVariables.append(node["browsePath"])
         #also remeber the timefield as path
         request = self.path+".table"
         nodes = self.__web_call("post","_getleaves",request)
@@ -416,7 +394,7 @@ class TimeSeriesWidgetDataServer():
         return copy.deepcopy(self.events)
 
 
-    def fetch_annotations(self):
+    def fetch_annotations_old(self):
         # return a dict with {id:annotationdict}
         #get a fresh copy of the annotations
         nodes = self.__web_call("post", "_getleaves", self.path + ".hasAnnotation.annotations")
@@ -447,6 +425,22 @@ class TimeSeriesWidgetDataServer():
         #self.logger.debug("server annotations" + json.dumps(self.annotations, indent=4))
         self.annotations = copy.deepcopy(annotations)
         return annotations
+
+
+    def fetch_annotations(self):
+        # return a dict with {id:annotationdict}
+        #get a fresh copy of the annotations
+        nodes = self.__web_call("post", "_getAnnotations", self.path + ".hasAnnotation.annotations")
+        if not nodes:
+            nodes = {}
+        for id,node in nodes.items():
+            if "startTime" in node:
+                node["startTime"] = date2secs(node["startTime"])*1000
+            if "endTime" in node:
+                node["endTime"] = date2secs(node["endTime"]) * 1000
+        self.logger.debug(f"_fetch_annotations(): {len(nodes)} annotations")
+        self.annotations = copy.deepcopy(nodes)
+        return nodes
 
     def fetch_annotations_differential(self,info):
         #args is a dict :{"new":[id1,id2], "delete":[id3,id4] "modify":[id5...] lists that contain ids where there have been changes
@@ -569,7 +563,7 @@ class TimeSeriesWidgetDataServer():
         if small:
             query = {"node":self.path,"depth":1,"ignore":["observer"]}
         else:
-            query = {"node":self.path,"depth":100,"ignore":["observer","hasAnnotation.anno","hasAnnotation.new"]}
+            query = {"node":self.path,"depth":100,"ignore":["observer","hasAnnotation.anno","hasAnnotation.new","selectableVariables","contextMenu","showHide"]}
         self.mirror = self.__web_call("post", "_getbranchpretty", query)
         self.update_score_variables_from_mirror()
         self.update_background_info_from_mirror()
@@ -609,9 +603,9 @@ class TimeSeriesWidgetDataServer():
         self.mirror["currentColors"][".properties"]["value"] = currentColors
         self.__web_call('POST', 'setProperties', nodesToModify)
 
-    def get_variables_selectable(self):
-        """ returns the selectable variables from the cache"""
-        return copy.deepcopy(self.selectableVariables)
+    #def get_variables_selectable(self):
+    #    """ returns the selectable variables from the cache"""
+    #    return copy.deepcopy(self.selectableVariables)
 
     def get_variables_selected(self):
         """ return list of selected variables from the cache"""
@@ -1122,8 +1116,8 @@ class TimeSeriesWidget():
 
         if self.columnData =={}:
             self.logger.info("init the colum data")
-            for var in self.server.get_variables_selectable():
-                self.columnData[var]=ColumnDataSource({"x":[],"y":[]})
+            #for var in self.server.get_variables_selectable():
+            #    self.columnData[var]=ColumnDataSource({"x":[],"y":[]})
 
         if "__time" in newData:
             del newData["time"]
@@ -1383,14 +1377,7 @@ class TimeSeriesWidget():
 
 
 
-    def reinit_annotations(self):
-        self.hide_annotations()
-        self.server.load_annotations()
-        self.logger.debug("reinit_annotations=>init_annotations")
-        self.init_annotations()
-        if self.reInitAnnotationsVisible:
-            self.logger.debug("reinit_annotations=>init_annotations")
-            self.show_annotations()
+
 
     def __legend_check(self):
         try:

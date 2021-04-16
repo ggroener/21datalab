@@ -1887,6 +1887,40 @@ class Model:
             else:
                 return targets
 
+
+    def get_annotations_fast(self,desc):
+        """
+            this is a helper function for the ui for the fast retrieval of annotations
+            Args: desc: the root[referencer] descriptor for the annotations
+            Returns:
+                a dict with {id:{"name":...,"id":{...}} with the annotations
+        """
+        with self.lock:
+            id = self.__get_id(desc)
+            if not id: return {}
+
+            onlyid = self.get_leaves(desc, includeNodeInfo=False,allowDuplicates=True) #allow duplicates makes it faster, we get rid of duplicates later
+            result = {}
+            for small in onlyid:
+
+                id = small["id"]
+                if self.model[id]["type"] != "annotation":
+                    continue
+                big = {"id": id}
+                big["browsePath"] = self.get_browse_path(id)
+                big["name"] = self.model[id]["name"]
+                # now look at the children
+                for childId in small["children"]:
+                    name = self.model[childId]["name"]
+                    type = self.model[childId]["type"]
+                    if type== "referencer":
+                        big[name]=self.model[childId]["forwardRefs"][0]
+                    else:
+                        big[name] = self.model[childId]["value"]
+                    result[id] = big
+        return result
+
+
     def __get_referencer_parents(self,ids):
         backRefs = []
         #we look back from this node

@@ -457,6 +457,11 @@ def all(path):
             response = json.dumps(models)
             responseCode = 200
 
+        elif(str(path) == "_getAnnotations") and str(flask.request.method) in ["POST", "GET"]:
+            logger.debug("execute get forward")
+            nodes = m.get_annotations_fast(data)
+            response = json.dumps(nodes, indent=4)
+            responseCode = 200
 
         elif(str(path) == "_getleaves") and str(flask.request.method) in ["POST", "GET"]:
             logger.debug("execute get forward")
