@@ -227,13 +227,22 @@ class TimeSeriesWidgetDataServer():
             rData = json.loads(response.content.decode("utf-8"))
             return rData
 
-    def get_selected_variables_sync(self):
-        request = self.path + ".selectedVariables"
-        selectedVars = []
+    def get_selected_variables_sync(self, fetch = True):
 
-        nodes = self.__web_call("post", "_getleaves", request)
-        selectedVars=[node["browsePath"] for node in nodes]
+        selectedVars = []
+        if fetch:
+            request = self.path + ".selectedVariables"
+            nodes = self.__web_call("post", "_getleaves", request)
+        else:
+            #from mirror
+            leavesproperties = self.mirror["selectedVariables"][".properties"]["leavesProperties"]
+            if leavesproperties:
+                nodes = [v for k,v in leavesproperties.items()]
+            else:
+                nodes=[]
+
         #build the info as id:info plus browsepath:info, so we have a faster lookup; both browsepath and id are unique
+        selectedVars = [node["browsePath"] for node in nodes]
         self.objectsInfo = {}
         for node in nodes:
             info = copy.deepcopy(node)
@@ -282,16 +291,23 @@ class TimeSeriesWidgetDataServer():
 
 
 
-        request = [self.path]
-        info = self.__web_call("post","_get",request)
-        self.logger.debug("initial settings %s",json.dumps(info,indent=4))
-        #self.originalInfo=copy.deepcopy(info)
-        #grab some settings
+        #request = [self.path]
+        #info = self.__web_call("post","_get",request)
+
+        widgetChildren = [ node[".properties"] for k,node in self.mirror.items() if k!=".properties"] #replace the webcall with data from the mirror
+        #also provide it as info for later down
+
+        info=[{"children":widgetChildren}]
         self.settings = get_const_nodes_as_dict(info[0]["children"])
+
+        #compatibility for old style with the settings, we now derive them from the mirror
+
+
+        #self.settings = get_const_nodes_as_dict(widgetChildren)
 
 
         #also grab the selected
-        self.get_selected_variables_sync()
+        self.get_selected_variables_sync(fetch=False)
         #request = self.path+".selectedVariables"
         #self.selectedVariables=[]
         #nodes = self.__web_call("post","_getleaves",request)
@@ -303,8 +319,8 @@ class TimeSeriesWidgetDataServer():
         #for node in nodes:
         #    self.selectableVariables.append(node["browsePath"])
         #also remeber the timefield as path
-        request = self.path+".table"
-        nodes = self.__web_call("post","_getleaves",request)
+        #request = self.path+".table"
+        #nodes = self.__web_call("post","_getleaves",request)
         #this should return only one node
         #timerefpath = nodes[0]["browsePath"]+".timeField"
         #another call to get it right
@@ -313,10 +329,10 @@ class TimeSeriesWidgetDataServer():
   
 
         #now for the annotations
-        if (self.settings["hasAnnotation"] == True) or (self.settings["hasThreshold"] == True):
-            response = self.__web_call("post","_get",[self.path+"."+"hasAnnotation"])
-            annotationsInfo = get_const_nodes_as_dict(response[0]["children"])
-            self.settings.update(annotationsInfo)
+        #if (self.settings["hasAnnotation"] == True) or (self.settings["hasThreshold"] == True):
+        #    response = self.__web_call("post","_get",[self.path+"."+"hasAnnotation"])
+        #    annotationsInfo = get_const_nodes_as_dict(response[0]["children"])
+        #    self.settings.update(annotationsInfo)
         self.annotations=self.fetch_annotations() # get all the annotations
 
         #for the events
@@ -325,9 +341,9 @@ class TimeSeriesWidgetDataServer():
 
         #grab the info for the buttons
         myButtons=[]
-        for node in info[0]["children"]:
-            if node["name"]=="buttons":
-                myButtons = node["children"]
+        #for node in info[0]["children"]:
+        #    if node["name"]=="buttons":
+        #        myButtons = node["children"]
 
         #now get more info on the buttons
         if myButtons != []:
@@ -376,8 +392,8 @@ class TimeSeriesWidgetDataServer():
             self.settings["background"] = {"hasBackground": False}
 
 
-        self.logger.debug("SERVER.SETTINGS-------------------------")
-        self.logger.debug("%s",json.dumps(self.settings,indent=4))
+        #self.logger.debug("SERVER.SETTINGS-------------------------")
+        #self.logger.debug("%s",json.dumps(self.settings,indent=4))
 
 
     def fetch_events(self):
@@ -563,7 +579,7 @@ class TimeSeriesWidgetDataServer():
         if small:
             query = {"node":self.path,"depth":1,"ignore":["observer"]}
         else:
-            query = {"node":self.path,"depth":100,"ignore":["observer","hasAnnotation.anno","hasAnnotation.new","selectableVariables","contextMenu","showHide"]}
+            query = {"node":self.path,"depth":100,"ignore":["targets","hasAnnotation.anno","hasAnnotation.new","selectableVariables","contextMenu","showHide"]}
         self.mirror = self.__web_call("post", "_getbranchpretty", query)
         self.update_score_variables_from_mirror()
         self.update_background_info_from_mirror()
