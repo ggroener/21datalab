@@ -1700,7 +1700,7 @@ class TimeSeriesWidget():
         #now also display further elements
         visibleElements = self.server.get_mirror()["visibleElements"][".properties"]["value"]
         if "annotations" in visibleElements and visibleElements["annotations"] == True:
-            self.show_annotations()
+            self.show_annotations(fetch=False)
 
         if "thresholds" in visibleElements and visibleElements["thresholds"] == True:
             self.show_thresholds()
