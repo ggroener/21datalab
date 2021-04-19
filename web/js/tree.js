@@ -22,6 +22,7 @@ class TreeWidget
         this.treeRootId = '1'; //default is the "root"
         this.globalCopyBuffer = [];
         this.globalIconType = "standard"; // use to ingest html styles for the icons
+        this.delayedLoad = true;        // if set true, we load on the first refresh not at startup
         this.treeIcons = {
             //https://fontawesome.com/icons
             root : "fa fa-folder fa-sm",
@@ -425,6 +426,8 @@ class TreeWidget
 
     tree_generate()
     {
+        if (this.delayedLoad == true) return;
+
         var treeWidgetObject = this; //for usage in deeper object nesting
 
         $(this.treeDiv).jstree("destroy");
@@ -1732,7 +1735,15 @@ class TreeCard
 
     reload_on_click()
     {
-        this.myTree.tree_initialize();
+        if (this.myTree.delayedLoad==true)
+        {
+            this.myTree.delayedLoad=false;
+            this.myTree.tree_generate();
+        }
+        else
+        {
+            this.myTree.tree_initialize();
+        }
     }
 
     update_on_click()
