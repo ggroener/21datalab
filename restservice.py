@@ -463,6 +463,16 @@ def all(path):
             response = json.dumps(nodes, indent=4)
             responseCode = 200
 
+
+        elif(str(path) == "_createAnnotation") and str(flask.request.method) in ["POST", "GET"]:
+            logger.debug("execute _createAnnotation")
+            id = m.create_annotation(data)
+            response = json.dumps(id)
+            if id:
+                responseCode = 201
+            else:
+                responseCode = 400
+
         elif(str(path) == "_getleaves") and str(flask.request.method) in ["POST", "GET"]:
             logger.debug("execute get forward")
             nodes = m.get_leaves(data)

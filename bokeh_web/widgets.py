@@ -468,18 +468,16 @@ class TimeSeriesWidgetDataServer():
 
 
         #merge the new and modify and put them in our local info
-        nodes = info["new"]
+        nodes = {k:v for k,v in info["new"].items() if k not in self.annotations}
         nodes.update(info["modify"])
 
         for id,annotation in nodes.items():
             try:
                 # convert some stuff
-                if "startTime" in annotation:
-                    annotation["startTime"] = date2secs(
-                        annotation["startTime"]) * 1000
-                if "endTime" in annotation:
-                    annotation["endTime"] = date2secs(
-                        annotation["endTime"]) * 1000
+                if "startTime" in annotation and type(annotation["startTime"]) is str:
+                        annotation["startTime"] = date2secs(annotation["startTime"]) * 1000
+                if "endTime" in annotation and type(annotation["endTime"]) is str:
+                    annotation["endTime"] = date2secs(annotation["endTime"]) * 1000
                 if annotation["type"] in ["threshold", "motif"]:
                     # we also pick the target, only the first
                     annotation["variable"] = annotation["variable"][0]
@@ -628,7 +626,7 @@ class TimeSeriesWidgetDataServer():
         return copy.deepcopy(self.selectedVariables)
 
     def get_annotations(self):
-        return copy.deepcopy(self.annotations)
+        return self.annotations
         #return copy.deepcopy(self.annotations)
 
     def bokeh_time_to_string(self,epoch):
@@ -700,12 +698,13 @@ class TimeSeriesWidgetDataServer():
             return None
 
         self.logger.debug("creating anno %s",str(nodesToCreate))
-        res = self.__web_call('POST','_create',nodesToCreate)
+        #res = self.__web_call('POST','_create',nodesToCreate)
+        res = [self.__web_call('POST','_createAnnotation',nodesToCreate)] #returns a single value
 
         if res:
             #the first is our node id
             #now also update our internal list
-            anno  = {"startTime":start,"endTime":end,"tags":[tag],"min":min,"max":max,"type":type,"variable":var,"id":res[0],"name":nodeName}
+            anno  = {"startTime":start,"endTime":end,"tags":[tag],"min":min,"max":max,"type":type,"variable":var,"id":res[0],"name":nodeName,"browsePath":annoPath}
             self.annotations[anno["id"]] = copy.deepcopy(anno)
             return anno
         else:
@@ -1295,6 +1294,24 @@ class TimeSeriesWidget():
             if len(splitted)>2 and splitted[-2]=="envelope":
                 self.logger.info("skip anno update due to envelope")
                 return
+            # modifies give the value
+            if "value" in arg["data"]:
+                #check if the annotation is in our known list
+                annotationBrowsePath = '.'.join(arg["data"]["sourcePath"].split('.')[:-1])
+
+                lookup = {v["browsePath"]:k for k,v in self.server.get_annotations().items()}
+                if annotationBrowsePath in lookup:
+                    #build the _eventInfo to avoid the fetch
+                    id = lookup[annotationBrowsePath]
+                    updatedAnno = copy.deepcopy(self.server.get_annotations()[id])
+                    changeKey = arg["data"]["sourcePath"].split('.')[-1]
+                    updatedAnno[changeKey]=arg["data"]["value"]
+                    if changeKey != "variable":
+                        updatedAnno["variable"] = [updatedAnno["variable"]] # events from the outside deliver the variable as list (the forward refs from the referencer, internally, we only keep a string
+                    eventInfo = {"new":{},"delete":{},"modify":{id:updatedAnno}}
+                    arg["data"]["_eventInfo"] = eventInfo
+
+
 
 
         lastAnnotations = self.server.get_annotations()
@@ -1361,7 +1378,7 @@ class TimeSeriesWidget():
                 # so check for modifications here
                 # it might not be part of the renderers: maybe thresholds are currently off
                 if annoId in self.renderers and not self._compare_anno(anno,self.renderers[annoId]["info"]):
-                    self.logger.debug(f"update_annotations() -- thresholds has changed {annoId} {self.renderers[annoId]['info']} => {anno}")
+                    self.logger.debug(f"update_annotations() -- thresholds/motif has changed {annoId} {self.renderers[annoId]['info']} => {anno}")
                     with self.renderersLock:
                         self.renderersGarbage.append(self.renderers[annoId]["renderer"])
                     del self.renderers[annoId]  # kick out the entry, the remaining invisible renderer will stay in bokeh as garbage

@@ -4,6 +4,7 @@ import json
 import copy
 import dates
 from model import getRandomId
+import threading
 
 __functioncontrolfolder = {
     "name":"control","type":"folder","children":[
@@ -142,6 +143,8 @@ alarmClock = {
     ]
 }
 
+
+
 counter = {
     "name":"counter",
     "type":"function",
@@ -178,12 +181,96 @@ saveModel = {
     "functionPointer":"system.save_model",              #filename.functionname
     "autoReload":False,                                 #set this to true to reload the module on each execution
     "children":[
-        {"name":"autoName","type":"const","value":False},   #if autoName is on, we will use a new name each time
-        {"name":"name","type":"variable","value":None},
+        {"name":"autoName","type":"const","value":False},   #if autoName is on, we will use a new name each time (modelname+_+randomid)
+        {"name":"name","type":"variable","value":None},     #this is not an input field! it is just the info under which name it was saved
         __functioncontrolfolder,
     ]
 }
 
+
+autoTimer = {
+    "name": "autoTimer",
+    "type": "object",
+    "class": "system.AutoTimerClass",
+    "children": [
+        {"name": "target", "type": "referencer"},                   # which function(s) to call
+        {"name": "isRunning", "type": "variable", "value": False},  # show if it is running or note
+        {"name": "periodSeconds", "type": "const", "value": 24 * 60 * 60},
+        {"name": "nextTimeout", "type": "const", "value": "2021-01-15T08:00+02:00"},  # first alarm in iso time, if this is in the past, the timer advances with the periods until it is in the future
+        {"name": "executionCounter", "type": "variable", "value": 0},
+        {"name": "autoStart", "type":"const","value":True},         #set this to true to autostart at system start
+        { "name": "start","type": "function", "functionPointer": "system.start_auto_timer", "autoReload":False, "children": [__functioncontrolfolder] },
+        { "name": "stop","type": "function", "functionPointer": "system.stop_auto_timer", "autoReload":False, "children": [__functioncontrolfolder] },
+        __functioncontrolfolder
+    ]
+}
+
+
+class AutoTimerClass():
+    def __init__(self, objectNode):
+        self.objectNode = objectNode
+        self.model = objectNode.get_model()
+        self.logger = objectNode.get_logger()
+        self.running = False
+
+
+    def find_first_timeout(self):
+        nextTimeOut = dates.date2secs(self.objectNode.get_child("nextTimeout").get_value())
+        now = dates.date2secs(dates.now_iso())
+        period = self.objectNode.get_child("periodSeconds").get_value()
+        while nextTimeOut < now:
+            nextTimeOut = nextTimeOut + period
+        self.objectNode.get_child("nextTimeout").set_value(dates.epochToIsoString(nextTimeOut))
+        status = self.objectNode.get_child("isRunning").set_value(False)
+
+    def reset(self, data):
+        self.find_first_timeout()
+        if self.objectNode.get_child("autoStart").get_value():
+            self.start()
+
+    def thread_func(self):
+        while self.running:
+            status = self.objectNode.get_child("isRunning").get_value()
+            if not status:
+                self.objectNode.get_child("isRunning").set_value(True)
+            timeout = dates.date2secs(self.objectNode.get_child("nextTimeout").get_value())
+            now = time.time()
+            if now > timeout:
+                # set the next timeout
+                period = self.objectNode.get_child("periodSeconds").get_value()
+                timeout = timeout + period
+                self.objectNode.get_child("nextTimeout").set_value(dates.epochToIsoString(timeout))
+
+                for node in self.objectNode.get_child("target").get_leaves():
+                    self.logger.debug(f"AutoTimerClass executes", node.get_name())
+                    node.execute()
+
+                counterNode = self.objectNode.get_child("executionCounter")
+                counterNode.set_value(counterNode.get_value() + 1)
+
+            time.sleep(5)  # only sleep short to be able to break the loop with the signal
+        self.objectNode.get_child("isRunning").set_value(False)
+
+    def stop(self):
+        self.running = False
+
+
+    def start(self):
+        self.find_first_timeout()
+        if not self.running:
+            self.running = True
+            self.timerThread = threading.Thread(target=self.thread_func)
+            self.timerThread.start()
+            return True
+        else:
+            return False
+
+def start_auto_timer(functionNode):
+    return functionNode.get_parent().get_object().start()
+
+def stop_auto_timer(functionNode):
+    functionNode.get_parent().get_object().stop()
+    return True
 
 
 
@@ -194,6 +281,7 @@ def counter_f(functionNode):
     except:
         val = 0
     counterNode.set_value(val+1)
+    return True
 
 
 
@@ -296,8 +384,7 @@ def save_model(functionNode):
         fileName = fileName+ "_" + getRandomId()
         functionNode.get_child("name").set_value(fileName)
     else:
-        if functionNode.get_child("name").get_value()==None:
-            functionNode.get_child("name").set_value(model.currentModelName)
+        functionNode.get_child("name").set_value(model.currentModelName)
 
     #now save it
     fileName =  functionNode.get_child("name").get_value()

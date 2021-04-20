@@ -1282,6 +1282,55 @@ class Model:
             self.__notify_observers(parentId,"children")
             return newNode["id"]
 
+
+
+
+    def create_annotation(self,nodesToCreate):
+        """
+            special helper function to fast create an annotation with a special UI eventinfo to get all modification at once
+            Args:
+                browsePath: browsePath of new annotatino node
+                annoInfo [dict] k:v keys are the children, v are the value, the nodes are created as const
+                            can also contain "targets" for referencers
+
+            Returns: the id of the created annotation
+
+        """
+        try:
+            with self.lock:
+                self.disable_observers()
+                annoId = None
+                for node in nodesToCreate:
+                    targets=[]
+                    if "targets" in node:
+                        targets = node["targets"]
+                        del node["targets"]
+                    id = self.create_node_from_path(node["browsePath"], node)
+                    if node["type"]=="annotation":
+                        annoId = id
+                    if targets:
+                        self.add_forward_refs(id,targets)
+                annotation = self.get_node(annoId)
+                infoDict = {
+                    "id": annotation.get_id(),
+                    "name": annotation.get_name(),
+                    "browsePath": annotation.get_browse_path()
+                }
+                for child in annotation.get_children():
+                    if child.get_type()=="referencer":
+                        infoDict[child.get_name()]=[target.get_browse_path() for target in child.get_targets()]
+                    else:
+                        infoDict[child.get_name()] = child.get_value()
+
+        except:
+            self.log_error()
+        self.enable_observers()
+        if annoId:
+            self.notify_observers(self.model[annoId]["parent"], "children", eventInfo={"new": {annoId:infoDict},"delete":{},"modify":{}})
+        return annoId
+
+
+
     def create_node_from_path(self,path,properties={"type":"variable"}):
         """
             create a node from a path given, all intermediate nodes of th path given that do not yet exist are also created as folder type
@@ -1914,7 +1963,10 @@ class Model:
                     name = self.model[childId]["name"]
                     type = self.model[childId]["type"]
                     if type== "referencer":
-                        big[name]=self.model[childId]["forwardRefs"][0]
+                        if len(self.model[childId]["forwardRefs"]):
+                            big[name]=self.get_browse_path(self.model[childId]["forwardRefs"][0])
+                        else:
+                            big[name] = None
                     else:
                         big[name] = self.model[childId]["value"]
                     result[id] = big
