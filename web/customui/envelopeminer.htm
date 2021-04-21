@@ -300,8 +300,10 @@ function on_update_complete()
         if (status == 200)
         {
             var data = JSON.parse(data);
-            envelopeMotif = data; //take the latest data 
+            envelopeMotif = data; //take the latest data
+            //update potential changes
             //envelope_update_step(envelopeMotif);
+            update_parameter_values(envelopeMotif);
         }
 
     });
@@ -481,6 +483,8 @@ function envelope_parameters_click()
 
             //adjust all parameters to the correct values
 
+            update_parameter_values(envelopeMotif);
+            /*
             $("#envelope-sampling-period").attr("min",envelopeMotif.envelope.samplingPeriod[".properties"].validation.limits[0]);
             $("#envelope-sampling-period").attr("max",envelopeMotif.envelope.samplingPeriod[".properties"].validation.limits[1]);
             $("#envelope-sampling-period").attr("step",(envelopeMotif.envelope.samplingPeriod[".properties"].validation.limits[1]-envelopeMotif.envelope.samplingPeriod[".properties"].validation.limits[0])/steps);
@@ -495,6 +499,7 @@ function envelope_parameters_click()
             $("#envelope-step").attr("max",envelopeMotif.envelope.step[".properties"].validation.limits[1]);
             $("#envelope-step").attr("step",(envelopeMotif.envelope.step[".properties"].validation.limits[1]-envelopeMotif.envelope.step[".properties"].validation.limits[0])/steps);
             $("#envelope-step").val(envelopeMotif.envelope.step[".properties"].value);
+            */
 
 
 
@@ -524,8 +529,32 @@ function envelope_parameters_click()
 }
 
 
-function update_parameter_values()
+function update_parameter_values(envelopeMotif)
 {
+    let steps = 1000;
+
+    $("#envelope-sampling-period").attr("min",envelopeMotif.envelope.samplingPeriod[".properties"].validation.limits[0]);
+    $("#envelope-sampling-period").attr("max",envelopeMotif.envelope.samplingPeriod[".properties"].validation.limits[1]);
+    $("#envelope-sampling-period").attr("step",(envelopeMotif.envelope.samplingPeriod[".properties"].validation.limits[1]-envelopeMotif.envelope.samplingPeriod[".properties"].validation.limits[0])/steps);
+    $("#envelope-sampling-period").val(envelopeMotif.envelope.samplingPeriod[".properties"].value); // must repeat this
+
+    $("#envelope-width").attr("min",envelopeMotif.envelope.freedom[".properties"].validation.limits[0]);
+    $("#envelope-width").attr("max",envelopeMotif.envelope.freedom[".properties"].validation.limits[1]);
+    $("#envelope-width").attr("step",(envelopeMotif.envelope.freedom[".properties"].validation.limits[1]-envelopeMotif.envelope.freedom[".properties"].validation.limits[0])/steps);
+    $("#envelope-width").val(envelopeMotif.envelope.freedom[".properties"].value);
+
+
+    $("#envelope-step").attr("min",envelopeMotif.envelope.step[".properties"].validation.limits[0]);
+    $("#envelope-step").attr("max",envelopeMotif.envelope.step[".properties"].validation.limits[1]);
+    $("#envelope-step").attr("step",(envelopeMotif.envelope.step[".properties"].validation.limits[1]-envelopeMotif.envelope.step[".properties"].validation.limits[0])/steps);
+    $("#envelope-step").val(envelopeMotif.envelope.step[".properties"].value);
+
+
+    write_range_slider_numerical_values(); // the numbers next to the sliders
+
+    console.log("step value", envelopeMotif.envelope.step[".properties"].value);
+
+
 }
 
 
@@ -658,6 +687,7 @@ function on_envelope_params_change_step()
 
     //write the values to the backend
     var query = [{"id":envelopeMotif.envelope.step[".properties"].id,"value":step}]
+
 
     http_post("setPropertiesQuiet",JSON.stringify(query),null,null,function(obj,status,data,params)
     {

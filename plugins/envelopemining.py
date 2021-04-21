@@ -45,7 +45,7 @@ envelopeMinerTemplate = {
                 {"name": "widget","type":"referencer"} ,        # the widget to which this miner belongs which is used (to find the selected motif
                 {"name": "annotations","type":"folder"},        # the results
                 {"name": "results","type":"variable"},          # list of results
-                {"name": "maxNumberOfMatches","type":"const","value":0},      # the maximum number of matches to avoid massive production of annotations
+                {"name": "maxNumberOfMatches","type":"const","value":100},      # the maximum number of matches to avoid massive production of annotations
                 {"name": "holeSize","type":"const","value":60},                 #the allowed size of a hole in the data to ignore it, larger holes will cause the windowing to skip the area
                 {"name": "createAnnotations","type":"const","value":False},     #set to true of creation of annos is required
                 mycontrol[0]
@@ -66,6 +66,7 @@ envelopeMinerTemplate = {
             "functionPointer": "envelopemining.update",  # filename.functionname
             "autoReload": True,  # set this to true to reload the module on each execution
             "children": [
+                {"name":"autoStepSize","type":"const","value":True},        #set this to true to autoset the step size of the motif
                 __functioncontrolfolder
             ]
         },
@@ -509,6 +510,7 @@ def _update_envelope(motif,widget):
 def update(functionNode,startTime=0):
     motif = functionNode.get_parent().get_child("EnvelopeMiner").get_child("motif").get_target()
     widget = functionNode.get_parent().get_child("EnvelopeMiner").get_child("widget").get_target()
+    logger = functionNode.get_logger()
     #fil = motif.get_child("envelopeFilter")
     #sample = motif.get_child("envelopeSamplingPeriod")
 
@@ -562,16 +564,25 @@ def update(functionNode,startTime=0):
         fillMax = numpy.min(upper)
         fillMin = numpy.max(lower)
 
-        right = numpy.append(upper[shift:],[fillMax]*shift)
-        left = numpy.append([fillMax]*shift,upper[:-shift])
-        upper = numpy.max([left,upper,right],axis=0)
+        totalShift = shift
+        logger.debug(f"envelope shift size is {shift}, freedom is {freedom} totallen is{len(times)} shiftsize/len ={float(shift)/float(len(times))}")
+        autoStepSize = float(shift)/float(len(times));
 
-        right = numpy.append(lower[shift:],[fillMin]*shift)
-        left = numpy.append([fillMin]*shift,lower[:-shift])
-        lower = numpy.min([left,lower,right],axis=0)
+        newupper = numpy.copy(upper)
+        newlower = numpy.copy(lower)
+        steps = set(list(numpy.linspace(1,totalShift,8,dtype=int)))
+        for shift in steps:
+            right = numpy.append(upper[shift:],[fillMax]*shift)
+            left = numpy.append([fillMax]*shift,upper[:-shift])
+            newupper = numpy.max([left,newupper,right],axis=0)
+
+            right = numpy.append(lower[shift:],[fillMin]*shift)
+            left = numpy.append([fillMin]*shift,lower[:-shift])
+            newlower = numpy.min([left,newlower,right],axis=0)
 
 
-
+    upper=newupper
+    lower = newlower
 
     #xxx todo dynamic freedom
 
@@ -598,6 +609,10 @@ def update(functionNode,startTime=0):
     finally:
         model.enable_observers()
         #model.notify_observers(motif.get_id(), "children")
+        autoStepNode = functionNode.get_child("autoStepSize")
+        if not autoStepNode or autoStepNode.get_value()==True:
+            logger.debug(f"autostep size enabled, set value {autoStepSize}")
+            motif.get_child("envelope.step").set_value(autoStepSize)
         model.notify_observers(lMax.get_id(), "value")
 
     return True
