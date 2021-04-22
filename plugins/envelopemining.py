@@ -508,6 +508,10 @@ def _update_envelope(motif,widget):
 
 
 def update(functionNode,startTime=0):
+
+    if functionNode.get_name()!="update":
+        functionNode = functionNode.get_parent().get_child("update")
+
     motif = functionNode.get_parent().get_child("EnvelopeMiner").get_child("motif").get_target()
     widget = functionNode.get_parent().get_child("EnvelopeMiner").get_child("widget").get_target()
     logger = functionNode.get_logger()
@@ -566,7 +570,7 @@ def update(functionNode,startTime=0):
 
         totalShift = shift
         logger.debug(f"envelope shift size is {shift}, freedom is {freedom} totallen is{len(times)} shiftsize/len ={float(shift)/float(len(times))}")
-        autoStepSize = float(shift)/float(len(times));
+        autoStepSize = float(shift)/float(len(times))/2; #then our step size is half the width to make sure we get the original motif
 
         newupper = numpy.copy(upper)
         newlower = numpy.copy(lower)
