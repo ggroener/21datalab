@@ -735,15 +735,59 @@ function context_menu_set_visible_elements(modelPath,data)
 function context_menu_click_delete(option)
 {
     console.log("context_menu_click_delete "+option.label+" data" + option.data);
-    $('#doublecheck').modal("show");
-    $('#doublechecktext1').text("Deleting Annotation");
-    $('#doublechecktext2').text(option.data);
-    var saveButton=$("#doublecheckButtonSave");
-    saveButton.click(function(){
-        http_post("/_delete",JSON.stringify(option.data),null,null,null);
+
+    http_post( "/_getbranchpretty", JSON.stringify(option.data[0]), null,null, function(obj,status,data,params)
+    {
+        var annoText ="";
+        var tagText = "";
+        var title = ""
+        if (status == 200)
+        {
+            let info=JSON.parse(data);
+            console.log("data");
+            if (info.type[".properties"].value == "time")
+            {
+                title = "Deleting Annotation";
+                annoText = "Deleting Annotation '" + info.tags[".properties"].value + "' ?" +"<br><br>(" + info[".properties"].browsePath + ")";
+            }
+            if (info.type[".properties"].value == "threshold")
+            {
+                title = "Deleting Threshold";
+                annoText = "Deleting Threshold of '" + info.variable[".properties"].leavesProperties[Object.keys( info.variable[".properties"].leavesProperties)[0]].name +"' ?" +"<br><br> (" + info[".properties"].browsePath + ")";
+
+            }
+            if (info.type[".properties"].value == "motif")
+            {
+                title = "Deleting Motif";
+                annoText = "Deleting Motif of '"+ info.variable[".properties"].leavesProperties[Object.keys( info.variable[".properties"].leavesProperties)[0]].name +"' ?" +"<br><br> (" + info[".properties"].browsePath + ")";
+            }
+
+
+            confirm_dialog(title,annoText,"Delete",on_context_delete_confirm,option.data);
+            superCm.destroyMenu(); // hide it
+
+            /*$('#doublecheck').modal("show");
+            $('#doublechecktext1').text(annoText);
+            $('#doublechecktext2').text(option.data);
+            var saveButton=$("#doublecheckButtonSave");
+            saveButton.click(function(){
+                http_post("/_delete",JSON.stringify(option.data),null,null,null);
+            });
+            superCm.destroyMenu(); // hide it
+            */
+
+
+        }
     });
-    superCm.destroyMenu(); // hide it
+
 }
+function on_context_delete_confirm(data)
+{
+    http_post("/_delete",JSON.stringify(data),null,null,null);
+}
+
+
+
 
 function context_menu_click_test(option, contextMenuIndex, optionIndex)
 {
@@ -1290,6 +1334,7 @@ function prepare_context_menu(dataString,modelPath)
         label:"delete",
         disabled : disableDirectModification,
         data: data.hasAnnotation.selectedAnnotations[".properties"].leaves,
+        extendeddata:data.hasAnnotation.selectedAnnotations[".properties"],
         action : function(option, contextMenuIndex, optionIndex){context_menu_click_delete(option);}
     },
     {
