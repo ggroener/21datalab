@@ -1716,6 +1716,19 @@ function prepare_context_menu(dataString,modelPath)
         });
 
 
+    //jump to date
+    menu.push({
+        disabled:false,
+        icon: 'far fa-calendar-alt',
+        label: "jump to date..",
+        modelPath:modelPath,
+        action: function(option, contextMenuIndex, optionIndex){
+                        var opt = option;
+                        var idx = contextMenuIndex;
+                        var optIdx = optionIndex;
+                        context_menu_jump_date(opt,idx,optIdx);
+    }
+    });
 
 
     //the "new" area
@@ -2248,6 +2261,77 @@ function set_all_icon_of_submenu_dynamic(cmindex)
     superCm.setMenuOptions(cmindex,options);
 
 }
+
+function context_menu_jump_date(opt,idx,optIdx)
+{
+    //get current start and end
+
+    http_post("_get",JSON.stringify([opt.modelPath+".startTime",opt.modelPath+".endTime"]),opt.modelPath,null,function(isLast,status,data,params)   {
+        if (status==200)
+        {
+            console.log("jump date");
+
+
+            console.log(params);
+            var res = JSON.parse(data);
+
+            var startMoment = moment(res[0].value)  ;
+            var startEpoch = Date.parse(res[0].value);
+            var endEpoch = Date.parse(res[1].value);
+            var halfLenEpoch = (endEpoch-startEpoch)/2;
+
+            $("#jump-to-date").attr("startTime",res[0].value);
+            $("#jump-to-date").attr("endTime",res[1].value);
+            $("#jump-to-date").attr("modelPath",params);
+
+            //now calc the middle with the help of the start and end
+            var timezone = startMoment.utcOffset();
+            var middleEpoch = startEpoch+halfLenEpoch;
+            var middleIso = moment(middleEpoch).utcOffset(timezone).format();
+            console.log("middle "+middleIso)
+            $("#jump-to-date").val(middleIso);
+
+            $("#contextjumpdate").modal('show');
+            console.log(res);
+        }
+    });
+}
+function jump_to_date_confirm()
+{
+
+    var startTime = $("#jump-to-date").attr("startTime");
+    var endTime = $("#jump-to-date").attr("endTime");
+    var newMiddle = $("#jump-to-date").val();
+
+    // we calc the new start and end via the original interval
+    var timezone = moment(newMiddle).utcOffset();
+
+    var halfLenEpoch = (Date.parse(endTime)-Date.parse(startTime))/2;
+
+    var newStartEpoch = Date.parse(newMiddle)-halfLenEpoch;
+    var newEndEpoch = Date.parse(newMiddle)+halfLenEpoch;
+
+    var newStart = moment(newStartEpoch).utcOffset(timezone);
+    var newEnd = moment(newEndEpoch).utcOffset(timezone);
+
+    console.log("jump confirm",startTime,endTime);
+
+    var modelPath = $("#jump-to-date").attr("modelPath");
+    if (newStart.isValid() &&newEnd.isValid())
+    {
+        var query = [{"browsePath":modelPath+".startTime","value":newStart.format()},
+                     {"browsePath":modelPath+".endTime","value":newEnd.format()}];
+        http_post("/setProperties",JSON.stringify(query),null,null,null);
+    }
+    else
+    {
+        console.error("invalid date format");
+    }
+
+
+}
+
+
 
 
 
