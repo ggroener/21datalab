@@ -1306,7 +1306,7 @@ class TimeSeriesWidget():
                     updatedAnno = copy.deepcopy(self.server.get_annotations()[id])
                     changeKey = arg["data"]["sourcePath"].split('.')[-1]
                     updatedAnno[changeKey]=arg["data"]["value"]
-                    if changeKey != "variable":
+                    if changeKey != "variable" and "variable" in updatedAnno:
                         updatedAnno["variable"] = [updatedAnno["variable"]] # events from the outside deliver the variable as list (the forward refs from the referencer, internally, we only keep a string
                     eventInfo = {"new":{},"delete":{},"modify":{id:updatedAnno}}
                     arg["data"]["_eventInfo"] = eventInfo
@@ -4056,19 +4056,22 @@ class TimeSeriesWidget():
     def show_scores(self):
         self.logger.debug("show_scores()")
         #adjust the current selected variables that they also contain the scores if they have any
+        # scores are variables that are listed under "score variables" and have a node name like
+        # name_*score
+        # if the "name" node is the corresponding node, found via the name of the node
+        # the score node must have a "score" string in the end of its name
 
         self.showScores=True
 
         additionalScores = [] # the list of score variables that should be displayed
         currentVariables = self.server.get_variables_selected()
+        currentVarNames = [path.split('.')[-1] for path in currentVariables]
         #now check if we need to add some scores
         for scoreVarName in self.server.get_score_variables():
-            for var in currentVariables:
-                scoreNameEnding = var.split('.')[-1]+"_score"
-                if scoreNameEnding in scoreVarName:
-                    #this score should be displayed
-                    if scoreVarName not in currentVariables:
-                        additionalScores.append(scoreVarName)
+            scoreNodeName = scoreVarName.split('.')[-1]
+            if scoreNodeName.split('_')[0] in currentVarNames:
+                if "SCORE" in scoreNodeName.split('_')[-1].upper():
+                    additionalScores.append(scoreVarName)
 
         #now we have in additionalScores the missing variables to add
         #write it to the backend and wait for the event to plot them
