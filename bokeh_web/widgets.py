@@ -1049,7 +1049,7 @@ class TimeSeriesWidget():
             if (visibleTagsOld != visibleTagsNew) and self.showAnnotations:
                 self.__dispatch_function(self.show_annotations)
 
-            if (visibleEventsOld != visibleEventsNew):
+            if (visibleEventsOld != visibleEventsNew) and self.eventsVisible:
                 self.__dispatch_function(self.show_all_events)
             #startime/endtime has changed
 

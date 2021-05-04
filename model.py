@@ -1950,7 +1950,7 @@ class Model:
 
             result = {}
             #now collect all info
-            values = ["startTime","endTime","hasAnnotation.visibleTags","visibleElements","autoScaleY","panOnlyX","streamingMode","hasEvents.visibleEvents"]
+            values = ["currentColors","startTime","endTime","hasAnnotation.visibleTags","visibleElements","autoScaleY","panOnlyX","streamingMode","hasEvents.visibleEvents"]
             refs = ["selectedVariables"]
 
             for v in values:
@@ -1960,6 +1960,13 @@ class Model:
                 referencerId = widget.get_child(r).get_id()
                 self.model[referencerId]["forwardRefs"]
                 result[r]={"references":self.model[referencerId]["forwardRefs"]}
+
+            #special handling for showhide dynamic menu
+            showHide = widget.get_child("showHide")
+            if showHide:
+                for child in showHide.get_children():
+                    result["showHide."+child.get_name()]={"value":child.get_value()}
+
         return result
 
     def set_widget_view(self,desc,viewInfo):
@@ -1983,15 +1990,20 @@ class Model:
             self.disable_observers()
             try:
                 for k,v in viewInfo["nodes"].items():
-                    if "value" in v:
-                        child = widget.get_child(k)
-                        child.set_value(v["value"])
-                        valueNotifyIds.append(child.get_id())
-                    if "references" in v:
-                        child = widget.get_child(k)
-                        self.remove_forward_refs(child.get_id())
-                        self.add_forward_refs(child.get_id(),v["references"])
-                        refNotifyIds.append(child.get_id())
+                    if k.startswith("showHide"):
+                        target = widget.get_child(k)
+                        if target:
+                            target.set_value(v["value"])
+                    else:
+                        if "value" in v:
+                            child = widget.get_child(k)
+                            child.set_value(v["value"])
+                            valueNotifyIds.append(child.get_id())
+                        if "references" in v:
+                            child = widget.get_child(k)
+                            self.remove_forward_refs(child.get_id())
+                            self.add_forward_refs(child.get_id(),v["references"])
+                            refNotifyIds.append(child.get_id())
             except:
                 pass
             self.enable_observers()
