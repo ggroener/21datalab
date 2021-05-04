@@ -1937,6 +1937,73 @@ class Model:
                 return targets
 
 
+    def get_widget_view(self,desc,version):
+        """ get a set of nodes and info thereof to save a view """
+
+        with self.lock:
+            id = self.__get_id(desc)
+            if not id: return {}
+
+            widget = self.get_node(id)
+            if widget.get_type()!="widget" or version!=1:
+                return {}
+
+            result = {}
+            #now collect all info
+            values = ["startTime","endTime","hasAnnotation.visibleTags","visibleElements","autoScaleY","panOnlyX","streamingMode","hasEvents.visibleEvents"]
+            refs = ["selectedVariables"]
+
+            for v in values:
+                result[v]={"value":widget.get_child(v).get_value()}
+
+            for r in refs:
+                referencerId = widget.get_child(r).get_id()
+                self.model[referencerId]["forwardRefs"]
+                result[r]={"references":self.model[referencerId]["forwardRefs"]}
+        return result
+
+    def set_widget_view(self,desc,viewInfo):
+        """
+            write a set of info to a widget for restoring a view
+        """
+        if viewInfo["version"]!= 1:
+            return False
+
+        valueNotifyIds=[]
+        refNotifyIds=[]
+
+        with self.lock:
+            id = self.__get_id(desc)
+            if not id: return False
+
+            widget = self.get_node(id)
+            if widget.get_type()!="widget":
+                return False
+
+            self.disable_observers()
+            try:
+                for k,v in viewInfo["nodes"].items():
+                    if "value" in v:
+                        child = widget.get_child(k)
+                        child.set_value(v["value"])
+                        valueNotifyIds.append(child.get_id())
+                    if "references" in v:
+                        child = widget.get_child(k)
+                        self.remove_forward_refs(child.get_id())
+                        self.add_forward_refs(child.get_id(),v["references"])
+                        refNotifyIds.append(child.get_id())
+            except:
+                pass
+            self.enable_observers()
+            self.notify_observers(valueNotifyIds,["value"])
+            self.notify_observers(refNotifyIds,["forwardRefs"])
+
+
+        return True
+
+
+
+
     def get_annotations_fast(self,desc):
         """
             this is a helper function for the ui for the fast retrieval of annotations

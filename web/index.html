@@ -369,12 +369,10 @@
         </div>
     </div>
     <div id="contextmenu">
-
+        <!-- will be filled dynamically -->
     </div>
+
     <div id="contextmenujumpdate">
-
-
-
         <div id ="contextjumpdate" class="modal fade" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -398,61 +396,27 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </div>
+
+     <div id="contextmenuview">
+        <div id ="contextviews" class="modal fade" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="doublechecktitle">Save/Restore Widget Views</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                         <div id="viewscontainer"> no entries </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 
@@ -506,6 +470,42 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" id="enter-value-dialog" tabindex="-2" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:1000000">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h4 class="modal-title" id="enter-value-modal-title">Set Value</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+
+                </div>
+
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-4" id ="enter-value-modal-div" style="word-break:break-all"></div>
+                        <div class="col-8" id ="enter-value-model-div2">
+                            <input class="form-control" type="text" id="enter-value-modal-input"  style="text-align:left;" >
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" id="enter-value-modal-ok" data-dismiss="modal" >Accept</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
 
     <div id="cockpitplaceholder">
     <!-- insert cockpit test code here -->

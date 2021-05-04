@@ -1731,6 +1731,21 @@ function prepare_context_menu(dataString,modelPath)
     });
 
 
+    //jump to date
+    menu.push({
+        disabled:false,
+        icon: 'fas fa-chart-line',
+        label: "views..",
+        modelPath:modelPath,
+        action: function(option, contextMenuIndex, optionIndex){
+                        var opt = option;
+                        var idx = contextMenuIndex;
+                        var optIdx = optionIndex;
+                        context_menu_views(opt,idx,optIdx);
+    }
+    });
+
+
     //the "new" area
 
     // new annotation submenu
@@ -2159,6 +2174,8 @@ function deleteAlarm()
     $("#confirm-delete").modal('show');
 }
 
+
+
 function deleteAllAlarms()
 {
     var ids = this.deleteIds;
@@ -2209,6 +2226,24 @@ function confirm_dialog(title,text,buttonText,confirmCallback,parameter)
     $("#confirm-modal-ok").unbind();
     $("#confirm-modal-ok").click( function() {callback(parameter);});
     $("#confirm-delete").modal('show');
+}
+
+function set_value_dialog(title,text,buttonText,confirmCallback,parameter,value)
+{
+    var callback = confirmCallback;
+    $("#enter-value-modal-title").empty();
+    $("#enter-value-modal-title").append(title);
+    $("#enter-value-modal-div").empty();
+    $("#enter-value-modal-div").append(text);
+    $("#enter-value-modal-ok").empty();
+    $("#enter-value-modal-ok").append(buttonText);
+    $("#enter-value-modal-ok").unbind();
+    $("#enter-value-modal-input").val(value);
+    $("#enter-value-modal-ok").click( function() {
+        var newValue = $("#enter-value-modal-input").val();
+        callback(parameter,newValue);
+    });
+    $("#enter-value-dialog").modal('show');
 }
 
 
@@ -2331,6 +2366,188 @@ function jump_to_date_confirm()
 
 }
 
+
+
+function context_menu_views(opt,idx,optIdx)
+
+{
+    refresh_views_table();
+    if (opt) $("#contextviews").attr("widgetPath",opt.modelPath);
+    $("#contextviews").modal('show').draggable();
+
+}
+
+function refresh_views_table()
+{
+    console.log("refresh_views_table");
+
+    http_post("_get",JSON.stringify(["root.system.views"]), null,null, function(obj,status,data,params)
+    {
+        var table = $('#viewscontainer');
+        if (status == 200)
+        {
+            /*create the table*/
+            var msgs = JSON.parse(data);
+
+            if ((msgs[0]==null) || (msgs[0].children.length == 0))
+            {
+                table.empty();
+            }
+            else
+            {
+                //we have at least one entry
+                table.empty();
+                for (var i in msgs[0].children)
+                {
+                    var entry = msgs[0].children[i];
+
+                    //make a row
+                    var row = document.createElement("div");
+                    row.className = "row mb-4";
+
+                    var timeDiv = document.createElement("div");
+                    timeDiv.className = "col-6";
+                    if ((entry.value!=null) && ("time" in entry.value))
+                    {
+                        timeDiv.innerHTML = entry.value.time;
+                    }
+                    else
+                    {
+                        timeDiv.innerHTML = " -unknown time-";
+                    }
+
+
+                    var msgDiv = document.createElement("div");
+                    msgDiv.className = "col-3";
+                    msgDiv.innerHTML = entry.name;
+
+                    let buttonDiv = document.createElement("div");
+                    buttonDiv.className = "col-3";
+
+                    var btn =  document.createElement("BUTTON");   // Create a <button> element
+                    btn.className = "btn btn-secondary";
+                    btn.id = "loadView-"+entry.name;
+                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    btn.onclick = select_view;
+                    buttonDiv.append(btn);
+
+                    var delbtn =  document.createElement("BUTTON");   // Create a <button> element
+                    delbtn.className = "btn btn-secondary";
+                    delbtn.id = "deleteView-"+entry.name;
+                    delbtn.innerHTML = '<i class="far fa-trash-alt"></i>';
+                    delbtn.onclick = delete_view;
+                    buttonDiv.append(delbtn);
+
+                    row.append(msgDiv,timeDiv,buttonDiv);
+                    //row.appendChild(msgDiv);
+                    table.append(row);
+                }
+
+
+
+            }
+        }
+        else
+        {
+
+            table.empty();
+        }
+
+
+        // at the very end add the new entry button
+        var addViewDiv = document.createElement("div");
+        addViewDiv.className = "col-3";
+
+        var addViewBtn = document.createElement("BUTTON");   // Create a <button> element
+        addViewBtn.className = "btn btn-secondary";
+        addViewBtn.id = "addView";
+        addViewBtn.innerHTML = '<i class="fas fa-plus"></i>';
+        addViewBtn.onclick = add_view;
+        addViewDiv.append(addViewBtn);
+        table.append(addViewDiv);
+    });
+}
+
+
+
+function select_view()
+{
+    var id=this.id;
+    var idStr = id.substr(9);//remove the "loadview-" part
+    console.log("the node id is ",idStr);
+    //get the info
+    http_post("_get",JSON.stringify(["root.system.views."+idStr]),null,null,function(obj,status,data,params)   {
+        if (status==200)
+        {
+            var res = JSON.parse(data);
+            var widgetPath = $("#contextviews").attr("widgetPath");
+            var query = {"node":widgetPath,"data":res[0].value}
+            http_post("_setWidgetView",JSON.stringify(query),null,null,function(obj,status,data,params)   {
+                console.log(status);
+            });
+
+        }
+     });
+
+}
+
+function delete_view()
+{
+    var id=this.id;
+    var idStr = id.substr(11);//remove the "deleteAlarm-" part
+    console.log("the node id is ",idStr);
+    confirm_dialog("Delete View","Delete the view '"+idStr+"'","Delete",delete_view_confirm,idStr);
+}
+
+
+function delete_view_confirm(nodeName)
+{
+    http_post("_delete",JSON.stringify(["root.system.views."+nodeName]), null,null, function(obj,status,data,params)
+    {
+        context_menu_views();
+    });
+}
+
+
+function add_view()
+{
+   const randomId = Math.floor(Math.random()*16777215).toString(16);
+   var name = "newView_"+randomId;
+   set_value_dialog("Create new View","Name ","Create",new_view,null,name);
+}
+
+
+function new_view(parameter,name)
+{
+    var widgetPath = $("#contextviews").attr("widgetPath");
+    console.log("new_view",parameter,name,"from widget",widgetPath);
+    //create a new view, collect all values
+    //var viewData = {"time":moment().format(),"nodes":[]};
+
+    http_post("/_getWidgetView",JSON.stringify({"node":widgetPath,"version":1}),null,null,function(obj,status,data,params)
+    {
+        if (status==200)
+        {
+            var info = JSON.parse(data);
+            var query = {
+                "browsePath":"root.system.views."+name,
+                "type":"const",
+                "value":{
+                    "time":moment().format(),
+                    "nodes":info,
+                    "version":1
+                }
+            };
+
+            http_post("/_create",JSON.stringify([query]),null,null,function(obj,status,data,params)
+            {
+                 context_menu_views();
+            });
+        }
+
+
+    });
+}
 
 
 

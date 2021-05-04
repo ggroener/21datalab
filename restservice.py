@@ -105,6 +105,8 @@ POST /_upload       <jquery file upload>                                 # uploa
 POST /_clone        <clone.json>                -                        # clone a node and its subnodes
 POST /_insertEvents  <eventinsert.json>           -                       # insert event series data
 POST /_getEvents    <eventquery.json>           <eventresponse.json>     # get event series data
+POST /_getWidgetView  <viewquery.json>                                    # get a list of nodes from a widget to save a view
+POST /_setWidgetView  <viewquery.json>                                    # get a list of nodes from a widget to save a view
 
 data:
 JSONS ------------------------
@@ -315,6 +317,13 @@ functioncall.json
     parameter: parameter of the function /typically a dict
 }
 
+viewquery.json
+{
+    node:descriptor
+    version:1         //several styles of getting a view, only for get
+    data:[]           // nodes data, only for set
+}
+
 '''
 
 # Special handler for Server Sent Events
@@ -472,6 +481,20 @@ def all(path):
                 responseCode = 201
             else:
                 responseCode = 400
+
+        elif (str(path) == "_getWidgetView") and str(flask.request.method) in ["POST", "GET"]:
+            logger.debug("execute get widget view")
+            response = json.dumps(m.get_widget_view(data["node"],data["version"]))
+            responseCode = 200
+
+        elif (str(path) == "_setWidgetView") and str(flask.request.method) in ["POST", "GET"]:
+            logger.debug("execute set widget view")
+            response=""
+            if m.set_widget_view(data["node"],data["data"]):
+                responseCode = 200
+            else:
+                responseCode = 400
+
 
         elif(str(path) == "_getleaves") and str(flask.request.method) in ["POST", "GET"]:
             logger.debug("execute get forward")

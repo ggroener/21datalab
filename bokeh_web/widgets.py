@@ -3819,7 +3819,7 @@ class TimeSeriesWidget():
                 deleteNames.append(name + "_limitMax")
                 deleteNames.append(name + "_limitMin")
                 deleteNames.append(name + "_anomalyScore")
-            return deleteNames
+        return deleteNames
 
     def find_extra_renderers_of_lines(self,lines,markers=True,scores=True,expected=True,bands=True):
         if type(lines) is not list:
