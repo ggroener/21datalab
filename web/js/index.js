@@ -2421,24 +2421,36 @@ function refresh_views_table()
                     msgDiv.className = "col-3";
                     msgDiv.innerHTML = entry.name;
 
-                    let buttonDiv = document.createElement("div");
-                    buttonDiv.className = "col-3";
+
+                    let buttonDiv1 = document.createElement("div");
+                    buttonDiv1.className = "col-3";
+                    let buttonDiv = document.createElement("div")
+                    buttonDiv.className = "btn-group";
+
+
 
                     var btn =  document.createElement("BUTTON");   // Create a <button> element
                     btn.className = "btn btn-secondary";
                     btn.id = "loadView-"+entry.name;
-                    btn.innerHTML = '<i class="fas fa-check"></i>';
+                    btn.innerHTML = '<i class="fas fa-check"></i>&nbsp apply';
                     btn.onclick = select_view;
                     buttonDiv.append(btn);
+
+
 
                     var delbtn =  document.createElement("BUTTON");   // Create a <button> element
                     delbtn.className = "btn btn-secondary";
                     delbtn.id = "deleteView-"+entry.name;
                     delbtn.innerHTML = '<i class="far fa-trash-alt"></i>';
                     delbtn.onclick = delete_view;
+                    let span = document.createElement("span");
+                    span.innerHTML = "&nbsp;"
+                    buttonDiv.append(span);
                     buttonDiv.append(delbtn);
 
-                    row.append(msgDiv,timeDiv,buttonDiv);
+                    buttonDiv1.append(buttonDiv);
+
+                    row.append(msgDiv,timeDiv,buttonDiv1);
                     //row.appendChild(msgDiv);
                     table.append(row);
                 }
