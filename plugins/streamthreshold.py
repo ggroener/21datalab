@@ -550,8 +550,8 @@ class StreamAlarming(streaming.Interface):
                 name = self.model.get_node_info(id)["name"]
                 if name.endswith("total_score"):
                     continue
-                if name.endswith("_score"):
-                    #this is  a score variable
+                if "SCORE" in name.split("_")[-1].upper():
+                    #this is  a score variable, it is named like "var_someScore" or "var_score" and alike
                     if numpy.any(numpy.isfinite(values)):
                         #the values have an outlier in at least one place in this time frame
                         #do we have to generate a message
