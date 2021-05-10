@@ -250,6 +250,9 @@ def envelope_miner(functionNode):
         stepSize = 1 # choose one point for 0% settings
     else:
         stepSize = int ( float(samplePointsPerWindow)  * float(stepSizePercent))
+
+    if stepSize<1:
+        stepSize = 1 # at least one point advances per step
     samplePointsPerWindow = motif.get_child("envelope.numberSamples").get_value()
     windowMaker = streaming.Windowing(samplePeriod = samplePeriod, stepSize = stepSize,maxHoleSize=holeSize,samplePointsPerWindow=samplePointsPerWindow)
     numberOfWindows = (ts["__time"][-1] -ts["__time"][0]) /samplePeriod/stepSize #approx
