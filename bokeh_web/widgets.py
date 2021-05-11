@@ -2284,7 +2284,7 @@ class TimeSeriesWidget():
             function: functionpointer to be executed
         """
         with self.dispatchLock:
-            self.logger.debug(f"__dispatch_function {function.__name__}, arg: {arg}")
+            self.logger.debug(f"__dispatch_function {function.__name__}")#, arg: {arg}")
             self.dispatchList.append({"function":function,"arg":arg})
 
 
@@ -2681,7 +2681,7 @@ class TimeSeriesWidget():
             for entry in executelist: # avoid double execution
                 fkt = entry["function"]
                 arg = entry["arg"]
-                self.logger.info(f"now executing dispatched fkt {fkt.__name__} arg {arg}")
+                self.logger.info(f"now executing dispatched fkt {fkt.__name__}")# arg {arg}")
                 if arg:
                     fkt(arg) # execute the functions which wait for execution and must be executed from this context
                 else:
