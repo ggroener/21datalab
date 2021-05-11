@@ -56,7 +56,7 @@ globalBackgroundsAlpha = 0.2
 globalBackgroundsHighlightAlpha = 0.6
 
 globalRESTTimeout = 90
-
+BOX_ANNO = False # set this false to use the Rect for annos, true=use Boxannotations
 
 
 def setup_logging(loglevel=logging.DEBUG,tag = ""):
@@ -918,7 +918,7 @@ class TimeSeriesWidget():
            dispatch functions to be executed in the callback from the bokeh loop
 
         """
-        self.logger.debug(f"observer_cb {data}")
+        self.logger.debug(f"observer_cb {data['event']}")
         if data["event"] == "timeSeriesWidget.variables" or data["event"] == "global.timeSeries.value":
             #refresh the lines
             if data["event"] == "timeSeriesWidget.variables":
@@ -1317,10 +1317,14 @@ class TimeSeriesWidget():
         lastAnnotations = self.server.get_annotations()
         if "data" in arg and "_eventInfo" in arg["data"]:
             newAnnotations = self.server.fetch_annotations_differential(arg["data"]["_eventInfo"])
+            differential = True
         else:
             newAnnotations = self.server.fetch_annotations()
+            differential = False
+
 
         #check for deletes
+        # the delete check is fast enough so no need to improve with differential
         deleteList = [] # a list of ids
         for annoId,anno in lastAnnotations.items():
             if annoId not in newAnnotations:
@@ -1341,8 +1345,16 @@ class TimeSeriesWidget():
         #now the new ones
         createdTimeAnnos = []
 
-        for annoId,anno in newAnnotations.items():
+        if not differential:
+            annosToIterate = newAnnotations
+        else:
+            #take on the the nodes from the incoming
+            annosToIterate = arg["data"]["_eventInfo"]["new"]
+            annosToIterate.update(arg["data"]["_eventInfo"]["modify"])
 
+        self.logger.debug(f"annosToIterate {annosToIterate}")
+
+        for annoId,anno in annosToIterate.items():
             if anno["type"] == "time":
                 if annoId not in self.renderers:# and self.showAnnotations:
                     self.logger.debug(f"new annotations {annoId}")
@@ -1354,10 +1366,11 @@ class TimeSeriesWidget():
                     if not self._compare_anno(anno,self.renderers[annoId]["info"] ):
                         self.logger.debug(f"update_annotations() -- annotation has changed {annoId} {self.renderers[annoId]['info']} => {anno}")
 
-                        isVisible = self.renderers[annoId]["renderer"] in self.plot.renderers # remember if the annotation was currently visible
-                        with self.renderersLock:
-                            self.renderersGarbage.append(self.renderers[annoId]["renderer"])
-                        del self.renderers[annoId]# kick out the entry,
+                        if BOX_ANNO:
+                            isVisible = self.renderers[annoId]["renderer"] in self.plot.renderers # remember if the annotation was currently visible
+                            with self.renderersLock:
+                                self.renderersGarbage.append(self.renderers[annoId]["renderer"])
+                            del self.renderers[annoId]# kick out the entry,
                         # if the currently selected is being changed, we hide the box modifier
                         if self.boxModifierVisible:
                             if self.boxModifierAnnotationName == annoId:
@@ -1368,11 +1381,14 @@ class TimeSeriesWidget():
                         # depending on selected tags etc. this covers especially the exception case where a user
                         # draws a new annotation, which is a currently NOT activated tag, then modifies that new annotation:
                         # it should stay visible!
-                        if isVisible:
-                            self.draw_annotation(anno, visible=True)        #show right away because it was visible before
+                        if BOX_ANNO:
+                            if isVisible:
+                                self.draw_annotation(anno, visible=True)        #show right away because it was visible before
+                            else:
+                                self.draw_annotation(anno, visible=False)       # show later if allowed depending on tags etc.
+                                createdTimeAnnos.append(annoId)                 #show later if allowed
                         else:
-                            self.draw_annotation(anno, visible=False)       # show later if allowed depending on tags etc.
-                            createdTimeAnnos.append(annoId)                 #show later if allowed
+                            self.update_annotation_data(anno,annoId)
             if anno["type"] in ["threshold","motif"]:
                 # for thresholds/motifs we do not support delete/create per backend, only modify
                 # so check for modifications here
@@ -1408,6 +1424,22 @@ class TimeSeriesWidget():
 
         self.remove_renderers() # execute at least the deletes
 
+
+    def update_annotation_data(self,anno,annoId):
+
+        start = anno["startTime"]
+        end = anno["endTime"]
+
+        infinity = 1000000
+        # we must use varea, as this is the only one glyph that supports hatches and does not create a blue box when zooming out
+        # self.logger.debug(f"have pattern with hatch {pattern}, tag {tag}, color{color} ")
+
+        self.logger.debug(f'from  {self.renderers[anno["id"]]["source"].data["w"]} => {end-start}')
+        #self.renderers[anno["id"]]["source"].data["w"][0]= self.renderers[anno["id"]]["source"].data["w"][0]*0.5
+
+        #source = ColumnDataSource({"l": [start], "w": [end - start], "y": [-infinity], "height": [3 * infinity]})
+        self.renderers[anno["id"]]["source"].data = {"l": [start+(end-start)/2],"w": [end-start],"y": [-infinity],"height": [3 * infinity]}
+        self.renderers[anno["id"]]["source"].data = self.renderers[anno["id"]]["source"].data
 
 
 
@@ -1795,66 +1827,36 @@ class TimeSeriesWidget():
 
     def debug_button_2_cb(self):
 
-        if 0:
-            source = copy.deepcopy(self.debugsource.data)
-
-            infi = 1000000
-            self.logger.debug("debug button cb")
-            basic = date2secs("20150214T12:00:00+02:00")
-            times=[]
-            ys = []
-            for n in range(500):
-                tim = basic+n
-                times.extend([tim,tim,numpy.nan])
-                ys.extend([-infi,infi,numpy.nan])
-            times=numpy.asarray(times)*1000
-            dic = {"x":times,"y":ys}
-            self.debugsource.data = dic # update
-
-
-        if 1:
-            self.evs.visible=False
-
+        self.mysource.data["w"][0]=self.mysource.data["w"][0]*0.5
+        self.mysource.data= self.mysource.data
 
 
     def debug_button_cb(self):
 
-        if 1:
-            infi = 1000000
-            self.logger.debug("debug button cb")
-            basic = date2secs("20150214T00:00:00+02:00")
-            times=[]
-            ys = []
-            for n in range(10000):
-                tim = basic+n
-                times.extend([tim,tim,numpy.nan])
-                ys.extend([-infi,infi,numpy.nan])
-            times=numpy.asarray(times)*1000
-            self.debugsource = ColumnDataSource({"x": times,"y":ys})
-            self.logger.debug(f"epoches {times}")
-
-            infinity = 1000000000
-
-            self.evs = self.plot.line(x="x",y="y", source=self.debugsource,color="red") # works
-
-        if 0:
-            basic = date2secs("20150214T00:00:00+02:00")
-            ss=[]
-            self.logger.debug("start span createion")
-            for n in range(5000):
-                s= Span(location=(basic+n)*1000, dimension='height', line_color='red', line_width=3)
-                ss.append(s)
-            self.logger.debug("add spans")
-            self.add_renderers(ss)
-            self.ss = ss
-            self.logger.debug("adding done")
 
 
+        left = self.plot.x_range.start
+        right = self.plot.x_range.end
+        width = right-left
+        infinity = 100*1000
+
+        c = ColumnDataSource({"l":[left+width/4,left+width/2],
+                                          "w":[width/7,width/8],
+                                         "y":[-infinity,-infinity],
+                                         "height":[3*infinity,3*infinity]
+        })
+        self.mysource = c
+
+        infinity = 1000*100
+
+        #self.mysource = source
+        recta = Rect(x="l", y="y", width="w", height="height", fill_color="red",fill_alpha=0.5)
+
+        g = GlyphRenderer(data_source=c, glyph=recta)
+        self.add_renderers([g])
 
 
-
-
-
+        #self.plot.add_glyph(self.mysource, glyph)
 
 
 
@@ -3612,15 +3614,23 @@ class TimeSeriesWidget():
                                     name=anno["id"],
                                     fill_alpha=globalAlpha)
                 """
-                source = None
-
                 if any([True for tag in anno["tags"] if "anomaly" in tag]):
-                    #if we have an anomaly to draw, we put it on top
+                    # if we have an anomaly to draw, we put it on top
                     level = globalThresholdsLevel
                 else:
                     level = globalAnnotationLevel
-                myrenderer = BoxAnnotation(left=start,right=end,fill_color=color,fill_alpha=globalAnnotationsAlpha,name=anno['id'],level=level)
-                rendererType = "BoxAnnotation"
+
+                if BOX_ANNO:
+                    source = None
+                    myrenderer = BoxAnnotation(left=start,right=end,fill_color=color,fill_alpha=globalAnnotationsAlpha,name=anno['id'],level=level)
+                    rendererType = "BoxAnnotation"
+                else:
+                    #use rect
+                    source = ColumnDataSource({"l": [start+(end-start)/2],"w": [end-start],"y": [-infinity],"height": [3 * infinity]})
+                    recta = Rect(x="l", y="y", width="w", height="height", fill_color=color, fill_alpha=globalAnnotationsAlpha)
+                    myrenderer = GlyphRenderer(data_source=source, glyph=recta, name=anno['id'],level=level)
+                    rendererType = "Rect"
+
 
             # bokeh hack to avoid adding the renderers directly: we create a renderer from the glyph and store it for later bulk assing to the plot
             # which is a lot faster than one by one
