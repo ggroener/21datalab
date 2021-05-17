@@ -9,6 +9,9 @@ import dates
 import numpy
 import numpy as np
 import copy
+import time
+from model import getRandomId
+import threading
 
 class Interface(ABC):
 
@@ -49,6 +52,19 @@ Splitter={
     ]
 }
 
+FlowMonitor={
+    "name":"FlowMonitor",
+    "type":"object",
+    "class": "streaming.FlowMonitorClass",
+    "children":[
+        {"name": "enabled", "type": "const", "value": False},
+        {"name": "windowSize", "type": "const", "value": 30},              #the monitoring window in seconds
+        {"name": "expectedNoOfMsgs", "type": "const", "value": 6},      #if >= this number
+        {"name": "alarm","type":"variable","value":False},             # values: alarm, ok, idle
+        {"name": "alarmMessagesFolder","type":"referencer"},
+        __functioncontrolfolder
+    ]
+}
 
 class PipelineHead():
 
@@ -312,6 +328,113 @@ class Windowing:
             self.values = self.values[originalIndex:]
             self.currentStartTime=samplingTimes[1]
         #print(f"now shift by {start}, the original was {originalIndex}")
+
+
+
+
+class FlowMonitorClass():
+
+    def __init__(self, functionNode):
+        self.logger = functionNode.get_logger()
+        self.logger.debug("init FlowMonitorClass")
+        self.functionNode = functionNode
+        self.model = functionNode.get_model()
+        self.lock = threading.RLock()
+        self.thread = threading.Thread(target = self._threadfunc)
+        self.started = False
+
+
+
+    def reset(self,data=None):
+        self.enabledNode = self.functionNode.get_child("enabled")
+        self.alarmNode = self.functionNode.get_child("alarm")
+        self.alarmNode.set_value(False)
+        self.windowNode = self.functionNode.get_child("windowSize")
+        self.expectedNode= self.functionNode.get_child("expectedNoOfMsgs")
+        self.alarmFolder = self.functionNode.get_child("alarmMessagesFolder").get_target()
+        self.msgTimes=[]
+        self.enoughMsgs = False
+        if not self.started:
+            self.thread.start()
+            self.started = True
+
+    def _threadfunc(self):
+        while True:
+            print(".")
+            time.sleep(2)
+            self.check(False)
+
+
+    def check(self,withData=False):
+        #this is called periodically from the thread and feed function
+        if not self.enabledNode.get_value():
+            return
+        with self.lock:
+            now = time.time()
+            self.msgTimes.append({"time":now,"withData":withData}) # append this entry
+            windowStart = now - self.windowNode.get_value()
+            #now remove all "too old" msgs
+            while 1:
+                if self.msgTimes:
+                    if self.msgTimes[0]["time"] < windowStart:
+                        self.msgTimes.pop(0)
+                        self.enoughMsgs = True # if we have popped one msg, the overall window processed is long enough
+                    else:
+                        break
+                else:
+                    break
+
+            # now see if the overall number of msgs is enough
+            # now see if we have a state transition
+            #count the number of msgs
+            noDataMsgs = len([m for m in self.msgTimes if m["withData"]==True])
+            self.logger.debug(f"FlowMonitorClass {self.enoughMsgs} {noDataMsgs} / {len(self.msgTimes)}")#{self.msgTimes}")
+
+            if self.enoughMsgs:
+                if noDataMsgs < self.expectedNode.get_value():
+                    if self.alarmNode.get_value() == False:
+                        # transition into alarm mode
+                        self.alarmNode.set_value(True)
+                        self.__generate_alarm(self.msgTimes[0]["time"])
+                        self.msgTimes = []          #flush the list
+                        self.enoughMsgs = False     # start over
+                else:
+                    self.alarmNode.set_value(False)  # not in alarm
+
+
+
+    def feed(self,data=None):
+        if self.enabledNode.get_value():
+            self.check(True)
+        return data
+
+    def flush(self,data):
+        return data
+
+    def __generate_alarm(self,lastTime):
+
+        try:
+            alarmTime = dates.epochToIsoString(time.time(),zone='Europe/Berlin')
+            lastTime = dates.epochToIsoString(lastTime,zone='Europe/Berlin')
+            messagetemplate = {
+                "name":None,"type":"alarm","children":[
+                    {"name": "text","type":"const","value":f"Stream data missing since {lastTime}"},
+                    {"name": "level", "type": "const", "value":"automatic"},
+                    {"name": "confirmed", "type": "const", "value": "unconfirmed","enumValues":["unconfirmed","critical","continue","accepted"]},
+                    {"name": "startTime", "type": "const", "value": alarmTime},
+                    {"name": "endTime", "type": "const", "value": None},
+                    {"name": "confirmTime", "type": "const", "value": None},
+                    {"name": "mustEscalate", "type": "const", "value":True},
+                    {"name": "summary","type":"const","value":f"21data alarm: Stream data missing since {lastTime}"}
+                ]
+            }
+
+            path = self.alarmFolder.get_browse_path()+".StreamDataAlarm_"+getRandomId()
+            self.model.create_template_from_path(path,messagetemplate)
+        except:
+            self.model.log_error()
+        return
+
 
 
 
