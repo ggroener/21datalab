@@ -388,7 +388,7 @@ class FlowMonitorClass():
             # now see if we have a state transition
             #count the number of msgs
             noDataMsgs = len([m for m in self.msgTimes if m["withData"]==True])
-            self.logger.debug(f"FlowMonitorClass {self.enoughMsgs} {noDataMsgs} / {len(self.msgTimes)}")#{self.msgTimes}")
+            #self.logger.debug(f"FlowMonitorClass enough={self.enoughMsgs} {noDataMsgs} / {len(self.msgTimes)}")#{self.msgTimes}")
 
             if self.enoughMsgs:
                 if noDataMsgs < self.expectedNode.get_value():
@@ -399,9 +399,10 @@ class FlowMonitorClass():
                         self.msgTimes = []          #flush the list
                         self.enoughMsgs = False     # start over
                 else:
-                    self.alarmNode.set_value(False)  # not in alarm
+                    if self.alarmNode.get_value() == True:
+                        self.alarmNode.set_value(False)  # not in alarm
 
-
+            #self.logger.debug(f"FlowMonitorClass enough={self.enoughMsgs} alarm = {self.alarmNode.get_value()} msgs: {noDataMsgs} / {len(self.msgTimes)}")  # {self.msgTimes}")
 
     def feed(self,data=None):
         if self.enabledNode.get_value():
