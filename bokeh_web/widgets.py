@@ -1010,6 +1010,8 @@ class TimeSeriesWidget():
             else:
                 visibleEventsNew = None
 
+            self.logger.debug(f"mirror old {oldMirror} => new {newMirror}")
+
             for entry in ["thresholds","annotations","scores","background","motifs","events"]:
                 #check for turn on:
                 if entry in visibleElementsNew and visibleElementsNew[entry] == True:
@@ -1047,7 +1049,7 @@ class TimeSeriesWidget():
 
             #visible tag selections for annotations has changed
             if (visibleTagsOld != visibleTagsNew) and self.showAnnotations:
-                self.__dispatch_function(self.show_annotations)
+                self.__dispatch_function(self.update_annotations)
 
             if (visibleEventsOld != visibleEventsNew) and self.eventsVisible:
                 self.__dispatch_function(self.show_all_events)
@@ -3412,6 +3414,14 @@ class TimeSeriesWidget():
             self.draw_annotation(annoname,add_layout=False)
         #now we have all bokeh objects in the self.annotations
         self.logger.debug("init_annotations.. done")
+
+
+    def update_annotations(self):
+        """
+            this is called when the tags have changed and we might have to update the currently visible annos
+        """
+        if self.showAnnotations:
+            self.show_annotations()
 
     def show_annotations(self, annoIdFilter=[],fetch=True):
         """
