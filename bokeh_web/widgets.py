@@ -867,7 +867,7 @@ class TimeSeriesWidget():
         self.eventLines = {}    #holding event line renderes and the columndatasources
         self.eventsVisible = False  #set true if events are currently turned on
         self.scrollLabel = None
-
+        self.annotationsInfo = {}       #holding annotations
 
         self.__init_figure() #create the graphical output
 
@@ -1441,7 +1441,7 @@ class TimeSeriesWidget():
 
         #source = ColumnDataSource({"l": [start], "w": [end - start], "y": [-infinity], "height": [3 * infinity]})
         self.renderers[anno["id"]]["source"].data = {"l": [start+(end-start)/2],"w": [end-start],"y": [-infinity],"height": [3 * infinity]}
-        self.renderers[anno["id"]]["source"].data = self.renderers[anno["id"]]["source"].data
+        #self.renderers[anno["id"]]["source"].data = dict(self.renderers[anno["id"]]["source"].data)
 
 
 
@@ -1739,7 +1739,7 @@ class TimeSeriesWidget():
                 buttonControls.append(button)
 
 
-        if 0: # turn this helper button on to put some debug code
+        if 1: # turn this helper button on to put some debug code
             self.debugButton= Button(label="debug")
             self.debugButton.on_click(self.debug_button_cb)
             self.debugButton2 = Button(label="debug2")
@@ -1828,9 +1828,37 @@ class TimeSeriesWidget():
 
 
     def debug_button_2_cb(self):
+        data = copy.deepcopy(self.mysource.data)
+        #data["l"][0]=data["l"][0]-self.debugWidth
+        #self.mysource.data=data
 
-        self.mysource.data["w"][0]=self.mysource.data["w"][0]*0.5
-        self.mysource.data= self.mysource.data
+        #print(f"len {len(data['l'])}")
+        #delete a random
+
+
+        #l=len(data)
+        #for k in data.keys():
+        #    data[k]=data[k][100:105]
+
+        #data["l"].append(data["l"][0]-self.debugWidth*4)
+
+        #data["alp"][0]=0
+        #for i in range(len(data["alp"])):
+        #    if data["c"][i]=="blue":
+        #        data["alp"][i]=0
+        left = self.plot.x_range.start
+        right = self.plot.x_range.end
+        number = 2000
+        width = (right - left) / number
+        self.debugWidth = width
+        infinity = 100 * 1000
+        colors=["red" if i % 2 else "blue" for i in range(number)]
+        data={"l":[left + i*width for i in range(number)],
+                              "c":colors,
+                              "alp":[0.5]*number,
+                              "halp": ['x'] * number}
+
+        self.mysource.data = dict(data)    #magically apply
 
 
     def debug_button_cb(self):
@@ -1839,26 +1867,41 @@ class TimeSeriesWidget():
 
         left = self.plot.x_range.start
         right = self.plot.x_range.end
-        width = right-left
+        number = 2000
+        width = (right-left)/number
+        self.debugWidth = width
         infinity = 100*1000
 
-        c = ColumnDataSource({"l":[left+width/4,left+width/2],
-                                          "w":[width/7,width/8],
-                                         "y":[-infinity,-infinity],
-                                         "height":[3*infinity,3*infinity]
-        })
+        '''
+        colors=["red" if i % 2 else "blue" for i in range(number)]
+        c = ColumnDataSource({"l":[left + i*width for i in range(number)],
+                              "c":colors,
+                              "alp":[0.5]*number,
+                              "halp": ['x'] * number})
+        '''
+        c = ColumnDataSource({"l":[],"c":[],"alp":[],"halp": []})
+
         self.mysource = c
+        recta = Rect(x="l", y=-infinity, width=width/2, height=3*infinity, fill_color="c",fill_alpha="alp",line_alpha=0,hatch_pattern=None,hatch_alpha=0.5)
+        g = GlyphRenderer(data_source=self.mysource, glyph=recta,level = globalBackgroundsLevel)
 
-        infinity = 1000*100
 
-        #self.mysource = source
-        recta = Rect(x="l", y="y", width="w", height="height", fill_color="red",fill_alpha=0.5)
+        '''
+        c2 = ColumnDataSource({"l":[left + i*width+width/2 for i in range(number)],
+                                          "w":[width/2]*number,
+                                         "y":[-infinity]*number,
+                                         "height":[3*infinity]*number
+        })
+        self.mysource = c2
+        recta2 = Rect(x="l", y="y", width="w", height="height", fill_color="blue",fill_alpha=0.5,line_alpha=0)
+        g2 = GlyphRenderer(data_source=c2, glyph=recta2,level = globalBackgroundsLevel)
+        '''
 
-        g = GlyphRenderer(data_source=c, glyph=recta)
+
+
         self.add_renderers([g])
 
 
-        #self.plot.add_glyph(self.mysource, glyph)
 
 
 
@@ -2052,8 +2095,10 @@ class TimeSeriesWidget():
             #                 ("value", "@$name{0.000}")]  # show one digit after dot
 
 
-            hover.tooltips = [("name", "$name"), ("time", "@{x}{%f}"),
-                              ("value", "@y{0.000}")]  # show one digit after dot
+            #hover.tooltips = [("name", "$name"), ("time", "@{x}{%f}"),
+            #                  ("value", "@y{0.000}")]  # show one digit after dot
+            hover.tooltips = [("name", "$name"), ("time", "$x{%f}"),
+                              ("value", "@y{0.000}")]  # show one digi
             if 0:
                 mytooltip = """
                     <script>
@@ -2073,7 +2118,7 @@ class TimeSeriesWidget():
             #self.testSource = ColumnDataSource({"test":[67]*1000})
             #hover.formatters = {'__time': CustomJSHover(code=custom)}
             custom3 = """ console.log(cb_data);"""
-            hover.formatters = {'x': CustomJSHover(code=custom)}#, 'z':CustomJSHover(args=dict(source=self.testSource),code=custom2)}
+            hover.formatters = {'$x': CustomJSHover(code=custom)}#, 'z':CustomJSHover(args=dict(source=self.testSource),code=custom2)}
             #hover.callback=CustomJS(code=custom3)
 
             if self.server.get_settings()["hasHover"] in ['vline','hline','mouse']:
@@ -3183,7 +3228,7 @@ class TimeSeriesWidget():
             #tags = self.server.get_settings()["tags"]
             #mytag = self.annotationTags[option]
             for k,v in self.columnData.items():
-                v.selected =Selection(indices=[]) #not allowed in bokeh 2.01 f
+                #v.selected =Selection(indices=[]) #not allowed in bokeh 2.01 f
                 pass
 
             mytag =self.currentAnnotationTag
@@ -3371,6 +3416,7 @@ class TimeSeriesWidget():
         ## but only the time annotations, the others are created and destroyed on demand
         #self.visibleAnnotations = set() # a set
 
+        return
         self.logger.debug(f"init_annotations() {len(self.server.get_annotations())} annotations..")
 
         #now we build all renderers for the time annos and don't show them now
@@ -3423,7 +3469,7 @@ class TimeSeriesWidget():
         if self.showAnnotations:
             self.show_annotations()
 
-    def show_annotations(self, annoIdFilter=[],fetch=True):
+    def show_annotations_old(self, annoIdFilter=[],fetch=True):
         """
             show annotations and hide annotations according to their tags (compare with visibleTags
         """
@@ -3466,7 +3512,79 @@ class TimeSeriesWidget():
         self.remove_renderers(renderers=removeList)
 
 
-    def hide_annotations(self):
+    def hide_annotations_by_tag(self,tag):
+        #empty all lists
+
+        if self.boxModifierVisible:
+            if self.boxModifierAnnotationName in self.annotationsInfo[tag]["data"]["id"]:
+                self.box_modifier_hide()
+
+        for key in self.annotationsInfo[tag]["data"]:
+            self.annotationsInfo[tag]["data"][key]=[]
+        #apply
+        #if apply:
+        #    self.annotationsInfo["ColumnDataSource"].data=dict(self.annotationsInfo[tag]["data"])
+
+
+    def show_annotations(self, fetch=True):
+        """
+            show annotations and hide annotations according to their tags (compare with visibleTags
+        """
+
+        #
+
+        self.logger.debug("show_annotations()")
+        self.showAnnotations = True
+        if fetch:
+            mirror = self.server.fetch_mirror()
+        else:
+            mirror = self.server.get_mirror()
+
+        allowedTags = mirror["hasAnnotation"]["visibleTags"][".properties"]["value"]
+        self.showAnnotationTags = [tag for tag in allowedTags if allowedTags[tag]]
+        self.logger.debug(f"show annotation tags {self.showAnnotationTags}")
+
+        generalVisible = mirror["visibleElements"][".properties"]["value"]["annotations"]
+
+        for tag,visible in mirror["hasAnnotation"]["visibleTags"][".properties"]["value"].items():
+            # first we check if for all tags we have general entries in the annotationsInfo
+            if not tag in self.annotationsInfo:
+
+                self.annotationsInfo[tag]={"data":{"center":[],"width":[],"id":[],"name":[],"anno":[]},
+                                           "ColumnDataSource":None,
+                                           "renderer":None,
+                                           "glyph":None,}
+                self.annotationsInfo[tag]["ColumnDataSource"]=ColumnDataSource(self.annotationsInfo[tag]["data"])
+                self.create_annotations_glyph(tag)
+                #also draw them
+            if not visible or not generalVisible:
+                self.hide_annotations_by_tag(tag)
+            else:
+                #this tag is visible, let's see if we have any difference, we make this check to avoid unnecessary updates of the columndatas
+                existingIds = set(self.annotationsInfo[tag]["data"]["id"])
+                newIds = set([anno["id"] for annoname, anno in self.server.get_annotations().items() if anno["type"]=="time" and tag in anno["tags"]])
+                if newIds-existingIds or existingIds-newIds:
+                    #we have more or less, let's rebuild
+                    self.hide_annotations_by_tag(tag)
+                    for annoname, anno in self.server.get_annotations().items():
+                        if anno["type"]!="time":
+                            continue
+                        if tag not in anno["tags"]:
+                            continue
+                        start = anno["startTime"]
+                        end = anno["endTime"]
+                        self.annotationsInfo[tag]["data"]["center"].append((end+start)/2)
+                        self.annotationsInfo[tag]["data"]["width"].append(end-start)
+                        self.annotationsInfo[tag]["data"]["name"].append(anno["id"])
+                        self.annotationsInfo[tag]["data"]["id"].append(anno["id"])
+                        self.annotationsInfo[tag]["data"]["anno"].append(anno)
+
+            #apply the update
+            self.annotationsInfo[tag]["ColumnDataSource"].data = dict(self.annotationsInfo[tag]["data"])
+
+        self.logger.debug("show_annotations() done")
+
+    def hide_annotations_old(self):
         self.showAnnotations = False
         """ hide the current annotatios in the widget of type time"""
         annotations = self.server.get_annotations()
@@ -3475,6 +3593,12 @@ class TimeSeriesWidget():
         self.remove_renderers(deleteList=timeAnnos)
         #self.annotationsVisible = False
         self.box_modifier_hide()
+
+    def hide_annotations(self):
+        self.box_modifier_hide()
+        self.show_annotations()
+
+
 
     def get_layout(self):
         """ return the inner layout, used by the main"""
@@ -3667,6 +3791,61 @@ class TimeSeriesWidget():
 
         except Exception as ex:
             self.logger.error(f"error draw annotation {anno}"+str(ex))
+            return None
+
+    def create_annotations_glyph(self, tag):
+        """
+            draw one time annotation on the plot
+            Args:
+             anno: the annotation
+             visible: true/false
+        """
+        try:
+            # self.logger.debug(f"draw_annotation  {anno['name']} visible {visible}")
+            mirror = self.server.get_mirror()
+            myColors = mirror["hasAnnotation"]["colors"][".properties"]["value"]
+            myTags = mirror["hasAnnotation"]["tags"][".properties"]["value"]
+
+            try:  # to set color and pattern
+                if type(myColors) is list:
+                    tagIndex = myTags.index(tag)
+                    pattern = None
+                    color = myColors[tagIndex]
+                elif type(myColors) is dict:
+                    color = myColors[tag]["color"]
+                    pattern = myColors[tag]["pattern"]
+                    if not pattern is None:
+                        if pattern not in [" ", ".", "o", "-", "|", "+", ":", "@", "/", "\\", "x", ",", "`", "v", ">",
+                                           "*"]:
+                            pattern = 'x'
+            except:
+                color = None
+                pattern = None
+            if not color:
+                self.logger.error("did not find color for boxannotation")
+                color = "red"
+
+            #now we have color and pattern
+            infinity = 1000*1000
+
+            self.annotationsInfo[tag]["glyph"]=Rect(x="center",
+                                                    y=-infinity/4,
+                                                    width="width",
+                                                    height=infinity,
+                                                    fill_color=color,
+                                                    fill_alpha=globalAnnotationsAlpha,
+                                                    hatch_color="black",
+                                                    hatch_pattern=pattern,
+                                                    hatch_alpha=0,5,
+                                                    line_alpha=0
+                                                    )
+
+            self.annotationsInfo[tag]["renderer"]= GlyphRenderer(data_source=self.annotationsInfo[tag]["ColumnDataSource"], glyph=self.annotationsInfo[tag]["glyph"], name="annotationsOf_"+tag, level=globalAnnotationLevel)
+            self.add_renderers([self.annotationsInfo[tag]["renderer"]])
+
+
+        except Exception as ex:
+            self.logger.error(f"error draw annotation {anno}" + str(ex))
             return None
 
     def hide_all_events(self):
