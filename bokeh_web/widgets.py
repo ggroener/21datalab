@@ -626,8 +626,8 @@ class TimeSeriesWidgetDataServer():
         return copy.deepcopy(self.selectedVariables)
 
     def get_annotations(self):
-        return self.annotations
-        #return copy.deepcopy(self.annotations)
+        #return self.annotations
+        return copy.deepcopy(self.annotations) #this must be a deepcopy, as we make compares of old/new
 
     def bokeh_time_to_string(self,epoch):
         localtz =  timezone(self.settings["timeZone"])
@@ -1285,7 +1285,7 @@ class TimeSeriesWidget():
 
 
 
-    def update_annotations_and_thresholds(self,arg=None):
+    def update_annotations_and_thresholds_old(self,arg=None):
         self.logger.debug(f"update_annotations {arg}")
         # this is called when the backend has changed annotation leaves or values, it adjusts annotations
         # and thresholds
@@ -1336,13 +1336,15 @@ class TimeSeriesWidget():
                     with self.renderersLock:
                         self.renderersGarbage.append(self.renderers[annoId]["renderer"])
                     del self.renderers[annoId]
+                else:
+                    self.delete_annotations([annoId])
         self.logger.debug(f"update_annotations() -- must delete {deleteList}")
-
-
 
         if self.boxModifierVisible:
             if self.boxModifierAnnotationName in deleteList:
                 self.box_modifier_hide()
+
+
 
         #now the new ones
         createdTimeAnnos = []
@@ -1358,7 +1360,7 @@ class TimeSeriesWidget():
 
         for annoId,anno in annosToIterate.items():
             if anno["type"] == "time":
-                if annoId not in self.renderers:# and self.showAnnotations:
+                if not self.find_renderer(annoId):# not in self.renderers:# and self.showAnnotations:
                     self.logger.debug(f"new annotations {annoId}")
                     self.draw_annotation(anno,visible=False) #will be activated later with show_annotations
                     createdTimeAnnos.append(annoId)
@@ -1425,6 +1427,134 @@ class TimeSeriesWidget():
         #self.show_annotations()
 
         self.remove_renderers() # execute at least the deletes
+
+
+    def update_annotations_and_thresholds_old_part(self,arg,lastAnnotations,newAnnotations,differential):
+        self.logger.debug(f"update_annotations_and_thresholds_old_part")
+
+
+        #check for deletes
+        # the delete check is fast enough so no need to improve with differential
+        deleteList = [] # a list of ids
+        for annoId,anno in lastAnnotations.items():
+            if anno["type"]=="time":
+                continue
+            if annoId not in newAnnotations:
+                self.logger.debug(f"update_annotations() -- annotations was deleted on server: {annoId}, {lastAnnotations[annoId]['name']}")
+                deleteList.append(annoId)
+                if annoId in self.renderers:
+                    with self.renderersLock:
+                        self.renderersGarbage.append(self.renderers[annoId]["renderer"])
+                    del self.renderers[annoId]
+                else:
+                    self.delete_annotations([annoId])
+        self.logger.debug(f"update_annotations() -- must delete {deleteList}")
+
+        if self.boxModifierVisible:
+            if self.boxModifierAnnotationName in deleteList:
+                self.box_modifier_hide()
+
+
+
+        #now the new ones
+        createdTimeAnnos = []
+
+        if not differential:
+            annosToIterate = newAnnotations
+        else:
+            #take on the the nodes from the incoming
+            annosToIterate = arg["data"]["_eventInfo"]["new"]
+            annosToIterate.update(arg["data"]["_eventInfo"]["modify"])
+
+        self.logger.debug(f"annosToIterate {annosToIterate}")
+
+        for annoId,anno in annosToIterate.items():
+            if anno["type"] in ["threshold","motif"]:
+                # for thresholds/motifs we do not support delete/create per backend, only modify
+                # so check for modifications here
+                # it might not be part of the renderers: maybe thresholds are currently off
+                if annoId in self.renderers and not self._compare_anno(anno,self.renderers[annoId]["info"]):
+                    self.logger.debug(f"update_annotations() -- thresholds/motif has changed {annoId} {self.renderers[annoId]['info']} => {anno}")
+                    with self.renderersLock:
+                        self.renderersGarbage.append(self.renderers[annoId]["renderer"])
+                    del self.renderers[annoId]  # kick out the entry, the remaining invisible renderer will stay in bokeh as garbage
+                    #if the currently selected is being changed, we hide the box modifier
+                    if self.boxModifierVisible:
+                        if self.boxModifierAnnotationName == annoId:
+                            self.box_modifier_hide()
+                    # now recreate
+                    if anno["type"] =="threshold":
+                        self.draw_threshold(anno)
+                    else:
+                        self.draw_motif(anno)
+
+        #now execute the changes
+        if 0:
+            for entry in deleteList:
+                # we only switch it invisible for now, we don't delete the
+                # renderer, as this takes too long
+                r = self.find_renderer(entry)
+                if r:
+                    r.visible = False
+
+        #if self.showAnnotations and createdTimeAnnos != []:
+        #    self.show_annotations(createdTimeAnnos,fetch=False) # this will put them to the plot renderes
+
+        #self.show_annotations()
+
+        self.remove_renderers() # execute at least the deletes
+
+
+
+
+    def update_annotations_and_thresholds(self,arg=None):
+        self.logger.debug(f"update_annotations {arg}")
+        # this is called when the backend has changed annotation leaves or values, it adjusts annotations
+        # and thresholds
+
+        #avoid reload if an envelope embedded in a annotation is changed
+        if "data" in arg and "sourcePath" in arg["data"]:
+            splitted = arg["data"]["sourcePath"].split('.')
+            if len(splitted)>2 and splitted[-2]=="envelope":
+                self.logger.info("skip anno update due to envelope")
+                return
+            # modifies give the value
+            if "value" in arg["data"]:
+                #check if the annotation is in our known list
+                annotationBrowsePath = '.'.join(arg["data"]["sourcePath"].split('.')[:-1])
+
+                lookup = {v["browsePath"]:k for k,v in self.server.get_annotations().items()}
+                if annotationBrowsePath in lookup:
+                    #build the _eventInfo to avoid the fetch
+                    id = lookup[annotationBrowsePath]
+                    updatedAnno = copy.deepcopy(self.server.get_annotations()[id])
+                    changeKey = arg["data"]["sourcePath"].split('.')[-1]
+                    updatedAnno[changeKey]=arg["data"]["value"]
+                    if changeKey != "variable" and "variable" in updatedAnno:
+                        updatedAnno["variable"] = [updatedAnno["variable"]] # events from the outside deliver the variable as list (the forward refs from the referencer, internally, we only keep a string
+                    eventInfo = {"new":{},"delete":{},"modify":{id:updatedAnno}}
+                    arg["data"]["_eventInfo"] = eventInfo
+
+
+        lastAnnotations = self.server.get_annotations()
+        hasModifies = False
+        if "data" in arg and "_eventInfo" in arg["data"]:
+            if arg["data"]["_eventInfo"]["modify"]:
+                hasModifies = True
+            newAnnotations = self.server.fetch_annotations_differential(arg["data"]["_eventInfo"]) #this will write the new anno to our internal mirror, also executing the modify or delete
+            differential = True
+        else:
+            newAnnotations = self.server.fetch_annotations()
+            differential = False
+
+        # now we have written the update to the server
+        # we now rewrite the annotations
+        # new and missing will be identified by the show function
+
+        self.show_annotations(fetch=False,checkModifies=hasModifies)
+
+        self.update_annotations_and_thresholds_old_part(arg,lastAnnotations,newAnnotations,differential)
+
 
 
     def update_annotation_data(self,anno,annoId):
@@ -3228,7 +3358,9 @@ class TimeSeriesWidget():
             #tags = self.server.get_settings()["tags"]
             #mytag = self.annotationTags[option]
             for k,v in self.columnData.items():
-                #v.selected =Selection(indices=[]) #not allowed in bokeh 2.01 f
+                #v.selected = Selection(indices=[]) #not allowed in bokeh 2.01 f
+                v.selected.indices = []
+                v.data = dict(v.data)
                 pass
 
             mytag =self.currentAnnotationTag
@@ -3254,12 +3386,36 @@ class TimeSeriesWidget():
         self.refresh_plot()
 
 
+
+    def delete_annotations(self,annoIds,apply=True):
+
+        for tag,v in self.annotationsInfo.items():
+            hasChanged = False
+            for id in annoIds:
+                if id in v["data"]["id"]:
+                    #get the index and rework the table: we take out the index of this match
+                    fIdx =v["data"]["id"].index(id)
+                    for k,original in v["data"].items():
+                        self.annotationsInfo[tag]["data"][k]=[item for idx, item in enumerate(original) if idx != fIdx]
+                    hasChanged = True
+            if hasChanged and apply:
+                # apply the update
+                self.annotationsInfo[tag]["ColumnDataSource"].data = dict(self.annotationsInfo[tag]["data"])
+            hasChanged = False
+
     def find_renderer(self,rendererName):
         for r in self.plot.renderers:
             if r.name:
                 if r.name == rendererName:
                     return r
+        #also look through the annotations
+        for k,v in self.annotationsInfo.items():
+            if rendererName in v["data"]["name"]:
+                return v["renderer"]
+
         return None
+
+
 
     def add_renderers(self,addList):
         self.plot.renderers.extend(addList)
@@ -3514,21 +3670,42 @@ class TimeSeriesWidget():
 
     def hide_annotations_by_tag(self,tag):
         #empty all lists
+        hasChanged = False
 
         if self.boxModifierVisible:
             if self.boxModifierAnnotationName in self.annotationsInfo[tag]["data"]["id"]:
                 self.box_modifier_hide()
 
-        for key in self.annotationsInfo[tag]["data"]:
-            self.annotationsInfo[tag]["data"][key]=[]
-        #apply
-        #if apply:
-        #    self.annotationsInfo["ColumnDataSource"].data=dict(self.annotationsInfo[tag]["data"])
+        if any(self.annotationsInfo[tag]["data"]["drawn"]):
+            #delete only the non-drawn
+            serverAnnos = self.server.get_annotations()
+            hasChanged = True
+            new = {key:[] for key in self.annotationsInfo[tag]["data"]}
+            for index in range(len(self.annotationsInfo[tag]["data"]["drawn"])):
+                if self.annotationsInfo[tag]["data"]["drawn"][index]:
+                    annoId = self.annotationsInfo[tag]["data"]["id"][index]
+                    self.add_anno_to_list(serverAnnos[annoId],tag,manual=True,listPointer=new)
+                    #for key in new:
+                    #    new[key].append(self.annotationsInfo[tag]["data"][key][index])
 
 
-    def show_annotations(self, fetch=True):
+
+            self.annotationsInfo[tag]["data"] = new
+        else:
+            #no anno was drawn manually, so hide them all
+            for key in self.annotationsInfo[tag]["data"]:
+                if self.annotationsInfo[tag]["data"][key]!=[]:
+                    hasChanged = True
+                    self.annotationsInfo[tag]["data"][key]=[]
+
+        return hasChanged
+
+    def show_annotations(self, fetch=True, checkModifies=False, newAnno=None):
         """
             show annotations and hide annotations according to their tags (compare with visibleTags
+            if anno is given, we only display the anno (additionally)
+            newAnnotation: just add this annotation now, nothing else to do
+
         """
 
         #
@@ -3548,9 +3725,10 @@ class TimeSeriesWidget():
 
         for tag,visible in mirror["hasAnnotation"]["visibleTags"][".properties"]["value"].items():
             # first we check if for all tags we have general entries in the annotationsInfo
+            mustApply = False
             if not tag in self.annotationsInfo:
 
-                self.annotationsInfo[tag]={"data":{"center":[],"width":[],"id":[],"name":[],"anno":[]},
+                self.annotationsInfo[tag]={"data":{"center":[],"width":[],"id":[],"name":[],"anno":[],"drawn":[]},
                                            "ColumnDataSource":None,
                                            "renderer":None,
                                            "glyph":None,}
@@ -3558,31 +3736,52 @@ class TimeSeriesWidget():
                 self.create_annotations_glyph(tag)
                 #also draw them
             if not visible or not generalVisible:
-                self.hide_annotations_by_tag(tag)
-            else:
+                if self.hide_annotations_by_tag(tag):
+                    mustApply = True
+                if newAnno:
+                    self.add_anno_to_list(newAnno, tag, True)
+                    mustApply = True
+
                 #this tag is visible, let's see if we have any difference, we make this check to avoid unnecessary updates of the columndatas
+            else:
                 existingIds = set(self.annotationsInfo[tag]["data"]["id"])
                 newIds = set([anno["id"] for annoname, anno in self.server.get_annotations().items() if anno["type"]=="time" and tag in anno["tags"]])
-                if newIds-existingIds or existingIds-newIds:
+                if newIds-existingIds or existingIds-newIds or checkModifies:
+                    mustApply = True
                     #we have more or less, let's rebuild
                     self.hide_annotations_by_tag(tag)
                     for annoname, anno in self.server.get_annotations().items():
-                        if anno["type"]!="time":
-                            continue
-                        if tag not in anno["tags"]:
-                            continue
-                        start = anno["startTime"]
-                        end = anno["endTime"]
-                        self.annotationsInfo[tag]["data"]["center"].append((end+start)/2)
-                        self.annotationsInfo[tag]["data"]["width"].append(end-start)
-                        self.annotationsInfo[tag]["data"]["name"].append(anno["id"])
-                        self.annotationsInfo[tag]["data"]["id"].append(anno["id"])
-                        self.annotationsInfo[tag]["data"]["anno"].append(anno)
+                        self.add_anno_to_list(anno,tag,False)
+                # if this tag is visible, we convert all "drawn" annotation to standard annotations
+                # doing so, they will be hidden on the next invisible switch
+                if any(self.annotationsInfo[tag]["data"]["drawn"]):
+                    self.annotationsInfo[tag]["data"]["drawn"]=[False]*len(self.annotationsInfo[tag]["data"]["drawn"])
+                    mustApply=True
+            #if there is a manual add, we do it here
+
+
+
+
 
             #apply the update
-            self.annotationsInfo[tag]["ColumnDataSource"].data = dict(self.annotationsInfo[tag]["data"])
+            if mustApply:
+                self.annotationsInfo[tag]["ColumnDataSource"].data = dict(self.annotationsInfo[tag]["data"])
 
         self.logger.debug("show_annotations() done")
+
+    def add_anno_to_list(self,anno,tag,manual=False,listPointer=None):
+        if type(listPointer) is type(None):
+            listPointer = self.annotationsInfo[tag]["data"]
+
+        if anno["type"]=="time" and tag in anno["tags"]:
+            start = anno["startTime"]
+            end = anno["endTime"]
+            listPointer["center"].append((end + start) / 2)
+            listPointer["width"].append(end - start)
+            listPointer["name"].append(anno["id"])
+            listPointer["id"].append(anno["id"])
+            listPointer["anno"].append(anno)
+            listPointer["drawn"].append(manual)
 
     def hide_annotations_old(self):
         self.showAnnotations = False
@@ -3672,6 +3871,9 @@ class TimeSeriesWidget():
         except Exception as ex:
             self.logger.error("error draw motif"+str(ex))
             return None
+
+
+
 
 
     def draw_annotation(self, anno, visible=False):
@@ -3836,7 +4038,7 @@ class TimeSeriesWidget():
                                                     fill_alpha=globalAnnotationsAlpha,
                                                     hatch_color="black",
                                                     hatch_pattern=pattern,
-                                                    hatch_alpha=0,5,
+                                                    hatch_alpha=0.5,
                                                     line_alpha=0
                                                     )
 
@@ -4352,9 +4554,10 @@ class TimeSeriesWidget():
         elif "threshold" not in tag:
             #create a time annotation one
 
-            newAnno= self.server.add_annotation(start,end,tag,type="time")
+            newAnno= self.server.add_annotation(start,end,tag,type="time")# this also adds the annotation to the server list and the backend
             #print("\n now draw"+newAnnotationPath)
-            self.draw_annotation(newAnno,visible=True)
+            self.show_annotations(fetch=False,newAnno=newAnno)
+            #self.draw_annotation(newAnno,visible=True)
             #print("\n draw done")
         else:
             #create a threshold annotation, but only if ONE variable is currently selected
