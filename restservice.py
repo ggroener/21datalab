@@ -926,36 +926,48 @@ def all(path):
                     for div in divs:
                         uiinfo = json.loads(div.attrs['uiinfo'])
                         try:
-                            #now find the widget by looking into the model
-                            widgetType = m.get_node(uiinfo['component']+'.model').get_leaves()[0].get_child("widgetType").get_value()
+                            # now find the widget by looking into the model
+                            widgetType = m.get_node(uiinfo['component'] + '.model').get_leaves()[0].get_child(
+                                "widgetType").get_value()
                             if widgetType == "timeSeriesWidget":
-                                #this is a bokeh time series widget, so we must do some things here
-                                port = m.get_node(uiinfo['component']+'.settings').get_value()["port"]
-                                #now get the host under which the client sees me:
+                                print("is time series widget")
+                                # this is a bokeh time series widget, so we must do some things here
+                                port = m.get_node(uiinfo['component'] + '.settings').get_value()["port"]
+                                # now get the host under which the client sees me:
                                 host = flask.request.host.split(':')[0]
-                                #script = server_session(session_id=str(uuid.uuid4().hex), url="http://localhost:"+str(port)+"/bokeh_web")
-                                script = server_document(url="http://"+host+":"+str(port)+"/bokeh_web", relative_urls=False, resources='default',
-                                                arguments=None)
-                                #script = script.encode('utf-8') # due to problem with "&"
-                                scriptHtml = BeautifulSoup(script, "lxml")
-                                scriptTag = scriptHtml.find("script")
-                                scriptSource = scriptTag["src"]
-                                scriptId = scriptTag["id"]
-                                scriptinsert = scriptTag.prettify(formatter=None)
 
-                                scriptTag = soup.new_tag("script",src=scriptSource,id=scriptId)
-                                uiinfo["droppath"]=m.get_node(uiinfo['component']+'.model').get_leaves()[0].get_browse_path()
-                                div.append(scriptTag)
-                                div.attrs['uiinfo']=json.dumps(uiinfo)
+                                script = server_document(url="http://" + host + ":" + str(port) + "/bokeh_web",
+                                                         relative_urls=False, resources='default',
+                                                         arguments=None)
+                                if "xhr" in script:
+                                    #to detect the bokeh 2.x
+                                    div.append(script)
+                                else:
+                                    #bokeh 1.4ff
+                                    # script = script.encode('utf-8') # due to problem with "&"
+                                    scriptHtml = BeautifulSoup(script, "lxml")
+                                    scriptTag = scriptHtml.find("script")
+                                    scriptSource = scriptTag["src"]
+                                    scriptId = scriptTag["id"]
+                                    scriptinsert = scriptTag.prettify(formatter=None)
+
+                                    scriptTag = soup.new_tag("script",src=scriptSource,id=scriptId)
+
+                                    div.append(scriptTag)
+                                uiinfo["droppath"] = m.get_node(uiinfo['component'] + '.model').get_leaves()[0].get_browse_path()
+                                div.attrs['uiinfo'] = json.dumps(uiinfo)
                             else:
-                                logger.error("unsupported widget type"+str(widgetType))
-                            print(uiinfo)
+                                logger.error("unsupported widget type" + str(widgetType))
+                            #print(uiinfo)
                         except Exception as ex:
-                            logger.error("can't get layout component" + str(uiinfo['component']))
-                response = str(soup)
-                response=response.replace('&amp;','&') # hack: can't get beautifulsoup to suppress the conversion
-                logger.debug(response)
-                responseCode = 200
+                            logger.error(f"can't get layouttt {ex} component" + str(uiinfo['component']))
+                        response = str(soup)
+
+                        response = response.replace('&amp;', '&')  # hack: can't get beautifulsoup to suppress the conversion
+                        response = response.replace('&lt;', '<')
+                        response = response.replace('&gt;', '>')
+                        logger.debug(response)
+                        responseCode = 200
 
             except Exception as ex:
                 logger.error("can't get layout" + str(ex) + str(sys.exc_info()[0]))
