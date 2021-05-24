@@ -360,7 +360,7 @@ class FlowMonitorClass():
 
     def _threadfunc(self):
         while True:
-            print(".")
+            #print(".")
             time.sleep(2)
             self.check(False)
 
