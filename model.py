@@ -797,6 +797,13 @@ class Model:
                             found.append(Node(self,id))
         return found
 
+    def get_type(self,desc):
+        with self.lock:
+            id = self.__get_id(desc)
+            if not id: return None
+            return self.model[id]["type"]
+
+
     def get_node_info(self,desc,includeLongValues=True):
         """
             Args:
@@ -3981,7 +3988,16 @@ class Model:
         return self.ts.get_info(name)
 
 
-    def time_series_get_raw(self,id,start=None,end=None):
+    def time_series_get_raw(self,desc,start=None,end=None):
+        """
+            gets the time series as they are internally
+
+            Returns:
+             {"values":[2,2,3,3]., "__time":[1,k22,3,34,45]
+        """
+        id = self.get_id(desc)
+        if not id:
+            return None
 
         table = self.ts.get_table([id], start=start, end=end, copy=False, resampleTimes=None,
                                   noBins=None, includeIntervalLimits=False,

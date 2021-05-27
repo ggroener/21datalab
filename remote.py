@@ -174,7 +174,7 @@ class RemoteModel(model.Model):
                 self.__copy_nodes_from_remote(modifiedNodes, remoteNodes, withValues=includeData)
 
 
-    def pull_values(self,remoteNodes):
+    def pull_values(self,remoteNodes,includeTimeSeries = True):
         """
             get the values of remote nodes over REST
             Args:
@@ -182,10 +182,47 @@ class RemoteModel(model.Model):
 
 
         """
+        if type(remoteNodes) is not list:
+            remoteNodes = [remoteNodes]
         self.logger.info(f"@ pull_values {remoteNodes}")
         data = self.rest.request("POST", "_getvalue", remoteNodes)
         for id, array in zip(remoteNodes, data):
             self.set_value(id, array)
+
+        if includeTimeSeries:
+            #now the timeseries
+            body = {
+                "nodes": [],
+                "startTime" : None,
+                "endTime" : None,
+                "bins" : 0
+            }
+            for node in remoteNodes:
+                id = self.get_id(node)
+                if self.get_type(id)=="timeseries":
+                    body["nodes"].append(id)
+            if body["nodes"]:
+                r = self.rest.request("POST", "_getdata", body)
+                if not r:
+                    return None
+
+                toWrite = {}
+                for key,v in r.items():
+
+                    if key.endswith("__time"):
+                        name = key[0:-6]
+                    else:
+                        name = key
+                    if name not in toWrite:
+                        toWrite[name]={}
+
+                    if key.endswith("__time"):
+                        toWrite[name]["__time"] = v
+                    else:
+                        toWrite[name]["values"] = v
+
+                for k,v in toWrite.items():
+                    self.time_series_set(k,values=v["values"],times=v["__time"])
 
     def push_branch(self,branchRoot):
         """
@@ -275,14 +312,32 @@ class RemoteModel(model.Model):
 
         """
         self.logger.info(f"@ push_values {nodeIds}")
+        if type(nodeIds) is not list:
+            nodeIds = [nodeIds]
         body = []
         for nodeid in nodeIds:
-            value = self.get_value(nodeid)
-            if type(value) is numpy.ndarray:
-                value = list(value)
-            node = {"id":nodeid,"value":value}
-            body.append(node)
+            if  self.get_type(nodeid)!="timeseries":
+                value = self.get_value(nodeid)
+                if type(value) is numpy.ndarray:
+                    value = list(value)
+                node = {"id":nodeid,"value":value}
+                body.append(node)
         self.rest.request("POST", "setProperties", body)
+
+        #now the time series (they also might have a value
+        data = {}
+        for nodeid in nodeIds:
+            if self.get_type(nodeid)=="timeseries":
+                ts = self.time_series_get_raw(nodeid)
+                data[nodeid] = {"values":list(ts["values"]),"__time":list(ts["__time"])}
+
+        if data:
+            body = {"insert":False,"data":data}
+            self.rest.request("POST", "_setTimeSeries", body)
+
+
+
+
 
 
 

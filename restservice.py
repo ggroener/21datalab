@@ -8,7 +8,7 @@ import datetime
 import dateutil.parser
 import random
 import requests
-from gevent.pywsgi import WSGIServer
+#from gevent.pywsgi import WSGIServer
 import uuid
 from bs4 import BeautifulSoup
 import re
@@ -107,6 +107,7 @@ POST /_insertEvents  <eventinsert.json>           -                       # inse
 POST /_getEvents    <eventquery.json>           <eventresponse.json>     # get event series data
 POST /_getWidgetView  <viewquery.json>                                    # get a list of nodes from a widget to save a view
 POST /_setWidgetView  <viewquery.json>                                    # get a list of nodes from a widget to save a view
+POST /_setTimeSeries <settsquery.json>                                   # set the time series 
 
 data:
 JSONS ------------------------
@@ -323,6 +324,15 @@ viewquery.json
     version:1         //several styles of getting a view, only for get
     data:[]           // nodes data, only for set
 }
+
+
+settsquery
+{
+    <desc>:{"values":[1,2,3,4,5...], "__time":[1,2,3,3,4,5...],
+    <desc>:{"values":[1,2,3,4,5...], "__time":[1,2,3,3,4,5...],
+    "__insert":True /False                  #set false to delete the data before writing
+}
+
 
 '''
 
@@ -715,6 +725,26 @@ def all(path):
                         responseCode = 400
             response = json.dumps(result)
             responseCode = 201
+
+
+        elif (str(path) == "_setTimeSeries") and str(flask.request.method) in ["POST"]:
+            logger.debug("set Time Series")
+            result = {}
+            for descriptor,series in data["data"].items():
+                result["descriptor"]=False # default no success
+                id = m.get_id(descriptor)
+                if not id:
+                    #this node must be created
+                    id = m.create_node_from_path(descriptor,properties={"type":"timeseries"})
+                if data["insert"]:
+                    #insert
+                    result["descriptor"] = m.time_series_insert(id, values=series["values"], times=series["__time"], allowDuplicates=False)
+                else:
+                    #set
+                    result["descriptor"] = m.time_series_set(id,values=series["values"], times=series["__time"])
+
+            responseCode = 200
+            response = json.dumps(result)
 
         elif (str(path) == "_push") and str(flask.request.method) in ["POST"]:
             m.push_nodes(data)
