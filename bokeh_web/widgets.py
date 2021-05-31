@@ -1093,6 +1093,9 @@ class TimeSeriesWidget():
 
             if "autoScaleY" in newMirror:
                 self.autoAdjustY = newMirror["autoScaleY"][".properties"]["value"]
+                if newMirror["autoScaleY"][".properties"]["value"]==True and oldMirror["autoScaleY"][".properties"]["value"]==False:
+                    #turn on autoscale
+                    self.__dispatch_function(self.adjust_y_axis_limits)
 
         elif data["event"] == "timeSeriesWidget.values":
             #the data has changed, typically the score values?
