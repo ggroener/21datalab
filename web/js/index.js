@@ -2236,7 +2236,7 @@ function confirm_dialog(title,text,buttonText,confirmCallback,parameter)
     $("#confirm-delete").modal('show');
 }
 
-function set_value_dialog(title,text,buttonText,confirmCallback,parameter,value)
+function set_value_dialog(title,text,buttonText,confirmCallback,parameter,value,placeholderText = null)
 {
     var callback = confirmCallback;
     $("#enter-value-modal-title").empty();
@@ -2247,6 +2247,8 @@ function set_value_dialog(title,text,buttonText,confirmCallback,parameter,value)
     $("#enter-value-modal-ok").append(buttonText);
     $("#enter-value-modal-ok").unbind();
     $("#enter-value-modal-input").val(value);
+    $("#enter-value-modal-input").attr("placeholder",placeholderText);
+
     $("#enter-value-modal-ok").click( function() {
         var newValue = $("#enter-value-modal-input").val();
         callback(parameter,newValue);
@@ -2415,6 +2417,23 @@ function refresh_views_table()
             {
                 //we have at least one entry
                 table.empty();
+
+                //table title
+                var row = document.createElement("div");
+                row.className = "row mb-4";
+                var msgDiv = document.createElement("div");
+                msgDiv.className = "col-5";
+                msgDiv.innerHTML = "View Name";
+                var tim = document.createElement("div");
+                tim.className = "col-4";
+                tim.innerHTML = "Date/Time";
+                var act = document.createElement("div");
+                act.className = "col-3";
+                act.innerHTML = "Action";
+                row.append(msgDiv,tim,act);
+                table.append(row);
+
+
                 for (var i in msgs[0].children)
                 {
                     var entry = msgs[0].children[i];
@@ -2424,7 +2443,7 @@ function refresh_views_table()
                     row.className = "row mb-4";
 
                     var timeDiv = document.createElement("div");
-                    timeDiv.className = "col-6";
+                    timeDiv.className = "col-4";
                     if ((entry.value!=null) && ("time" in entry.value))
                     {
                         timeDiv.innerHTML = entry.value.time;
@@ -2436,7 +2455,7 @@ function refresh_views_table()
 
 
                     var msgDiv = document.createElement("div");
-                    msgDiv.className = "col-3";
+                    msgDiv.className = "col-5";
                     msgDiv.innerHTML = entry.name;
 
 
@@ -2450,10 +2469,20 @@ function refresh_views_table()
                     var btn =  document.createElement("BUTTON");   // Create a <button> element
                     btn.className = "btn btn-secondary";
                     btn.id = "loadView-"+entry.name;
-                    btn.innerHTML = '<i class="fas fa-check"></i>&nbsp apply';
+                    btn.innerHTML = '<i class="fas fa-check"></i>&nbsp restore';
                     btn.onclick = select_view;
                     buttonDiv.append(btn);
 
+
+                    var savebtn = document.createElement("BUTTON");   // Create a <button> element
+                    savebtn.className = "btn btn-secondary";
+                    savebtn.id = "saveView-"+entry.name;
+                    savebtn.innerHTML = '<i class="fas fa-save"></i>';
+                    savebtn.onclick = save_view;
+                    let span = document.createElement("span");
+                    span.innerHTML = "&nbsp;&nbsp;"
+                    buttonDiv.append(span);
+                    buttonDiv.append(savebtn);
 
 
                     var delbtn =  document.createElement("BUTTON");   // Create a <button> element
@@ -2461,9 +2490,9 @@ function refresh_views_table()
                     delbtn.id = "deleteView-"+entry.name;
                     delbtn.innerHTML = '<i class="far fa-trash-alt"></i>';
                     delbtn.onclick = delete_view;
-                    let span = document.createElement("span");
-                    span.innerHTML = "&nbsp;"
-                    buttonDiv.append(span);
+                    let span2 = document.createElement("span");
+                    span2.innerHTML = "&nbsp;&nbsp;"
+                    buttonDiv.append(span2);
                     buttonDiv.append(delbtn);
 
                     buttonDiv1.append(buttonDiv);
@@ -2524,11 +2553,23 @@ function select_view()
 function delete_view()
 {
     var id=this.id;
-    var idStr = id.substr(11);//remove the "deleteAlarm-" part
+    var idStr = id.substr(11);//remove the "deleteView-" part
     console.log("the node id is ",idStr);
     confirm_dialog("Delete View","Delete the view '"+idStr+"'","Delete",delete_view_confirm,idStr);
 }
 
+function save_view()
+{
+    var id=this.id;
+    var idStr = id.substr(9);//remove the "saveView-" part
+    console.log("the node id is ",idStr);
+    confirm_dialog("Overwrite View Settings","Overwrite the view '"+idStr+"'","Overwrite",save_view_confirm,idStr);
+}
+
+function save_view_confirm(nodeName)
+{
+    new_view(null,nodeName);
+}
 
 function delete_view_confirm(nodeName)
 {
@@ -2542,13 +2583,14 @@ function delete_view_confirm(nodeName)
 function add_view()
 {
    const randomId = Math.floor(Math.random()*16777215).toString(16);
-   var name = "newView_"+randomId;
-   set_value_dialog("Create new View","Name ","Create",new_view,null,name);
+   var name = null;//"newView_"+randomId;
+   set_value_dialog("Create new View","Name ","Create",new_view,null,name,placeholderText="set new view name");
 }
 
 
 function new_view(parameter,name)
 {
+    if (!name) return;
     var widgetPath = $("#contextviews").attr("widgetPath");
     console.log("new_view",parameter,name,"from widget",widgetPath);
     //create a new view, collect all values
