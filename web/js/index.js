@@ -2367,6 +2367,16 @@ function jump_to_date_confirm()
 }
 
 
+function jump_to_date_now()
+{
+    var startTime = $("#jump-to-date").attr("startTime");
+    var endTime = $("#jump-to-date").attr("endTime");
+    var timezone = moment(newMiddle).utcOffset();
+    var now = moment().utcOffset(timezone).format();
+    var newMiddle = $("#jump-to-date").val(now);
+
+}
+
 
 function context_menu_views(opt,idx,optIdx)
 
