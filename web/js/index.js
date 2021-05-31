@@ -1728,7 +1728,7 @@ function prepare_context_menu(dataString,modelPath)
     menu.push({
         disabled:false,
         icon: 'far fa-calendar-alt',
-        label: "jump to date..",
+        label: "jump to date...",
         modelPath:modelPath,
         action: function(option, contextMenuIndex, optionIndex){
                         var opt = option;
@@ -1743,7 +1743,7 @@ function prepare_context_menu(dataString,modelPath)
     menu.push({
         disabled:false,
         icon: 'fas fa-chart-line',
-        label: "views..",
+        label: "views...",
         modelPath:modelPath,
         action: function(option, contextMenuIndex, optionIndex){
                         var opt = option;
@@ -1910,7 +1910,7 @@ function prepare_context_menu(dataString,modelPath)
         var splitted = fkt.split(".");
         var entry={
             icon: 'fas fa-play-circle',
-            label: '<font size="3" color="#d9b100">'+splitted[splitted.length -1]+'</font>',
+            label: '<font size="3" color="#d9b100">'+splitted[splitted.length -1]+'...</font>',
             data: fkt,
             action: function(option, contextMenuIndex, optionIndex){context_menu_click_function(option); }
         };
@@ -1923,7 +1923,7 @@ function prepare_context_menu(dataString,modelPath)
             var splitted = pipeline.split(".");
             var entry={
                 icon: 'fas fa-gamepad',
-                label: '<font size="3" color="#d9b100">'+splitted[splitted.length -1]+'</font>',
+                label: '<font size="3" color="#d9b100">'+splitted[splitted.length -1]+'...</font>',
                 data: pipeline,
                 widget: data[".properties"].id,
                 action: function(option, contextMenuIndex, optionIndex){context_menu_click_pipeline(option); }
