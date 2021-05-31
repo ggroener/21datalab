@@ -105,9 +105,6 @@ function populate_ui()
 
     //Make all dialogs draggable
     $('.modal').on('shown.bs.modal', function (e) {
-        alert('modal is  shown',e);
-        var t = this;
-
         $("#"+e.target.id).draggable({
                         cursor: 'move',
                         handle: '.modal-header'

@@ -1550,8 +1550,10 @@ class TimeSeriesWidget():
         # now we have written the update to the server
         # we now rewrite the annotations
         # new and missing will be identified by the show function
-
-        self.show_annotations(fetch=False,checkModifies=hasModifies)
+        if hasModifies:
+            self.show_annotations(fetch=False,checkModifies=hasModifies)
+        else:
+            self.show_annotations(fetch=True, checkModifies=hasModifies)
 
         self.update_annotations_and_thresholds_old_part(arg,lastAnnotations,newAnnotations,differential)
 
@@ -3684,7 +3686,10 @@ class TimeSeriesWidget():
             for index in range(len(self.annotationsInfo[tag]["data"]["drawn"])):
                 if self.annotationsInfo[tag]["data"]["drawn"][index]:
                     annoId = self.annotationsInfo[tag]["data"]["id"][index]
-                    self.add_anno_to_list(serverAnnos[annoId],tag,manual=True,listPointer=new)
+                    # we rescue this annotation only if it was not deleted on the server!
+                    #print(f"this anno id was draws {annoId} and is on server {annoId in serverAnnos}")
+                    if annoId in serverAnnos:
+                        self.add_anno_to_list(serverAnnos[annoId],tag,manual=True,listPointer=new)
                     #for key in new:
                     #    new[key].append(self.annotationsInfo[tag]["data"][key][index])
 
