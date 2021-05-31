@@ -2363,7 +2363,7 @@ function jump_to_date_confirm()
         console.error("invalid date format");
     }
 
-
+    $("#contextjumpdate").modal('hide');
 }
 
 
