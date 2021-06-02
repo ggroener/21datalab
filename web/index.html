@@ -337,13 +337,10 @@
                                         <div class="col-4">
                                             Message
                                         </div>
-                                        <div class="col">
-                                            classification
+                                        <div class="col-2">
+                                            status
                                         </div>
-                                        <div class="col">
-                                            level
-                                        </div>
-                                        <div class="col">
+                                        <div class="col-3">
                                             action
                                         </div>
                                     </div>
@@ -368,6 +365,37 @@
             </div>
         </div>
     </div>
+
+    <div>
+
+        <div id ="editalarmmodal" class="modal hide fade" role="dialog" >
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="doublechecktitle">Edit Alarm Status</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group row">
+                            <div class="col-3">Set to:</div>
+                            <div class="col-7" id="editalarmselectordiv">  </div>
+
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="set_alarm_status()">Apply</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+    </div>
+
     <div id="contextmenu">
         <!-- will be filled dynamically -->
     </div>

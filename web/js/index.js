@@ -2060,7 +2060,13 @@ function refresh_alarm_table()
 
                     let buttonDiv = document.createElement("div");
                     buttonDiv.className = "col-1";
-                    buttonDiv.style = "margin-left:auto; margin-right:0";
+                    buttonDiv.style = "margin-left:auto; margin-right:13%";
+
+                    //let col9 = document.createElement("col-9");
+                    //let col3 = document.createElement("col-3");
+
+
+
 
                     var btn =  document.createElement("BUTTON");   // Create a <button> element
                     btn.className = "btn btn-secondary";
@@ -2078,6 +2084,8 @@ function refresh_alarm_table()
 
                     btn.deleteIds = ids;
                     buttonDiv.append(btn);
+                    //col3.append(buttonDiv);
+
                     row.append(buttonDiv);
                     table.append(row);
 
@@ -2100,7 +2108,7 @@ function refresh_alarm_table()
                     msgDiv.innerHTML = msgs[msg].text[".properties"].value;
 
                     var statusDiv = document.createElement("div");
-                    statusDiv.className = "col";
+                    statusDiv.className = "col-2";
                     var classification = msgs[msg].confirmed[".properties"].value;
                     if (classification in alarmColors)
                     {
@@ -2108,14 +2116,20 @@ function refresh_alarm_table()
                     }
                     statusDiv.innerHTML = msgs[msg].confirmed[".properties"].value;
 
+
+
                     var buttonDiv = document.createElement("div");
-                    buttonDiv.className = "col";
+                    buttonDiv.className = "col-3";
+
+                    //buttonGroup.role = "group";
+
 
                     var selectDiv = document.createElement("div");
                     selectDiv.className = "col";
 
 
                     //create the classify area only
+
                     var select = document.createElement("SELECT")
                     var inner = "";
                     for (var idx in msgs[msg].confirmed[".properties"].enumValues)
@@ -2126,26 +2140,34 @@ function refresh_alarm_table()
                     select.innerHTML=inner;
                     select.id = "confirmSelect-"+msgs[msg].confirmed[".properties"].id;
                     selectDiv.append(select);
+                    //save the select div inside the button
+
 
                     var btn =  document.createElement("BUTTON");   // Create a <button> element
                     btn.className = "btn btn-secondary";
                     btn.id = "confirmAlarm-"+msgs[msg].confirmed[".properties"].id;
-                    btn.innerHTML = '<i class="fas fa-check"></i>';
-                    btn.onclick = confirmAlarm;
-
+                    btn.innerHTML = '<i class="fas fa-pen"></i>';
+                    btn.onclick = edit_alarm;//(btn);
+                    //btn.setAttribute("selector",selectDiv);
+                    btn.setAttribute("editOptions",msgs[msg].confirmed[".properties"].enumValues);
+                    btn.setAttribute("nodeId",msgs[msg].confirmed[".properties"].id);
                     buttonDiv.append(btn);
 
-                    var deleteDiv = document.createElement("div");
-                    deleteDiv.className = "col";
+
                     var delbtn =  document.createElement("BUTTON");   // Create a <button> element
                     delbtn.className = "btn btn-secondary";
                     delbtn.id = "deleteAlarm-"+msgs[msg][".properties"].id;
                     delbtn.innerHTML = '<i class="far fa-trash-alt"></i>';
                     delbtn.msgText = msgs[msg].startTime[".properties"].value+" \n: "+msgs[msg].text[".properties"].value;
                     delbtn.onclick = deleteAlarm;
-                    deleteDiv.append(delbtn);
 
-                    row.append(timeDiv,msgDiv,statusDiv,selectDiv, buttonDiv,deleteDiv);
+                    var space = document.createElement("span");
+                    space.innerHTML= ' &nbsp';
+                    buttonDiv.append(space);
+                    buttonDiv.append(delbtn);
+
+                    //buttonDiv.append(buttonGroup);
+                    row.append(timeDiv,msgDiv,statusDiv, buttonDiv );
                     //row.appendChild(msgDiv);
                     table.append(row);
                 }
@@ -2157,6 +2179,8 @@ function refresh_alarm_table()
 //executed on confirm click
 function confirmAlarm()
 {
+    //need the selection here xxx todo
+    /*
     var id=$(this).attr('id');
     var idStr = id.substr(13);
     console.log("the node id is ",idStr);
@@ -2166,8 +2190,57 @@ function confirmAlarm()
 
     var query = [{"id":idStr,"value":value}];
     http_post("/setProperties",JSON.stringify(query),null,null,null);
+    */
+}
+
+
+
+function edit_alarm()
+{
+    console.log("edit_alarm button");
+
+    var select = document.createElement("SELECT")
+    var inner = "";
+    options = this.getAttribute("editOptions").split(",");
+    for (var idx in options)
+    {
+        var enumval = options[idx];
+        inner=inner+"<option>"+enumval+"</option>";
+    }
+    select.innerHTML=inner;
+    select.id = "confirmAlarmSelect";//
+    select.setAttribute("nodeId",this.getAttribute("nodeId"));
+    //selectDiv.append(select);
+    //save the select div inside the button
+    $("#editalarmselectordiv").empty();
+    $("#editalarmselectordiv").append(select);
+
+    $("#editalarmmodal").modal("show");
+        //create the classify area only
+    console.log(this);
+    //get the selector ready prepared
 
 }
+
+function set_alarm_status()
+{ //called from the edit alarm modal
+
+    //var id=$(this).attr('id');
+    //var idStr = id.substr(13);
+    var idStr = $("#confirmAlarmSelect")[0].getAttribute("nodeId");
+    console.log("the node id is ",idStr);
+
+    //pick the selection
+    var value = $("#confirmAlarmSelect").children("option:selected").val();
+
+    var query = [{"id":idStr,"value":value}];
+    http_post("/setProperties",JSON.stringify(query),null,null,null);
+    refresh_alarm_table();
+
+}
+
+
+
 //executed on delete clickfunction btn_trash(id)
 function deleteAlarm()
 {
@@ -2192,8 +2265,9 @@ function deleteAllAlarms()
     $("#confirm-modal-ok").unbind();
     $("#confirm-modal-ok").click( function() {delete_all_alarms_confirmed(ids);});
     $("#confirm-delete").modal('show');
-
 }
+
+
 function delete_all_alarms_confirmed(ids)
 {
     var query = ids;
