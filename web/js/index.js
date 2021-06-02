@@ -2253,6 +2253,13 @@ function set_value_dialog(title,text,buttonText,confirmCallback,parameter,value,
         var newValue = $("#enter-value-modal-input").val();
         callback(parameter,newValue);
     });
+
+    $("#enter-value-modal-input")[0].onchange = function() {
+        $("#enter-value-dialog").modal('hide');
+        var newValue = $("#enter-value-modal-input").val();
+        callback(parameter,newValue);
+    };
+
     $("#enter-value-dialog").modal('show');
 }
 
@@ -2584,7 +2591,43 @@ function add_view()
 {
    const randomId = Math.floor(Math.random()*16777215).toString(16);
    var name = null;//"newView_"+randomId;
-   set_value_dialog("Create new View","Name ","Create",new_view,null,name,placeholderText="set new view name");
+   set_value_dialog("Create new View","Name ","Create",add_view_confirm,null,name,placeholderText="set new view name");
+}
+
+function add_view_confirm(parameter,name)
+{
+    //check if name already exists, if so, double check it
+    var table = $('#viewscontainer')[0].children;
+
+    var len = table.length;
+    var found = false;
+    if (len>2)
+    {
+        for (var index=1;index<len-1;index++) {
+            var c= table[index];
+            //console.log(c.children[0].innerHTML);
+            if (c.children[0].innerHTML == name)
+            {
+                found = true;
+                break;
+            }
+
+        }
+
+    }
+
+    if (found)
+    {
+
+        confirm_dialog("Overwrite View Settings","Overwrite the view '"+name+"'","Overwrite",save_view_confirm,name);
+    }
+    else
+    {
+        new_view(null,name);
+    }
+
+
+
 }
 
 
