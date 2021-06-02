@@ -59,7 +59,7 @@ sseclient==0.0.24         # via -r requirements.in (line 11)
  
 tornado==6.0.4            # via bokeh, ipykernel, jupyter-client, notebook, terminado
  
-urllib3==1.25.8           # via requests
+urllib3==1.26.5           # via requests
 wcwidth==0.1.8            # via prompt-toolkit
 webencodings==0.5.1       # via bleach
 wheel==0.33.6             # via -r requirements.in (line 12)
