@@ -3784,6 +3784,12 @@ class TimeSeriesWidget():
         if anno["type"]=="time" and tag in anno["tags"]:
             start = anno["startTime"]
             end = anno["endTime"]
+
+            #sanity checks
+            if start>end:
+                self.logger.error(f"skip annotation: start>end {anno}")
+                return
+
             listPointer["center"].append((end + start) / 2)
             listPointer["width"].append(end - start)
             listPointer["name"].append(anno["id"])
