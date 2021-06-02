@@ -2748,7 +2748,7 @@ class Model:
                 self.__execution_thread(id) # call it sync here
                 return True
             else:
-                self.logger.error("unsupported execution type"+str(executionType)+" in fuction"+str(id))
+                self.logger.error("unsupported execution type"+str(executionType)+" in function"+str(id))
                 raise(Exception)
         except:
             return False
@@ -2910,10 +2910,12 @@ class Model:
 
                     targetId = self.get_id("root.system.progress.targets")
                     if targetId:
-                        self.disable_observers()
-                        self.remove_forward_refs(targetId)
-                        self.add_forward_refs(targetId,[controlNode.get_child("progress").get_id()])
-                        self.enable_observers()
+                        if not self.get_node_info(targetId)["forwardRefs"]:
+                            #we only hook us on the observer if free
+                            self.disable_observers()
+                            self.remove_forward_refs(targetId)
+                            self.add_forward_refs(targetId,[controlNode.get_child("progress").get_id()])
+                            self.enable_observers()
 
                     # we don't signal these things
                     self.disable_observers()
@@ -2961,6 +2963,15 @@ class Model:
                         #only set it if it was set by the function, otherwise we save a progree event
                         controlProgress.set_value(0)
 
+                    #now unhook the observer of our progress
+                    targetId = self.get_id("root.system.progress.targets")
+                    if targetId:
+                        #we have a system observer for progress
+                        forwards = self.get_node_info(targetId)["forwardRefs"]
+                        if forwards and forwards[0] == controlNode.get_child("progress").get_id():
+                            #the observer is watching us, remove it
+                            self.logger.debug("remove "+self.get_browse_path(controlNode.get_child("progress").get_id()))
+                            self.remove_forward_refs(targetId)
 
                     #self.notify_observers([controlExecutionCounter.get_id(),controlProgress.get_id()],"value")
 
@@ -3131,6 +3142,11 @@ class Model:
                 self.logger.info(f" timeseries data {id} has no corresponding node in model .. delete the ts-data")
                 self.ts.delete(id)
 
+    def reset_progress_observer(self):
+        targetId = self.get_id("root.system.progress.targets")
+        if targetId:
+            self.remove_forward_refs(targetId)
+
 
     def load(self,fileName,includeData = True, update = False):
         """
@@ -3209,6 +3225,7 @@ class Model:
                                     self.ts.set(id,times=times)
                     self.clean_ts_entries()  # make sure the model and ts table is consistent
 
+                self.reset_progress_observer()
                 self.instantiate_all_objects()
                 self.reset_all_objects()
 
