@@ -480,7 +480,7 @@ class TimeSeriesWidgetDataServer():
                     annotation["endTime"] = date2secs(annotation["endTime"]) * 1000
                 if annotation["type"] in ["threshold", "motif"]:
                     # we also pick the target, only the first
-                    annotation["variable"] = annotation["variable"][0]
+                    annotation["variable"] = annotation["variable"][0] if type(annotation["variable"]) is list else annotation["variable"]
                 self.annotations[id] = annotation #update or new entry
             except Exception as ex:
                 self.logger.error(f"problem loading annotations {ex}, {str(sys.exc_info()[1])}")
@@ -1312,7 +1312,7 @@ class TimeSeriesWidget():
                     changeKey = arg["data"]["sourcePath"].split('.')[-1]
                     updatedAnno[changeKey]=arg["data"]["value"]
                     if changeKey != "variable" and "variable" in updatedAnno:
-                        updatedAnno["variable"] = [updatedAnno["variable"]] # events from the outside deliver the variable as list (the forward refs from the referencer, internally, we only keep a string
+                        updatedAnno["variable"] = updatedAnno["variable"] # events from the outside deliver the variable as list (the forward refs from the referencer, internally, we only keep a string
                     eventInfo = {"new":{},"delete":{},"modify":{id:updatedAnno}}
                     arg["data"]["_eventInfo"] = eventInfo
 
@@ -1537,6 +1537,14 @@ class TimeSeriesWidget():
                         updatedAnno["variable"] = [updatedAnno["variable"]] # events from the outside deliver the variable as list (the forward refs from the referencer, internally, we only keep a string
                     eventInfo = {"new":{},"delete":{},"modify":{id:updatedAnno}}
                     arg["data"]["_eventInfo"] = eventInfo
+
+        #once more, make sure that the variables are not a list
+        if "data" in arg and "_eventInfo" in arg["data"]:
+            for entry in ["new","delete","modify"]:
+                for id,info in arg["data"]["_eventInfo"][entry].items():
+                    for k,v in info.items():
+                        if k=="variable" and type(v) is list:
+                            arg["data"]["_eventInfo"][entry][id][k]=v[0] #take the first of the variables from the list
 
 
         lastAnnotations = self.server.get_annotations()
