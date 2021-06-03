@@ -2215,8 +2215,9 @@ class TimeSeriesWidget():
 
             for k, v in self.lines.items():
                 if not self.server.is_score_variable(k):
-                    self.logger.debug(f"add line {k} t hover")
-                    renderers.append(v)
+                    self.logger.debug(f"add line {k} t hover {type(v)} {type(v) is GlyphRenderer}")
+                    if type(v) is GlyphRenderer:
+                        renderers.append(v)
 
             self.logger.info(f"number of new hovers {len(renderers)}")
             #for h in self.annoHovers:
