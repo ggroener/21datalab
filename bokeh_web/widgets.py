@@ -638,7 +638,11 @@ class TimeSeriesWidgetDataServer():
         return copy.deepcopy(self.scoreVariables)
 
     def is_score_variable(self,variableBrowsePath):
-        return (variableBrowsePath in self.scoreVariables)
+        if variableBrowsePath in self.scoreVariables:
+            return True
+        if variableBrowsePath.upper().endswith("SCORE"):
+            return True
+        return False
 
     def get_score_marker(self,variableBrowsePath):
         #look for the uiInfo in the mirror
