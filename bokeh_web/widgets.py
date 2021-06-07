@@ -1048,6 +1048,7 @@ class TimeSeriesWidget():
                         elif entry == "motifs":
                             self.__dispatch_function(self.hide_motifs)
                         elif entry == "events":
+                            self.eventsVisible=False # set this false right away (especially important for "views" as they might trigger the hide and show both in a row
                             self.__dispatch_function(self.hide_all_events)
 
 
