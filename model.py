@@ -2994,16 +2994,39 @@ class Model:
                 except Exception as ex:
                     errorString = str(sys.exc_info()[1])
                     self.logger.error("error inside execution thread, id" +str(id)+" functionname"+str(functionName)+errorString+" "+str(ex)+" "+str(traceback.format_exc()))
+                    
+                    #unhook the progress bar
+                    targetId = self.get_id("root.system.progress.targets")
+                    if targetId:
+                        #we have a system observer for progress
+                        forwards = self.get_node_info(targetId)["forwardRefs"]
+                        if forwards and forwards[0] == controlNode.get_child("progress").get_id():
+                            #the observer is watching us, remove it
+                            self.logger.debug("remove "+self.get_browse_path(controlNode.get_child("progress").get_id()))
+                            self.remove_forward_refs(targetId)                    
+                    
+                    
                     pass
 
 
         except Exception as ex:
             errorString = str(sys.exc_info()[1])
-            self.logger.error("error inside execution thread, id " +str(id)+" functionname"+str(functionName)+errorString+" "+str(ex)+" "+str(traceback.format_exc()))
+            self.logger.error("error inside execution thread level outer, id " +str(id)+" functionname"+str(functionName)+errorString+" "+str(ex)+" "+str(traceback.format_exc()))
             controlNode.get_child("status").set_value("interrupted")
             controlNode.get_child("result").set_value("error:"+errorString)
             controlNode.get_child("progress").set_value(0)
             self.publish_status_msg("error in "+str(functionName)+": "+errorString)
+            
+            #unhook the progress bar
+            targetId = self.get_id("root.system.progress.targets")
+            if targetId:
+                #we have a system observer for progress
+                forwards = self.get_node_info(targetId)["forwardRefs"]
+                if forwards and forwards[0] == controlNode.get_child("progress").get_id():
+                    #the observer is watching us, remove it
+                    self.logger.debug("remove "+self.get_browse_path(controlNode.get_child("progress").get_id()))
+                    self.remove_forward_refs(targetId)            
+            
         return
 
     def get_error(self):
