@@ -4498,14 +4498,17 @@ class TimeSeriesWidget():
         #now check if we need to add some scores
         for scoreVarName in self.server.get_score_variables():
             scoreNodeName = scoreVarName.split('.')[-1]
-            if scoreNodeName.split('_')[0] in currentVarNames:
-                if "SCORE" in scoreNodeName.split('_')[-1].upper():
-                    additionalScores.append(scoreVarName)
+            splitted = scoreNodeName.split('_')
+            ending = splitted[-1].upper()
+            scoreName = '_'.join(splitted[:-1])
+            if scoreName in currentVarNames and "SCORE" in ending:
+                additionalScores.append(scoreVarName)
 
         #now we have in additionalScores the missing variables to add
         #write it to the backend and wait for the event to plot them
         if additionalScores !=[]:
             currentVariables.extend(additionalScores)
+            currentVariables = list(set(currentVariables)) # del duplicates
             self.server.set_variables_selected(currentVariables,updateLocalNow=False)
 
     def hide_scores(self):
