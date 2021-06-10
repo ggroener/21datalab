@@ -568,6 +568,8 @@ def update(functionNode,startTime=0):
 
     if 1:
         shift = int(float(len(times))*freedom*factorX)
+        if shift==0:
+            shift=1 #at least 1
         fillMax = numpy.min(upper)
         fillMin = numpy.max(lower)
 
