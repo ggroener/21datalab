@@ -305,6 +305,13 @@ def envelope_miner(functionNode):
                             "epochEnd": w[0][0]+windowTime,
                             "offset" : offset,
                             "format":my_date_format(w[0][0])+"&nbsp&nbsp(match=%2.3f)"%diff
+                            #"below":list(numpy.copy(below)),
+                            #"above":list(numpy.copy(above)),
+                            #"x":list(numpy.copy(x)),
+                            #"w":list(numpy.copy(w[1])),
+                            #"upper":list(numpy.copy(upper["values"])),
+                            #"lower":list(numpy.copy(lower["values"])),
+                            #"expected":list(numpy.copy(expected["values"]))
                             })
             if maxMatches and len(matches) == maxMatches:
                 break
@@ -510,7 +517,7 @@ def _update_envelope(motif,widget):
 
 
 
-def update(functionNode,startTime=0):
+def update(functionNode,startTime=0, offset=None):
 
     if functionNode.get_name()!="update":
         functionNode = functionNode.get_parent().get_child("update")
@@ -552,7 +559,10 @@ def update(functionNode,startTime=0):
         times=times+diff
         #value offset
         ts =  motif.get_child("variable").get_target().get_time_series(resampleTimes = times)
-        dataDiff = ts["values"][0]-data[0]
+        if type(offset) is type(None):
+            dataDiff = ts["values"][0]-data[0]
+        else:
+            dataDiff = offset
         data = data +dataDiff
 
     freedom = motif.get_child("envelope.freedom").get_value()
@@ -694,7 +704,7 @@ def jump(functionNode):
     if matchIndex == -1:
         update(functionNode)
     else:
-        update(functionNode, startTime=match["epochStart"])
+        update(functionNode, startTime=match["epochStart"], offset = match["offset"])
     return True
 
 
