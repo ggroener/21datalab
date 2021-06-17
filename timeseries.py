@@ -197,6 +197,7 @@ class TimeSeries:
                     "samplehold" sample and hold
                     "linear": linear interpolation
                     "linearfill": linear interpolation and also interpolate "nan" or "inf" values in the original data
+                    "outlier"
                 includeAllNan: if set true, we will return all existing nan in the requested interval no matter if they match the resampling
                                ... currently only supported for "bin" queries (typically from the UI)
 
@@ -261,7 +262,22 @@ class TimeSeries:
                     if noBins:
                         #we pick samples only if we have more than requested
                         if (endIndex-startIndex)>noBins:
-                            takeIndices = numpy.linspace(startIndex, endIndex-1, noBins, endpoint=True, dtype=int)
+                            if resampleMethod=="outlier":
+                                #take the outliers
+                                firstIndices = numpy.linspace(startIndex, endIndex-1, noBins+1, endpoint=True, dtype=int) # one more than the bins
+                                takeIndices = []
+                                for idxOfIndices in range(len(firstIndices)-1):
+                                    startIdx = firstIndices[idxOfIndices]
+                                    endIdx = firstIndices[idxOfIndices+1]
+                                    values = self.values[startIdx:endIdx]
+                                    #take = numpy.argmax(values)+startIdx # take the maximum valur
+                                    values = numpy.abs(values-numpy.mean(values)) #find the max deviating value
+                                    take = numpy.argmax(values)+startIdx
+                                    takeIndices.append(take)
+                                takeIndices = numpy.asarray(takeIndices,dtype=numpy.int)
+
+                            else:
+                                takeIndices = numpy.linspace(startIndex, endIndex - 1, noBins, endpoint=True, dtype=int)
                         else:
                             takeIndices = numpy.arange(startIndex, endIndex) #arange excludes the last
 

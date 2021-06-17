@@ -506,7 +506,7 @@ class TimeSeriesWidgetDataServer():
         return self.__web_call("POST","_getvalue",varList)
 
 
-    def get_data(self,variables,start=None,end=None,bins=300):
+    def get_data(self,variables,start=None,end=None,bins=300,aggregation=None):
 
         """
             retrieve a data table from the backend
@@ -519,6 +519,8 @@ class TimeSeriesWidgetDataServer():
                 the body of the response of the data request of the backend
         """
         self.logger.debug("server.get_data()")
+        if not aggregation:
+            aggregation=self.get_aggregation()
 
         varList = self.selectedVariables.copy()
         #include background values if it has background enabled
@@ -543,6 +545,7 @@ class TimeSeriesWidgetDataServer():
              "startTime" : start,
              "endTime" :   end,
             "bins":bins,
+            "resampleMethod":aggregation,
             "includeTimeStamps": "02:00",
             "includeIntervalLimits" : True,
             "includeAllNan":includeAllNan
@@ -779,6 +782,12 @@ class TimeSeriesWidgetDataServer():
 
     def get_settings(self):
         return copy.deepcopy(self.settings)
+
+    def get_aggregation(self):
+        if "aggregation" in self.mirror:
+            return self.mirror["aggregation"][".properties"]["value"]
+        else:
+            return None
 
     def refresh_settings(self):
         self.__get_settings()

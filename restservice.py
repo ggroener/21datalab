@@ -683,9 +683,22 @@ def all(path):
                     includeAllNan = data["includeAllNan"]
                 else:
                     includeAllNan = False
+
+                if "resampleMethod" in data:
+                    resampleMethod = data["resampleMethod"]
+                else:
+                    resampleMethod = None
                 try:
                     #result = m.get_timeseries_table(data["nodes"],startTime=startTime,endTime=endTime,noBins=int(data["bins"]),includeTimeStamps=includeTimeStamps,format="dict",includeBackGround=includeBackGround)
-                    result = m.time_series_get_table(data["nodes"], start=startTime, end=endTime, noBins=int(data["bins"]), format="flat",toList=True,includeIntervalLimits=includeIntervalLimits, includeAllNan=includeAllNan)
+                    result = m.time_series_get_table(data["nodes"],
+                                                     start=startTime,
+                                                     end=endTime,
+                                                     noBins=int(data["bins"]),
+                                                     format="flat",
+                                                     toList=True,
+                                                     includeIntervalLimits=includeIntervalLimits,
+                                                     includeAllNan=includeAllNan,
+                                                     resampleMethod=resampleMethod)
                     if type(result) != type(None):
                         if includeTimeStamps:
                             pass #XXX todo: include the timestamps converted to a certain format
