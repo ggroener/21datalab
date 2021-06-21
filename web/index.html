@@ -405,17 +405,52 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="doublechecktitle">Jump to date/time</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="nav-jump-top">
+                            <div class="nav-jump-top-title">
+                                <h4 class="modal-title" id="doublechecktitle">Jump to date/time</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            </div>
+                            <ul class="nav nav-jump-top-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-jumptodate-link nav-item-hover" href="#nav-jump-center" data-toggle="tab">
+                                        <div class="nav-jumptodate-text">
+                                            Center
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-jumptodate-link nav-item-hover" href="#nav-jump-start" data-toggle="tab">
+                                        <div class="nav-jumptodate-text">
+                                            Start/End
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group row">
-                            <div class="col-3">Jump to:</div>
-                            <div class="col-7"><input class="form-control" type="text" id="jump-to-date"  style="text-align:left;" onchange="jump_to_date_confirm()"> </div>
-                            <div class="col-2"><button type="button" id="jump-to-now" class="btn btn-default" onclick="jump_to_date_now()">now</button></div>
+                        <div class="tab-content">
+                            <div id="nav-jump-center" class="tab-pane fade active show ">
+                                <div class="form-group row">
+                                    <div class="col-3">Jump to:</div>
+                                    <div class="col-7"><input class="form-control" type="text" id="jump-to-date"  style="text-align:left;" onchange="jump_to_date_confirm()"> </div>
+                                    <div class="col-2"><button type="button" id="jump-to-now" class="btn btn-default" onclick="jump_to_date_now()">now</button></div>
+                                </div>
+                            </div>
 
+                            <div id="nav-jump-start" class="tab-pane fade">
+                                <div class="form-group row">
+                                    <div class="col-3">Start from:</div>
+                                    <div class="col-7"><input class="form-control" type="text" id="jump-to-date-start"  style="text-align:left;" onchange="jump_to_date_change()"> </div>
+                                    <div class="col-2"><button type="button" id="jump-to-now-start" class="btn btn-default" onclick="jump_to_date_start_now()">now</button></div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-3">End to:</div>
+                                    <div class="col-7"><input class="form-control" type="text" id="jump-to-date-end"  style="text-align:left;" onchange="jump_to_date_change()"> </div>
+                                    <div class="col-2"><button type="button" id="jump-to-now-end" class="btn btn-default" onclick="jump_to_date_end_now()">now</button></div>
+                                </div>
+                            </div>
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
