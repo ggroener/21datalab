@@ -813,19 +813,34 @@ class TimeSeriesWidgetDataServer():
         self.__web_call("POST", "_references", query)
         return
 
-    def set_x_range(self,start,end):
+    def set_xy_range(self,start,end,yMin=None,yMax=None):
         startTimeString = self.bokeh_time_to_string(start)
         endTimeString = self.bokeh_time_to_string(end)
 
         self.mirror["startTime"][".properties"]["value"]=startTimeString
         self.mirror["endTime"][".properties"]["value"] = endTimeString
 
+
         query= [
             {"browsePath": self.path+".startTime","value":startTimeString},
             {"browsePath": self.path + ".endTime", "value": endTimeString}]
+        if type(yMin) is None and type(yMax) is None:
+            pass
+        else:
+            if "yLimits" in self.mirror:
+                self.mirror["yLimits"][".properties"]["value"]=[yMin,yMax] #directly local write to avoid circle activities via event
+                query.append({"browsePath": self.path +"yLimits","value":[yMin,yMax]})
+
         self.__web_call("POST","setProperties",query)
         return
 
+    def set_y_range(self,yMin=None,yMax=None):
+
+        if "yLimits" in self.mirror:
+            self.mirror["yLimits"][".properties"]["value"] = [yMin, yMax]
+            query = [{"browsePath": self.path + ".yLimits", "value": [yMin, yMax]}]
+            self.__web_call("POST", "setProperties", query)
+        return True
 
 
 class TimeSeriesWidget():
@@ -997,7 +1012,7 @@ class TimeSeriesWidget():
             #check for start/EndTime
             if "sourcePath" in eventData:
                 serverPath = self.server.get_path()
-                for var in ["startTime","endTime"]:
+                for var in ["startTime","endTime","yLimits"]:
                     if eventData["sourcePath"] == serverPath+"."+var:
                         if self.server.get_mirror()[var][".properties"]["value"] == eventData["value"]:
                             self.logger.info("sync x asis not needed")
@@ -1080,6 +1095,10 @@ class TimeSeriesWidget():
                 self.logger.debug("start/end changed")
                 times = {"start":start,"end":end}
                 self.__dispatch_function(self.sync_x_axis,times)
+
+            if "yLimits" in oldMirror and "yLimits" in newMirror and oldMirror["yLimits"][".properties"]["value"] != newMirror["yLimits"][".properties"]["value"]:
+                self.__dispatch_function(self.set_y_axis, newMirror["yLimits"][".properties"]["value"])
+
 
             #check if streaming mode has changed
             if oldMirror["streamingMode"][".properties"]["value"] != newMirror["streamingMode"][".properties"]["value"]:
@@ -1259,6 +1278,10 @@ class TimeSeriesWidget():
         #self.plot.x_range.end = end
         self.autoAdjustY = self.server.get_mirror()["autoScaleY"][".properties"]["value"]
         self.adjust_y_axis_limits()
+
+    def set_y_axis(self,limits):
+        self.plot.y_range.start = limits[0]
+        self.plot.y_range.end = limits[1]
 
 
     def draw_new_annotation(self):
@@ -2496,7 +2519,7 @@ class TimeSeriesWidget():
     def is_second_axis(self,name):
         return ".score" in name
 
-    def adjust_y_axis_limits(self):
+    def adjust_y_axis_limits(self,force=False):
         """
             this function automatically adjusts the limts of the y-axis that the data fits perfectly in the plot window
         """
@@ -2506,7 +2529,8 @@ class TimeSeriesWidget():
             ## only rescale the box_modifier, this is needed in streaming to keep the left
             # and right limits
             self.box_modifier_rescale() # only rescale the box_modifier, this is needed in streaming to keep the left
-            return
+            if not force:
+                return
 
         lineData = []
         selected = self.server.get_variables_selected()
@@ -2926,7 +2950,7 @@ class TimeSeriesWidget():
 
 
 
-    def __plot_lines(self,newVars = None,appendingDataArrived=False):
+    def __plot_lines(self,newVars = None,appendingDataArrived=False,forceYRescale=False):
         """ plot the currently selected variables as lines, update the legend
             if newVars are given, we only plot them and leave the old
         """
@@ -2961,10 +2985,11 @@ class TimeSeriesWidget():
             return
         if self.rangeStart == None or self.streamingMode:
             mini,maxi = self.get_min_max_times(getData)
+            minY,maxY = self.get_min_max_y(getData)
             #write it back
             self.rangeStart = mini#getData["__time"][0]
             self.rangeEnd   = maxi#getData["__time"][-1]
-            self.server.set_x_range(self.rangeStart, self.rangeEnd)
+            self.server.set_xy_range(self.rangeStart, self.rangeEnd,minY,maxY)
 
         #del getData["__time"]
         #getData["__time"]=[0]*settings["bins"] # dummy for the hover
@@ -2997,7 +3022,7 @@ class TimeSeriesWidget():
         self.update_column_datas(getData)
 
         #self.logger.debug(f"self.columnData {self.columnData}")
-        self.adjust_y_axis_limits()
+        self.adjust_y_axis_limits(force=forceYRescale)
         #timeNode = "__time"
         #now plot var
 
@@ -3136,6 +3161,7 @@ class TimeSeriesWidget():
             self.plot.legend.items = legendItems #replace them
 
         self.set_x_axis()
+        self.server.set_y_range(self.plot.y_range.start,self.plot.y_range.end)
         #self.adjust_y_axis_limits()
 
         return getData # so that later executed function don't need to get the data again
@@ -3160,6 +3186,19 @@ class TimeSeriesWidget():
         maxi = 0
         for k,v in newData.items():
             if k.endswith("__time"):
+                check=[mini]
+                check.extend(v[1:-1])
+                mini =  min(check)
+                check=[maxi]
+                check.extend(v[1:-1])
+                maxi=max(check)
+        return mini,maxi
+
+    def get_min_max_y(self,newData):
+        mini = 1000*1000*1000*1000*1000
+        maxi = 0
+        for k,v in newData.items():
+            if not k.endswith("__time"):
                 check=[mini]
                 check.extend(v[1:-1])
                 mini =  min(check)
@@ -3294,7 +3333,11 @@ class TimeSeriesWidget():
                 #return # wait for next event
 
 
-        data = self.__plot_lines(newVars = newLines,appendingDataArrived=appendingDataArrived) # the data contain all visible time series including the background
+        if deleteLines or newLines:
+            forceYRescale = True
+        else:
+            forceYRescale = False
+        data = self.__plot_lines(newVars = newLines,appendingDataArrived=appendingDataArrived,forceYRescale=forceYRescale) # the data contain all visible time series including the background
         #todo: make this differential as well
         if self.server.get_settings()["background"]["hasBackground"]:
             self.refresh_backgrounds(data)
@@ -3375,7 +3418,7 @@ class TimeSeriesWidget():
             #if self.server.get_settings()["autoScaleY"][".properties"]["value"] == True
             if eventType=="LODEnd":# self.boxModifierVisible:
                 self.autoAdjustY = self.server.get_mirror()["autoScaleY"][".properties"]["value"]
-                self.server.set_x_range(self.rangeStart,self.rangeEnd)
+                self.server.set_xy_range(self.rangeStart,self.rangeEnd)
                 self.refresh_plot()
 
         if eventType == "Reset":
