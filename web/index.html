@@ -410,26 +410,22 @@
                                 <h4 class="modal-title" id="doublechecktitle">Jump to date/time</h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
-                            <ul class="nav nav-jump-top-tabs">
-                                <li class="nav-item">
-                                    <a class="nav-jumptodate-link nav-item-hover" href="#nav-jump-center" data-toggle="tab">
-                                        <div class="nav-jumptodate-text">
-                                            Center
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-jumptodate-link nav-item-hover" href="#nav-jump-start" data-toggle="tab">
-                                        <div class="nav-jumptodate-text">
-                                            Start/End
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
                         </div>
                     </div>
                     <div class="modal-body">
-                        <div class="tab-content">
+                        <ul class="nav nav-tabs bg-secondary" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="tab-cockpit-motif-select" data-toggle="tab" href="#nav-jump-center" role="tab">
+                                    Center
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab-cockpit-motif-parameters" data-toggle="tab" href="#nav-jump-start" role="tab">
+                                    Start/End
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content nav nav-jump-top-tabs">
                             <div id="nav-jump-center" class="tab-pane fade active show ">
                                 <div class="form-group row">
                                     <div class="col-3">Jump to:</div>

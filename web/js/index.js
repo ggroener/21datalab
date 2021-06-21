@@ -2102,7 +2102,7 @@ function refresh_alarm_table()
                     var timeDiv = document.createElement("div");
                     timeDiv.className = "col-3";
                     var startMoment = msgs[msg].startTime[".properties"].value;
-                    startMoment = moment(startMoment, "YYYY-MM-DD HH:mm").format();
+                    startMoment = moment(startMoment, "YYYY-MM-DD HH:mm:ss").format();
                     timeDiv.innerHTML = startMoment;
 
                     var msgDiv = document.createElement("div");
