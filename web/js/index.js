@@ -4,7 +4,7 @@ var nodesMoving = {}; //here we store information from the tree plugin about the
 var nodesMovingFromUpdate = false;
 
 var eventSource = 0;
-
+var newMiddle;
 
 function populate_settings() {
     // Try to retrieve the current setting from the local storage
@@ -2101,7 +2101,9 @@ function refresh_alarm_table()
 
                     var timeDiv = document.createElement("div");
                     timeDiv.className = "col-3";
-                    timeDiv.innerHTML = msgs[msg].startTime[".properties"].value;
+                    var startMoment = msgs[msg].startTime[".properties"].value;
+                    startMoment = moment(startMoment, "YYYY-MM-DD HH:mm").format();
+                    timeDiv.innerHTML = startMoment;
 
                     var msgDiv = document.createElement("div");
                     msgDiv.className = "col-4";
@@ -2416,6 +2418,9 @@ function context_menu_jump_date(opt,idx,optIdx)
             var middleIso = moment(middleEpoch).utcOffset(timezone).format();
             console.log("middle "+middleIso)
             $("#jump-to-date").val(middleIso);
+            
+            $("#jump-to-date-start").val(moment(startEpoch).utcOffset(timezone).format());
+            $("#jump-to-date-end").val(moment(endEpoch).utcOffset(timezone).format());
 
             $("#contextjumpdate").modal('show');
             console.log(res);
@@ -2427,7 +2432,7 @@ function jump_to_date_confirm()
 
     var startTime = $("#jump-to-date").attr("startTime");
     var endTime = $("#jump-to-date").attr("endTime");
-    var newMiddle = $("#jump-to-date").val();
+    newMiddle = $("#jump-to-date").val();
 
     // we calc the new start and end via the original interval
     var timezone = moment(newMiddle).utcOffset();
@@ -2464,8 +2469,48 @@ function jump_to_date_now()
     var endTime = $("#jump-to-date").attr("endTime");
     var timezone = moment(newMiddle).utcOffset();
     var now = moment().utcOffset(timezone).format();
-    var newMiddle = $("#jump-to-date").val(now);
+    newMiddle = $("#jump-to-date").val(now);
+}
 
+function jump_to_date_change()
+{
+    var startTime = $("#jump-to-date-start").val();
+    var endTime = $("#jump-to-date-end").val();
+    console.log(endTime);
+    adjust_middle_value_from_limits(startTime, endTime);
+}
+
+function jump_to_date_start_now()
+{
+    var startTime = $("#jump-to-date").attr("startTime");
+    var endTime = $("#jump-to-date").attr("endTime");
+    var timezone = moment(newMiddle).utcOffset();
+    var now = moment().utcOffset(timezone).format();
+    $("#jump-to-date-start").val(now);
+    jump_to_date_change();
+}
+
+function jump_to_date_end_now()
+{
+    var startTime = $("#jump-to-date").attr("startTime");
+    var endTime = $("#jump-to-date").attr("endTime");
+    var timezone = moment(newMiddle).utcOffset();
+    var now = moment().utcOffset(timezone).format();
+    $("#jump-to-date-end").val(now);
+    jump_to_date_change();
+}
+
+function adjust_middle_value_from_limits(startTime, endTime)
+{
+    $("#jump-to-date").attr("startTime", startTime);
+    $("#jump-to-date").attr("endTime", endTime);
+    var timezone = moment(newMiddle).utcOffset();
+    var startEpoch = Date.parse(startTime);
+    var endEpoch = Date.parse(endTime);
+    var middleEpoch = (startEpoch + endEpoch) / 2;
+    var middleIso = moment(middleEpoch).utcOffset(timezone).format();
+    console.log("middle "+middleIso)
+    $("#jump-to-date").val(middleIso);
 }
 
 

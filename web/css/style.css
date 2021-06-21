@@ -19,6 +19,39 @@
     color: #d9b100;
 }
 
+.nav-jump-top {
+    width: 100%;
+}
+
+.nav-jump-top-title {
+    display: flex;
+    -ms-flex-align: start;
+    align-items: flex-start;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+}
+
+.nav-jump-top-tabs {
+    margin-bottom: -10px !important;
+}
+
+.nav-jump-top-tabs .nav-item {
+    padding-right: 20px;
+}
+
+.nav-jumptodate-link:hover {
+    color: white;
+}
+
+.nav-jumptodate-link {
+    color: white;
+}
+
+.modal-header {
+    padding-bottom: 10px;
+}
+
 
 @media (min-width: 768px) {
     body {
