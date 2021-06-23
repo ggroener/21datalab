@@ -1586,9 +1586,11 @@ class TimeSeriesWidget():
 
         lastAnnotations = self.server.get_annotations()
         hasModifies = False
+        modified = None
         if "data" in arg and "_eventInfo" in arg["data"]:
             if arg["data"]["_eventInfo"]["modify"]:
                 hasModifies = True
+                modified = arg["data"]["_eventInfo"]["modify"]
             newAnnotations = self.server.fetch_annotations_differential(arg["data"]["_eventInfo"]) #this will write the new anno to our internal mirror, also executing the modify or delete
             differential = True
         else:
@@ -1599,9 +1601,9 @@ class TimeSeriesWidget():
         # we now rewrite the annotations
         # new and missing will be identified by the show function
         if hasModifies:
-            self.show_annotations(fetch=False,checkModifies=hasModifies)
+            self.show_annotations(fetch=False,checkModifies=hasModifies, modified = modified )
         else:
-            self.show_annotations(fetch=True, checkModifies=hasModifies)
+            self.show_annotations(fetch=True, checkModifies=hasModifies, modified = modified)
 
         self.update_annotations_and_thresholds_old_part(arg,lastAnnotations,newAnnotations,differential)
 
@@ -2215,7 +2217,7 @@ class TimeSeriesWidget():
         #self.__make_tooltips()
 
 
-    def __make_tooltips(self):
+    def __make_tooltips(self, force=False):
         #make the hover tool
         """
             if we create a hover tool, it only appears if we plot a line, we need to hook the hover tool to the figure and the toolbar separately:
@@ -2231,7 +2233,7 @@ class TimeSeriesWidget():
             newEventLines = set([ v["renderer"] for k,v in self.eventLines.items()])
             newLines.update(newEventLines)
             hoverLines = set(self.hoverTool.renderers)
-            if newLines != hoverLines:
+            if newLines != hoverLines or force:
 
                 self.logger.debug(f"reset hover tool MUSt UPDATE newLines {newLines}, hoverLines{hoverLines}")
                 self.hoverTool.renderers = []
@@ -2243,7 +2245,7 @@ class TimeSeriesWidget():
                 self.toolBarBox.toolbar.tools = newTools
                 self.hoverTool = None
 
-        if not self.hoverTool or  newLines != hoverLines:
+        if not self.hoverTool or  newLines != hoverLines or force:
             renderers = []
 
             for k, v in self.eventLines.items():
@@ -2299,7 +2301,7 @@ class TimeSeriesWidget():
             #self.testSource = ColumnDataSource({"test":[67]*1000})
             #hover.formatters = {'__time': CustomJSHover(code=custom)}
             custom3 = """ console.log(cb_data);"""
-            hover.formatters = {'$x': CustomJSHover(code=custom)}#, 'z':CustomJSHover(args=dict(source=self.testSource),code=custom2)}
+            #hover.formatters = {'$x': CustomJSHover(code=custom)}#, 'z':CustomJSHover(args=dict(source=self.testSource),code=custom2)} #xxxkna
             #hover.callback=CustomJS(code=custom3)
 
             if self.server.get_settings()["hasHover"] in ['vline','hline','mouse']:
@@ -3739,12 +3741,12 @@ class TimeSeriesWidget():
         self.remove_renderers(renderers=removeList)
 
 
-    def hide_annotations_by_tag(self,tag):
+    def hide_annotations_by_tag(self,tag,modified=None):
         #empty all lists
         hasChanged = False
 
         if self.boxModifierVisible:
-            if self.boxModifierAnnotationName in self.annotationsInfo[tag]["data"]["id"]:
+            if self.boxModifierAnnotationName in modified.keys():#self.annotationsInfo[tag]["data"]["id"]:
                 self.box_modifier_hide()
 
         if any(self.annotationsInfo[tag]["data"]["drawn"]):
@@ -3774,12 +3776,12 @@ class TimeSeriesWidget():
 
         return hasChanged
 
-    def show_annotations(self, fetch=True, checkModifies=False, newAnno=None):
+    def show_annotations(self, fetch=True, checkModifies=False, newAnno=None, modified = None):
         """
             show annotations and hide annotations according to their tags (compare with visibleTags
             if anno is given, we only display the anno (additionally)
             newAnnotation: just add this annotation now, nothing else to do
-
+            modified: the modified annotations in a dict form ["id":["name", "startimeae"....},"id2":{}...}
         """
 
         #
@@ -3810,7 +3812,7 @@ class TimeSeriesWidget():
                 self.create_annotations_glyph(tag)
                 #also draw them
             if not visible or not generalVisible:
-                if self.hide_annotations_by_tag(tag):
+                if self.hide_annotations_by_tag(tag,modified):
                     mustApply = True
                 if newAnno:
                     self.add_anno_to_list(newAnno, tag, True)
@@ -3820,10 +3822,18 @@ class TimeSeriesWidget():
             else:
                 existingIds = set(self.annotationsInfo[tag]["data"]["id"])
                 newIds = set([anno["id"] for annoname, anno in self.server.get_annotations().items() if anno["type"]=="time" and tag in anno["tags"]])
-                if newIds-existingIds or existingIds-newIds or checkModifies:
+
+                if checkModifies:
+                    modifiedTags = []
+                    for k,v in modified.items():
+                        if "tags" in v: modifiedTags.extend(v["tags"])
+
+
+                if newIds-existingIds or existingIds-newIds or (checkModifies and tag in modifiedTags):
+                    #we modify this tags's annotations only if they have changed
                     mustApply = True
                     #we have more or less, let's rebuild
-                    self.hide_annotations_by_tag(tag)
+                    self.hide_annotations_by_tag(tag,modified)
                     for annoname, anno in self.server.get_annotations().items():
                         self.add_anno_to_list(anno,tag,False)
                 # if this tag is visible, we convert all "drawn" annotation to standard annotations
