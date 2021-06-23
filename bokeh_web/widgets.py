@@ -1587,12 +1587,15 @@ class TimeSeriesWidget():
         lastAnnotations = self.server.get_annotations()
         hasModifies = False
         modified = None
+        deleted = None
         if "data" in arg and "_eventInfo" in arg["data"]:
             if arg["data"]["_eventInfo"]["modify"]:
                 hasModifies = True
                 modified = arg["data"]["_eventInfo"]["modify"]
             newAnnotations = self.server.fetch_annotations_differential(arg["data"]["_eventInfo"]) #this will write the new anno to our internal mirror, also executing the modify or delete
             differential = True
+            if arg["data"]["_eventInfo"]["delete"]:
+                deleted = arg["data"]["_eventInfo"]["delete"]
         else:
             newAnnotations = self.server.fetch_annotations()
             differential = False
@@ -3741,12 +3744,19 @@ class TimeSeriesWidget():
         self.remove_renderers(renderers=removeList)
 
 
-    def hide_annotations_by_tag(self,tag,modified=None):
+    def hide_annotations_by_tag(self,tag,modified=None, deleted = None,force=None):
+        # force: hide all annotations
+        # if modified given: then delete only the modified
+        # if deleted given: then delete only the deleted
         #empty all lists
         hasChanged = False
 
+        changedOrModifiedIds = []
+        if modified:
+            changedOrModifiedIds.extend(list(modified.keys()))
+
         if self.boxModifierVisible:
-            if self.boxModifierAnnotationName in modified.keys():#self.annotationsInfo[tag]["data"]["id"]:
+            if force or (modified and self.boxModifierAnnotationName in changedOrModifiedIds) or (deleted and self.boxModifierAnnotationName in deleted):#self.annotationsInfo[tag]["data"]["id"]:
                 self.box_modifier_hide()
 
         if any(self.annotationsInfo[tag]["data"]["drawn"]):
@@ -3812,7 +3822,7 @@ class TimeSeriesWidget():
                 self.create_annotations_glyph(tag)
                 #also draw them
             if not visible or not generalVisible:
-                if self.hide_annotations_by_tag(tag,modified):
+                if self.hide_annotations_by_tag(tag,modified = modified, force=True):
                     mustApply = True
                 if newAnno:
                     self.add_anno_to_list(newAnno, tag, True)
@@ -3833,7 +3843,7 @@ class TimeSeriesWidget():
                     #we modify this tags's annotations only if they have changed
                     mustApply = True
                     #we have more or less, let's rebuild
-                    self.hide_annotations_by_tag(tag,modified)
+                    self.hide_annotations_by_tag(tag,modified = modified,deleted = existingIds-newIds )
                     for annoname, anno in self.server.get_annotations().items():
                         self.add_anno_to_list(anno,tag,False)
                 # if this tag is visible, we convert all "drawn" annotation to standard annotations
