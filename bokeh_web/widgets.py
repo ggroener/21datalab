@@ -56,6 +56,7 @@ globalBackgroundsAlpha = 0.2
 globalBackgroundsHighlightAlpha = 0.6
 
 globalRESTTimeout = 90
+globalInfinity = 1000*1000
 BOX_ANNO = False # set this false to use the Rect for annos, true=use Boxannotations
 
 
@@ -1617,7 +1618,7 @@ class TimeSeriesWidget():
         start = anno["startTime"]
         end = anno["endTime"]
 
-        infinity = 1000000
+        infinity = globalInfinity
         # we must use varea, as this is the only one glyph that supports hatches and does not create a blue box when zooming out
         # self.logger.debug(f"have pattern with hatch {pattern}, tag {tag}, color{color} ")
 
@@ -2036,7 +2037,7 @@ class TimeSeriesWidget():
         number = 2000
         width = (right - left) / number
         self.debugWidth = width
-        infinity = 100 * 1000
+        infinity = globalInfinity
         colors=["red" if i % 2 else "blue" for i in range(number)]
         data={"l":[left + i*width for i in range(number)],
                               "c":colors,
@@ -2055,7 +2056,7 @@ class TimeSeriesWidget():
         number = 2000
         width = (right-left)/number
         self.debugWidth = width
-        infinity = 100*1000
+        infinity = globalInfinity
 
         '''
         colors=["red" if i % 2 else "blue" for i in range(number)]
@@ -2229,12 +2230,14 @@ class TimeSeriesWidget():
             if we change edit/del and add lines, (including their renderers, we need to del/add those renderes to the hover tools as well
 
         """
+        renderers = []
 
         #check if lines have changed:
-        if self.hoverTool:
+        if self.hoverTool: ###kna
             newLines = set([v for k,v in self.lines.items() if not self.server.is_score_variable(k) ]) # only the non-score lines
             newEventLines = set([ v["renderer"] for k,v in self.eventLines.items()])
             newLines.update(newEventLines)
+            newLines.update(set(self.annoHovers))
             hoverLines = set(self.hoverTool.renderers)
             if newLines != hoverLines or force:
 
@@ -2267,9 +2270,12 @@ class TimeSeriesWidget():
             #    renderers.append(h)
 
 
+            for h in self.annoHovers:
+                renderers.append(h)
 
-
-
+        #reverse the renderers to give the lines the prio
+        if renderers:
+            renderers.reverse()
 
         if not self.hoverTool:
             #we do this only once
@@ -2302,15 +2308,16 @@ class TimeSeriesWidget():
             custom = """var local = moment(value).tz('%s'); return local.format();""" % self.server.get_settings()["timeZone"]
             #custom2 = """var neu;neu = source.data['test'][0]; return String(value);"""
             #self.testSource = ColumnDataSource({"test":[67]*1000})
-            #hover.formatters = {'__time': CustomJSHover(code=custom)}
+            hover.formatters = {'__time': CustomJSHover(code=custom)}
             custom3 = """ console.log(cb_data);"""
-            #hover.formatters = {'$x': CustomJSHover(code=custom)}#, 'z':CustomJSHover(args=dict(source=self.testSource),code=custom2)} #xxxkna
+            hover.formatters = {'$x': CustomJSHover(code=custom)}#, 'z':CustomJSHover(args=dict(source=self.testSource),code=custom2)} #xxxkna
             #hover.callback=CustomJS(code=custom3)
 
             if self.server.get_settings()["hasHover"] in ['vline','hline','mouse']:
                 hover.mode = self.server.get_settings()["hasHover"]
             hover.mode = "mouse"
             hover.line_policy = 'interp'#need this instead of nearest for the event lines: they end in +- infinity, with the "nearest", they would show their tooltip hover at the end of their line, outside the visible area
+            hover.point_policy = "follow_mouse"
             self.plot.add_tools(hover)
 
             self.hoverTool = hover
@@ -3814,7 +3821,7 @@ class TimeSeriesWidget():
             mustApply = False
             if not tag in self.annotationsInfo:
 
-                self.annotationsInfo[tag]={"data":{"center":[],"width":[],"id":[],"name":[],"anno":[],"drawn":[]},
+                self.annotationsInfo[tag]={"data":{"center":[],"width":[],"id":[],"name":[],"anno":[],"drawn":[],"x":[],"y":[]},
                                            "ColumnDataSource":None,
                                            "renderer":None,
                                            "glyph":None,}
@@ -3862,6 +3869,7 @@ class TimeSeriesWidget():
                 self.annotationsInfo[tag]["ColumnDataSource"].data = dict(self.annotationsInfo[tag]["data"])
 
         self.logger.debug("show_annotations() done")
+        self.__make_tooltips(force=True)
 
     def add_anno_to_list(self,anno,tag,manual=False,listPointer=None):
         if type(listPointer) is type(None):
@@ -3882,6 +3890,9 @@ class TimeSeriesWidget():
             listPointer["id"].append(anno["id"])
             listPointer["anno"].append(anno)
             listPointer["drawn"].append(manual)
+            listPointer["x"].append((end + start) / 2)
+            listPointer["y"].append(0)
+
 
     def hide_annotations_old(self):
         self.showAnnotations = False
@@ -3934,7 +3945,7 @@ class TimeSeriesWidget():
             start = anno["startTime"]
             end = anno["endTime"]
 
-            infinity = 1000000
+            infinity = globalInfinity
             # we must use varea, as this is the only one glyph that supports hatches and does not create a blue box when zooming out
             # self.logger.debug(f"have pattern with hatch {pattern}, tag {tag}, color{color} ")
 
@@ -3976,7 +3987,7 @@ class TimeSeriesWidget():
 
 
 
-    def draw_annotation(self, anno, visible=False):
+    def draw_annotation__old(self, anno, visible=False):
         """
             draw one time annotation on the plot
             Args:
@@ -4012,7 +4023,7 @@ class TimeSeriesWidget():
             start = anno["startTime"]
             end = anno["endTime"]
 
-            infinity=1000000
+            infinity=globalInfinity
             # we must use varea, as this is the only one glyph that supports hatches and does not create a blue box when zooming out
             #self.logger.debug(f"have pattern with hatch {pattern}, tag {tag}, color{color} ")
             
@@ -4067,6 +4078,9 @@ class TimeSeriesWidget():
                     myrenderer = GlyphRenderer(data_source=source, glyph=recta, name=anno['id'],level=level)
                     rendererType = "Rect"
 
+                    if myrenderer not in self.annoHovers:
+                        self.annoHovers.append(myrenderer)
+
 
             # bokeh hack to avoid adding the renderers directly: we create a renderer from the glyph and store it for later bulk assing to the plot
             # which is a lot faster than one by one
@@ -4090,6 +4104,9 @@ class TimeSeriesWidget():
                 self.add_renderers([myrenderer])
 
             self.renderers[anno["id"]] = {"renderer": myrenderer, "info": copy.deepcopy(anno),"source": source,"rendererType":rendererType}  # we keep this renderer to speed up later
+
+
+            self.__make_tooltips(force=True) #xxxkna
 
         except Exception as ex:
             self.logger.error(f"error draw annotation {anno}"+str(ex))
@@ -4128,7 +4145,7 @@ class TimeSeriesWidget():
                 color = "red"
 
             #now we have color and pattern
-            infinity = 1000*1000
+            infinity = globalInfinity
 
             self.annotationsInfo[tag]["glyph"]=Rect(x="center",
                                                     y=-infinity/4,
@@ -4142,9 +4159,11 @@ class TimeSeriesWidget():
                                                     line_alpha=0
                                                     )
 
-            self.annotationsInfo[tag]["renderer"]= GlyphRenderer(data_source=self.annotationsInfo[tag]["ColumnDataSource"], glyph=self.annotationsInfo[tag]["glyph"], name="annotationsOf_"+tag, level=globalAnnotationLevel)
+            self.annotationsInfo[tag]["renderer"]= GlyphRenderer(data_source=self.annotationsInfo[tag]["ColumnDataSource"], glyph=self.annotationsInfo[tag]["glyph"], name="Annotation:"+tag, level=globalAnnotationLevel)
             self.add_renderers([self.annotationsInfo[tag]["renderer"]])
 
+            if self.annotationsInfo[tag]["renderer"] not in self.annoHovers:
+                self.annoHovers.append(self.annotationsInfo[tag]["renderer"])
 
         except Exception as ex:
             self.logger.error(f"error draw annotation {anno}" + str(ex))
