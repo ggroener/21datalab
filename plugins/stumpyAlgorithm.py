@@ -267,70 +267,6 @@ def stumpy_print_z_normalized(querySeriesValues, timeSeriesValues, timeSeriesTim
     plt.close(fig)
     return True
 
-
-def stumpy_print_z_normalized_labeled_2_axis(querySeriesValues, timeSeriesValues, timeSeriesTimes, idx, label, varName):
-    """
-    :param querySeries: a subsequence (motif), which is a subsequence of the full time series (like mass)
-    :param timeSeries: a time series (full time series)  (like mass)
-    :param idx: index - position nearest neightbor to query (result of stumpy_mass function
-    :param label: string as a name or label for the figure
-    :param varName: string that represents the name of the variable
-    :return:
-    """
-    # Since MASS computes z-normalized Euclidean distances,
-    # we should z-normalize our subsequences before plotting
-    querylength = querySeriesValues.size
-
-    querySeriesValues_z_norm = stp.core.z_norm(querySeriesValues)
-    timeSeriesValues_z_norm = stp.core.z_norm(timeSeriesValues)
-    timeSeriesValues = timeSeriesValues
-    fig, ax1  = plt.subplots()
-    ax1.set_xlabel('Time', fontsize ='12')
-    ax1.set_ylabel('Motif / query ', fontsize='12', color = 'blue')
-    ax1.plot(querySeriesValues_z_norm, lw=2, color="blue", label="Query z-norm")
-    ax1.tick_params(axis='y', labelcolor='blue')
-
-    ax2 = ax1.twinx()   ### instantiate a scondary axis that shares the same x-axis
-    ax2.set_ylabel('TS match (excerpt TS)', fontsize='12', color = 'red')
-    ax2.plot(timeSeriesValues_z_norm, lw=2, color = "red", label="TS z-norm")
-    ax2.tick_params(axis='y', labelcolor='red')
-    fig.tight_layout()   # otherwise the right y-label is slightly clipped
-
-    plt.legend()
-    plt.savefig('MASS_4/Z_norm_cross_norm' + varName + '_' + label + '.png')
-    plt.close(fig)
-    fig, ax1 = plt.subplots()
-    ax1.set_xlabel('Time', fontsize='12')
-    ax1.set_ylabel('Motif / query ', fontsize='12', color='blue')
-    ax1.plot(querySeriesValues, lw=2, color="blue", label="Query z-norm")
-    ax1.tick_params(axis='y', labelcolor='blue')
-
-    ax2 = ax1.twinx()  ### instantiate a scondary axis that shares the same x-axis
-    ax2.set_ylabel('TS match (excerpt TS)', fontsize='12', color='red')
-    ax2.plot(timeSeriesValues[idx:idx+querylength], lw=2, color="red", label="TS z-norm")
-    ax2.tick_params(axis='y', labelcolor='red')
-    fig.tight_layout()  # otherwise the right y-label is slightly clipped
-    plt.legend()
-    plt.savefig('MASS_4/ORIG_cross_norm' + varName + '_' + label + '.png')
-    plt.close(fig)
-    return True
-
-def stumpy_print_z_normalized_labeled_1_axis(querySeriesValues, timeSeriesValues, timeSeriesTimes, idx, label, varName):
-    querylength = querySeriesValues.size
-    querySeriesValues_z_norm = stp.core.z_norm(querySeriesValues)
-    timeSeriesValues_z_norm = stp.core.z_norm(timeSeriesValues)
-    timeSeriesValues = timeSeriesValues
-    fig = plt.figure()
-    plt.suptitle('Comparing The Query To Its Nearest Neighbor', fontsize='11')
-    plt.xlabel('Time', fontsize ='11')
-    plt.ylabel('Motif Variable', fontsize='11')
-    plt.plot(timeSeriesValues_z_norm, lw=2, color = "red", label="Nearest Neighbor")
-    plt.plot(querySeriesValues_z_norm, lw=2, color="blue", label="Query , querySeries")
-    plt.legend()
-    plt.savefig('MASS_4/1_Axis_Z_norm_cross_norm' + varName + '_' + label + '.png')
-    plt.close(fig)
-    return True
-
 def stumpy_stump(timeSeries, patternLength):
     """
     :param timeSeries: a time series given as numpy series
@@ -375,8 +311,8 @@ def minerStump(functionNode):
     print("index position:  ", stumpIndex)
     return True
 
-    #  the modified implementation of the minerMass algorithm SPLITS the full time series
-    # into the part before the motif and the part after the motif
+    #  the modified implementation of the minerMass algorithm SPLITS the full time series into TWO parts:
+    #   (i) one part before the motif and (ii) one  part after the motif (more of user interest)
 def minerMass(functionNode):
     logger = functionNode.get_logger()
     logger.info("==>>>> in stumpy mass split miner " + functionNode.get_browse_path())
@@ -410,6 +346,7 @@ def minerMass(functionNode):
     timeSeriesRightTimes = fullTimeSeriesTimes[startRightPartTs:]
     profile_before = stp.core.mass(queryTimeSeriesValues, timeSeriesLeftValues)
     profile_after = stp.core.mass(queryTimeSeriesValues, timeSeriesRightValues)
+
     maxValue_before = numpy.max(profile_before)
     profile_before = numpy.where(profile_before < 0.2, maxValue_before, profile_before)
     maxValue_after = numpy.max(profile_after)
@@ -423,6 +360,7 @@ def minerMass(functionNode):
     sorted_peaks_before = numpy.argsort(profile_before_peaks)
     sorted_peaks_after = numpy.argsort(profile_after_peaks)
     # align peaks (before and after partitions) to the whole sequence
+
     sorted_peaks_full_before = []
     for idx_short in range(len(sorted_peaks_before)):
         sorted_peaks_full_before.append(peaks_before[sorted_peaks_before[idx_short]])
@@ -430,16 +368,14 @@ def minerMass(functionNode):
     for idx_short in range(len(sorted_peaks_after)):
         sorted_peaks_full_after.append(peaks_after[sorted_peaks_after[idx_short]])
     matches = []
-    i = 0
+    matches_after = []
+    matches_before = []
     last = 0
-    below = 50
-    above = 0
     for j in range(maxMatches_after):
-        matches.append({
+        matches_after.append({
             "startTime": dates.epochToIsoString((timeSeriesRightTimes)[sorted_peaks_full_after[j]]),
             "endTime": dates.epochToIsoString((timeSeriesRightTimes)[sorted_peaks_full_after[j] + queryLength]),
             "match": (profile_after[peaks_after])[sorted_peaks_after[j]],
-            #            "match": stp.core.z_norm((profile_after[peaks_after])[sorted_peaks_after[j]]),
             "epochStart": (timeSeriesRightTimes)[sorted_peaks_full_after[j]],
             "epochEnd": (timeSeriesRightTimes)[sorted_peaks_full_after[j] + queryLength],
             "offset": 0,
@@ -454,15 +390,12 @@ def minerMass(functionNode):
         if signal.get_value() == "stop":
             break
     for j in range(maxMatches_before):
-        matches.append({
-            "startTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j]]),
-            "endTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j] + queryLength]),
-            #"match": (timeSeriesLeftValues)[sorted_peaks_before[j]],
+        matches_before.append({
+           "startTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j]]),
+           "endTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j] + queryLength]),
             "match": (profile_before[peaks_before])[sorted_peaks_before[j]],
-            #            "match": stp.core.z_norm((profile_before[peaks_before])[sorted_peaks_before[j]]),
             "epochStart": (timeSeriesLeftTimes)[sorted_peaks_full_before[j]],
             "epochEnd": (timeSeriesLeftTimes)[sorted_peaks_full_before[j] + queryLength],
-            # "offset": fullTimeSeriesValuesMinima_norm[idxSortDistProfMinimaExc[j]],
             "offset": 0,
             "format": my_date_format(
                 (timeSeriesLeftTimes)[sorted_peaks_full_before[j]]) + "&nbsp&nbsp(match=%2.3f)" %
@@ -474,6 +407,21 @@ def minerMass(functionNode):
             last = progress
         if signal.get_value() == "stop":
             break
+    idx_before = 0
+    idx_after = 0
+    while idx_before < len(matches_before) and idx_after < len(matches_after):
+        if (matches_before[idx_before])['match'] < (matches_after[idx_after])['match']:
+            matches.append(matches_before[idx_before])
+            idx_before = idx_before + 1
+        else:
+            matches.append(matches_after[idx_after])
+            idx_after = idx_after + 1
+    while idx_after < len(matches_after):
+        matches.append(matches_after[idx_after])
+        idx_after = idx_after + 1
+    while idx_before < len(matches_before):
+        matches.append(matches_before[idx_before])
+        idx_before = idx_before +1
     functionNode.get_child("results").set_value(matches)
     show_timeseries_results(functionNode)
     progressNode.set_value(1)
@@ -505,16 +453,7 @@ def show_timeseries_results(functionNode):
         firstValueFullTs = excerptFullTsValues[0]
         firstValueMotif = resultValues[0]
         verticalDistance = firstValueFullTs - firstValueMotif
-        #resultValuesNorm = min_max_norm_cross(resultValues, excerptFullTsValues, verticalDistance)
-        #resultValuesNorm = resultValues + verticalDistanceAvg
-        #resultValuesNorm = resultValues * verticalRatioAvg
-        #resultValuesNorm = correlation_norm(resultValues, excerptFullTsValues)
         resultValuesNorm = mixed_norm_cross(resultValues, excerptFullTsValues)
-        #resultValuesNorm = z_norm_cross(resultValues, excerptFullTsValues)
-        #resultValuesNorm = min_max_norm_cross(resultValues, excerptFullTsValues, verticalDistance)
-        # OPTIONAL - local plotting for debug
-        #stumpy_print_z_normalized_labeled_2_axis(resultValuesNorm, excerptFullTsValues, excerptFullTsTimes, cnt, str(cnt), varName)
-        #stumpy_print_z_normalized_labeled_1_axis(resultValuesNorm, excerptFullTsValues, excerptFullTsTimes, cnt, str(cnt), varName)
         resultValuesNormNan = resultValuesNorm.copy()
         resultValuesNormNan = numpy.insert(resultValuesNormNan,0, numpy.nan)
         resultValuesNormNan = numpy.append(resultValuesNormNan, numpy.nan)
@@ -552,9 +491,7 @@ def mixed_norm_cross(motifTsValues, excerptFullTsValues):
     varianceMotif = numpy.var(motifTsValues)
     cov = numpy.cov(motifTsValues, excerptFullTsValues, bias=True)[0][1]
     vertDist = motifTsValues - excerptFullTsValues
-    #return (motifTsValues - (medianMotif - medianFullTs)) # / (varianceMotif) * (varianceFullTs)
     return (motifTsValues - (medianMotif - medianFullTs) - (vertDist - medianMotif + medianFullTs) * cov)
-    #return (motifTsValues - (medianMotif - medianFullTs) - (vertDist - medianMotif + medianFullTs)/40)
 
 def mean_norm(nanResultValues):
     averageVal = numpy.mean(nanResultValues)
@@ -577,7 +514,6 @@ def min_max_norm_cross(motifTsValues, excerptFullTsValues, verticalDistance):
     res = res - avgFullTs
     res = res / abs(spanFullTs)
     return res
-
 
 def enable_interaction_observer(functionNode):
     motif=functionNode.get_parent().get_child("StumpyMASS.motif").get_target()
@@ -627,7 +563,6 @@ def hide_motif(functionNode):
     disable_interaction_observer(functionNode)
     disable_motif_select_observer(functionNode)
     disable_motif_change_size_observer(functionNode)
-    #show_motifs(functionNode,False)
     motif = functionNode.get_parent().get_child("StumpyMASS").get_child("motif").get_target()
     return _connect(motif,widget,False)
 
@@ -639,10 +574,7 @@ def select(functionNode):
         logger.error("no new motif given")
         return False
     motifPointer = functionNode.get_parent().get_child("StumpyMASS").get_child("motif")
-    #if motifPointer.get_target():
-    #    hide_motif(functionNode)
     motifPointer.add_references(newMotif,deleteAll=True)
-
     return True
 
 def jump(functionNode):
@@ -667,10 +599,9 @@ def jump(functionNode):
     return True
 
 def display_matches(functionNode,on=True):
-    return #Albert: we currently do not support display of annotations
+    return
 
 def enable_show_motifs(functionNode):
-    #switch on the motfs in the context menu
     widget = functionNode.get_parent().get_child("StumpyMASS.widget").get_target()
 
 def show_motifs(functionNode,show):
@@ -686,7 +617,6 @@ def show_motifs(functionNode,show):
 def hide(functionNode):
     miningNode = functionNode.get_parent().get_child("StumpyMASS")
     hide_timeseries_results(miningNode)
-    #hide_motif(functionNode)
     show_motifs(functionNode, False)
 
 def _create_annos_from_matches(annoFolder,matches,maxMatches=None):
@@ -713,17 +643,12 @@ def delete(functionNode):
     return True
 
 def _connect(motif,widget,connect=True):
-    """
-        we expect to find min and max, expected is optional
-        connect = True for connect, False for disconnect
-    """
     if not motif or not widget:
         return False
     try:
         lMax = None
         lMin = None
         exPe = None
-        #children = motif.get_children()
         if motif.get_child("envelope"):
             for child in motif.get_child("envelope").get_children():
                 if "_limitMax" in child.get_name():
@@ -775,86 +700,63 @@ def debug_help_vis(distance_profile, minimaRelPeakWD, idxSortDistProfMinimaExc):
     numpy.savetxt("idxSotedProfExc.txt", idxSortDistProfMinimaExc, delimiter=',')
     return True
 
+def stumpy_print_z_normalized_labeled_2_axis(querySeriesValues, timeSeriesValues, timeSeriesTimes, idx, label, varName):
+    """
+    :param querySeries: a subsequence (motif), which is a subsequence of the full time series (like mass)
+    :param timeSeries: a time series (full time series)  (like mass)
+    :param idx: index - position nearest neightbor to query (result of stumpy_mass function
+    :param label: string as a name or label for the figure
+    :param varName: string that represents the name of the variable
+    :return:
+    """
+    # Since MASS computes z-normalized Euclidean distances,
+    # we should z-normalize our subsequences before plotting
+    querylength = querySeriesValues.size
+    querySeriesValues_z_norm = stp.core.z_norm(querySeriesValues)
+    timeSeriesValues_z_norm = stp.core.z_norm(timeSeriesValues)
+    timeSeriesValues = timeSeriesValues
+    fig, ax1  = plt.subplots()
+    ax1.set_xlabel('Time', fontsize ='12')
+    ax1.set_ylabel('Motif / query ', fontsize='12', color = 'blue')
+    ax1.plot(querySeriesValues_z_norm, lw=2, color="blue", label="Query z-norm")
+    ax1.tick_params(axis='y', labelcolor='blue')
 
-    #### currently as back-up
+    ax2 = ax1.twinx()   ### instantiate a scondary axis that shares the same x-axis
+    ax2.set_ylabel('TS match (excerpt TS)', fontsize='12', color = 'red')
+    ax2.plot(timeSeriesValues_z_norm, lw=2, color = "red", label="TS z-norm")
+    ax2.tick_params(axis='y', labelcolor='red')
+    fig.tight_layout()   # otherwise the right y-label is slightly clipped
 
-    #  the core / base  Stumpy MASS algorithm:
-    #TODO rename  or remove -  original minerMass implementation without split
-def minerMass_tmp(functionNode):
-    logger = functionNode.get_logger()
-    logger.info("==>>>> in stumpy mass restsequence miner " + functionNode.get_browse_path())
-    progressNode = functionNode.get_child("control").get_child("progress")
-    progressNode.set_value(0)
-    signal = functionNode.get_child("control.signal")
-    signal.set_value(None)
-    functionNode.get_child("results").set_value([])
-    update(functionNode)
-    motifNode = functionNode.get_child("motif").get_target()
-    varNode = motifNode.get_child("variable").get_target()
-    startTime = motifNode.get_child("startTime").get_value()
-    endTime = motifNode.get_child("endTime").get_value()
-    timeSeries = varNode.get_time_series(start=startTime, end=endTime)
-    fullTimeSeries = varNode.get_time_series()
-    if functionNode.get_child("maxNumberOfMatches"):
-        maxMatches = functionNode.get_child("maxNumberOfMatches").get_value()
-    else:
-        maxMatches = None
-    queryLength = timeSeries['values'].size
-    profile = stp.core.mass(timeSeries['values'], fullTimeSeries['values'])
-    maxValue = numpy.max(profile)
-    # remove 0 values
-    profile = numpy.where(profile < 0.5, maxValue, profile) #
-    # remove profile values of search pattern
-    idx = numpy.argsort(profile, 10)[:10]
-    idxs = idx[numpy.argsort(profile[idx])]
-    peaks,_ = scy.signal.find_peaks(-profile, distance= round(queryLength / 4), width = round(numpy.median(profile)- 3*min(profile)))
-    profile_peaks = profile[peaks]
-    sorted_peaks =  numpy.argsort(profile_peaks)
-    # iterate over all sorted peak indices to refer to the long indices (full time series):
-    sorted_peaks_full_seq = []
-    for idx_short in range(len(sorted_peaks)):
-        sorted_peaks_full_seq.append(peaks[idx_short])
-    # DEBUG HELP
-    profile_idx_data = pd.DataFrame({"peaks": peaks, "profile_peaks": profile_peaks, "sorted_peaks": sorted_peaks, "sorted_peaks_full": sorted_peaks_full_seq})
-    profile_idx_data.to_csv('DEBUG_index_profile_val.csv', decimal = ',',  sep = ';' , index=False)
-    pd.DataFrame(profile).to_csv('DEBUG_complete_profile.csv', decimal = ',', sep = ';', index=False)
+    plt.legend()
+    plt.savefig('MASS_4/Z_norm_cross_norm' + varName + '_' + label + '.png')
+    plt.close(fig)
+    fig, ax1 = plt.subplots()
+    ax1.set_xlabel('Time', fontsize='12')
+    ax1.set_ylabel('Motif / query ', fontsize='12', color='blue')
+    ax1.plot(querySeriesValues, lw=2, color="blue", label="Query z-norm")
+    ax1.tick_params(axis='y', labelcolor='blue')
+    ax2 = ax1.twinx()  ### instantiate a scondary axis that shares the same x-axis
+    ax2.set_ylabel('TS match (excerpt TS)', fontsize='12', color='red')
+    ax2.plot(timeSeriesValues[idx:idx+querylength], lw=2, color="red", label="TS z-norm")
+    ax2.tick_params(axis='y', labelcolor='red')
+    fig.tight_layout()  # otherwise the right y-label is slightly clipped
+    plt.legend()
+    plt.savefig('MASS_4/ORIG_cross_norm' + varName + '_' + label + '.png')
+    plt.close(fig)
+    return True
 
-
-    matches = []
-    i = 0
-    last = 0
-    below = 50
-    above = 0
-    for j in range(maxMatches):
-        #fullTimeSeriesValuesMinima_norm = stp.core.z_norm(
-        #    (fullTimeSeries['values'])[idxSortDistProfMinimaExc[j]:idxSortDistProfMinimaExc[j] + queryLength])
-        #matches.append({
-        #     "startTime": dates.epochToIsoString((fullTimeSeries['__time'])[peaked_profile[j]]),
-        #     "endTime": dates.epochToIsoString((fullTimeSeries['__time'])[peaked_profile[j]+queryLength]),
-        #     "match": profile[peaked_profile[j]],
-        #     "epochStart": (fullTimeSeries['__time'])[peaked_profile[j]],
-        #     "epochEnd": (fullTimeSeries['__time'])[peaked_profile[j]+queryLength],
-        #     #"offset": fullTimeSeriesValuesMinima_norm[idxSortDistProfMinimaExc[j]],
-        #     "offset": 0,
-        #     "format": my_date_format((fullTimeSeries['__time'])[peaked_profile[j]])+"&nbsp&nbsp(match=%2.3f)"%profile[peaked_profile[j]]
-        # })
-        matches.append({
-            "startTime": dates.epochToIsoString((fullTimeSeries['__time'])[sorted_peaks_full_seq[j]]),
-            "endTime": dates.epochToIsoString((fullTimeSeries['__time'])[sorted_peaks_full_seq[j]+queryLength]),
-            "match": (profile[peaks])[sorted_peaks[j]],
-            "epochStart": (fullTimeSeries['__time'])[sorted_peaks_full_seq[j]],
-            "epochEnd": (fullTimeSeries['__time'])[sorted_peaks_full_seq[j]+queryLength],
-            #"offset": fullTimeSeriesValuesMinima_norm[idxSortDistProfMinimaExc[j]],
-            "offset": 0,
-            "format": my_date_format((fullTimeSeries['__time'])[sorted_peaks_full_seq[j]])+"&nbsp&nbsp(match=%2.3f)"%(profile[peaks])[sorted_peaks[j]]
-        })
-        progress = round(float(j)/maxMatches * 20)
-        if progress != last:
-            progressNode.set_value(float(j)/maxMatches)
-            last = progress
-        if signal.get_value() == "stop":
-            break
-    functionNode.get_child("results").set_value(matches)
-    show_timeseries_results(functionNode)
-    progressNode.set_value(1)
+def stumpy_print_z_normalized_labeled_1_axis(querySeriesValues, timeSeriesValues, timeSeriesTimes, idx, label, varName):
+    querylength = querySeriesValues.size
+    querySeriesValues_z_norm = stp.core.z_norm(querySeriesValues)
+    timeSeriesValues_z_norm = stp.core.z_norm(timeSeriesValues)
+    timeSeriesValues = timeSeriesValues
+    fig = plt.figure()
+    plt.suptitle('Comparing The Query To Its Nearest Neighbor', fontsize='11')
+    plt.xlabel('Time', fontsize ='11')
+    plt.ylabel('Motif Variable', fontsize='11')
+    plt.plot(timeSeriesValues_z_norm, lw=2, color = "red", label="Nearest Neighbor")
+    plt.plot(querySeriesValues_z_norm, lw=2, color="blue", label="Query , querySeries")
+    plt.legend()
+    plt.savefig('MASS_4/1_Axis_Z_norm_cross_norm' + varName + '_' + label + '.png')
+    plt.close(fig)
     return True
