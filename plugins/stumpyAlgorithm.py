@@ -351,16 +351,12 @@ def minerMass(functionNode):
     profile_before = numpy.where(profile_before < 0.2, maxValue_before, profile_before)
     maxValue_after = numpy.max(profile_after)
     profile_after = numpy.where(profile_after < 0.2, maxValue_after, profile_after)
-    # note: indexing on the right side starts at 0 --> thus we need an offset to add when moving back to the full sequence
-    #   this offset is the index value in startRightPartTs   2.4
-    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 2.4), width = round(queryLength / 13))
-    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 2.4 ), width = round(queryLength / 13))
+    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 2.1), width = round(queryLength / 11))
+    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 2.1 ), width = round(queryLength / 11))
     profile_before_peaks = profile_before[peaks_before]
     profile_after_peaks = profile_after[peaks_after]
     sorted_peaks_before = numpy.argsort(profile_before_peaks)
     sorted_peaks_after = numpy.argsort(profile_after_peaks)
-    # align peaks (before and after partitions) to the whole sequence
-
     sorted_peaks_full_before = []
     for idx_short in range(len(sorted_peaks_before)):
         sorted_peaks_full_before.append(peaks_before[sorted_peaks_before[idx_short]])
@@ -483,15 +479,11 @@ def correlation_norm(resultValues, excerptFullTsValues):
 
 
 def mixed_norm_cross(motifTsValues, excerptFullTsValues):
-    avgFullTs = numpy.mean(excerptFullTsValues)
-    medianFullTs = numpy.median(excerptFullTsValues)
-    varianceFullTs = numpy.var(excerptFullTsValues)
-    avgMotif = numpy.mean(motifTsValues)
-    medianMotif = numpy.median(motifTsValues)
-    varianceMotif = numpy.var(motifTsValues)
-    cov = numpy.cov(motifTsValues, excerptFullTsValues, bias=True)[0][1]
+    medDist =  numpy.median(motifTsValues) - numpy.median(excerptFullTsValues)
     vertDist = motifTsValues - excerptFullTsValues
-    return (motifTsValues - (medianMotif - medianFullTs) - (vertDist - medianMotif + medianFullTs) * cov)
+    return (motifTsValues - medDist * 0.8 - vertDist * 0.15)
+    # ORIG return (motifTsValues - (medianMotif - medianFullTs) - (vertDist - medianMotif + medianFullTs) * cov)
+    # return (motifTsValues - (medianMotif - medianFullTs) - vertDist) # Skalierung perfekt - offset besser
 
 def mean_norm(nanResultValues):
     averageVal = numpy.mean(nanResultValues)
