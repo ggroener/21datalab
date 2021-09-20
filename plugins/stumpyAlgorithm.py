@@ -481,7 +481,14 @@ def correlation_norm(resultValues, excerptFullTsValues):
 def mixed_norm_cross(motifTsValues, excerptFullTsValues):
     medDist =  numpy.median(motifTsValues) - numpy.median(excerptFullTsValues)
     vertDist = motifTsValues - excerptFullTsValues
-    return (motifTsValues - medDist * 0.8 - vertDist * 0.15)
+    return (motifTsValues - medDist * 0.38 - vertDist * 0.6)
+    # offset and scaling --- medDist is the same value that is subtracted --> thus offset
+    #                    ---  vertDist is an array (as the time series) --> thus this is a kind of scaling
+    # ORIG 17/09: return (motifTsValues - medDist * 0.8 - vertDist * 0.15)
+    # some scaling issue still remain due to similarity found by MASS
+    #return (motifTsValues - medDist * 0.5 - vertDist * 0.45)
+    #return (motifTsValues - medDist * 0.4 - vertDist * 0.55)
+    #return (motifTsValues - medDist * 0.6 - vertDist * 0.35)
     # ORIG return (motifTsValues - (medianMotif - medianFullTs) - (vertDist - medianMotif + medianFullTs) * cov)
     # return (motifTsValues - (medianMotif - medianFullTs) - vertDist) # Skalierung perfekt - offset besser
 
