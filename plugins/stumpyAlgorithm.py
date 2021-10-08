@@ -11,6 +11,7 @@ import matplotlib.ticker as ticker
 import matplotlib.dates as plotdates
 import stumpy as stp
 import scipy as scy
+import time as ti
 
 # use a list to avoid loading of this in the model as template
 mycontrol = [copy.deepcopy(__functioncontrolfolder)]
@@ -329,8 +330,8 @@ def minerMass(functionNode):
         maxMatches = functionNode.get_child("maxNumberOfMatches").get_value()
     else:
         maxMatches = None
-    maxMatches_before = round(maxMatches/4)   # roughly 25 % of the matches will be in the pattern before the motif
-    maxMatches_after = round(maxMatches/4 * 3)     # the remaining matches are afterwards
+    maxMatches_before = round(maxMatches * 1.2 /4)   # roughly 25 % of the matches will be in the pattern before the motif
+    maxMatches_after = round(maxMatches * 1.2 /4 * 3)     # the remaining matches are afterwards
     queryTimeSeries = varNode.get_time_series(start=startTime, end=endTime)
     fullTimeSeries = varNode.get_time_series()
     queryTimeSeriesTimes = queryTimeSeries['__time']
@@ -344,15 +345,15 @@ def minerMass(functionNode):
     timeSeriesRightValues = fullTimeSeriesValues[startRightPartTs:]
     timeSeriesLeftTimes = fullTimeSeriesTimes[:endLeftPartTs]
     timeSeriesRightTimes = fullTimeSeriesTimes[startRightPartTs:]
-    profile_before = stp.core.mass(queryTimeSeriesValues, timeSeriesLeftValues)
-    profile_after = stp.core.mass(queryTimeSeriesValues, timeSeriesRightValues)
-
+    profile_before = stp.core.mass(queryTimeSeriesValues, timeSeriesLeftValues, normalize=True)
+    profile_after = stp.core.mass(queryTimeSeriesValues, timeSeriesRightValues, normalize=True)
     maxValue_before = numpy.max(profile_before)
-    profile_before = numpy.where(profile_before < 0.2, maxValue_before, profile_before)
+    profile_before = numpy.where(profile_before < 0.05, maxValue_before, profile_before)
     maxValue_after = numpy.max(profile_after)
-    profile_after = numpy.where(profile_after < 0.2, maxValue_after, profile_after)
-    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 2.1), width = round(queryLength / 11))
-    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 2.1 ), width = round(queryLength / 11))
+    profile_after = numpy.where(profile_after < 0.05, maxValue_after, profile_after)
+    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 12), width = round(queryLength / 10), threshold=0.07)
+    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 12 ), width = round(queryLength / 10), threshold = 0.07)
+    #  profile (before / after) peaks --> the profile values (at peak positions)
     profile_before_peaks = profile_before[peaks_before]
     profile_after_peaks = profile_after[peaks_after]
     sorted_peaks_before = numpy.argsort(profile_before_peaks)
@@ -387,8 +388,8 @@ def minerMass(functionNode):
             break
     for j in range(maxMatches_before):
         matches_before.append({
-           "startTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j]]),
-           "endTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j] + queryLength]),
+            "startTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j]]),
+            "endTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j] + queryLength]),
             "match": (profile_before[peaks_before])[sorted_peaks_before[j]],
             "epochStart": (timeSeriesLeftTimes)[sorted_peaks_full_before[j]],
             "epochEnd": (timeSeriesLeftTimes)[sorted_peaks_full_before[j] + queryLength],
@@ -423,6 +424,24 @@ def minerMass(functionNode):
     progressNode.set_value(1)
     return True
 
+def stumpy_print_labeled_2_axis(querySeriesValues, timeSeriesValues, idx, label, varName):
+    plt.clf()
+    fig, ax1  = plt.subplots()
+    ax1.set_xlabel('Time', fontsize ='12')
+    ax1.set_ylabel('Motif / query ', fontsize='12', color = 'blue')
+    ax1.plot(querySeriesValues, lw=2, color="blue", label="Query z-norm")
+    ax1.tick_params(axis='y', labelcolor='blue')
+    ax2 = ax1.twinx()   ### instantiate a scondary axis that shares the same x-axis
+    ax2.set_ylabel('TS match (excerpt TS)', fontsize='12', color = 'red')
+    ax2.plot(timeSeriesValues, lw=2, color = "red", label="TS z-norm")
+    ax2.tick_params(axis='y', labelcolor='red')
+    fig.tight_layout()   # otherwise the right y-label is slightly clipped
+    plt.legend()
+    plt.savefig('C:/Users/viggroen/OneDrive - Carl Zeiss AG/41_ML_Projects/11_21data-lab_workbench_AnalyticTool/Tasks_AP-work/STUMPY/MASS/M_org_' + varName + '_' + label + '.png')
+    plt.close(fig)
+    plt.cla()
+    return True
+
 def show_timeseries_results(functionNode):
     results = functionNode.get_child("results").get_value()
     motifNode = functionNode.get_child("motif").get_target()
@@ -445,10 +464,14 @@ def show_timeseries_results(functionNode):
         ### for each result
         excerptFullTs = varNode.get_time_series(start=result['startTime'], end=result['endTime'])
         excerptFullTsValues = (excerptFullTs['values'])[:-1]
-        excerptFullTsTimes = (excerptFullTs['__time'])[:-1]
-        firstValueFullTs = excerptFullTsValues[0]
-        firstValueMotif = resultValues[0]
-        verticalDistance = firstValueFullTs - firstValueMotif
+#        excerptFullTsTimes = (excerptFullTs['__time'])[:-1]
+#        firstValueFullTs = excerptFullTsValues[0]
+#        firstValueMotif = resultValues[0]
+        rangeMotifValues = numpy.max(resultValues) - numpy.min(resultValues)
+        rangeExcerptTs = numpy.max(excerptFullTsValues) - numpy.min(excerptFullTsValues)
+        if (rangeExcerptTs < rangeMotifValues / 6.0 ):
+            continue
+#        stumpy_print_labeled_2_axis(resultValues, excerptFullTsValues, cnt, str(cnt), varName)
         resultValuesNorm = mixed_norm_cross(resultValues, excerptFullTsValues)
         resultValuesNormNan = resultValuesNorm.copy()
         resultValuesNormNan = numpy.insert(resultValuesNormNan,0, numpy.nan)
@@ -477,20 +500,19 @@ def correlation_norm(resultValues, excerptFullTsValues):
     cov = numpy.cov(resultValues, excerptFullTsValues)
     return (resultValues / cor)
 
-
 def mixed_norm_cross(motifTsValues, excerptFullTsValues):
-    medDist =  numpy.median(motifTsValues) - numpy.median(excerptFullTsValues)
-    vertDist = motifTsValues - excerptFullTsValues
-    return (motifTsValues - medDist * 0.38 - vertDist * 0.6)
-    # offset and scaling --- medDist is the same value that is subtracted --> thus offset
-    #                    ---  vertDist is an array (as the time series) --> thus this is a kind of scaling
-    # ORIG 17/09: return (motifTsValues - medDist * 0.8 - vertDist * 0.15)
-    # some scaling issue still remain due to similarity found by MASS
-    #return (motifTsValues - medDist * 0.5 - vertDist * 0.45)
-    #return (motifTsValues - medDist * 0.4 - vertDist * 0.55)
-    #return (motifTsValues - medDist * 0.6 - vertDist * 0.35)
-    # ORIG return (motifTsValues - (medianMotif - medianFullTs) - (vertDist - medianMotif + medianFullTs) * cov)
-    # return (motifTsValues - (medianMotif - medianFullTs) - vertDist) # Skalierung perfekt - offset besser
+    maxValueMotif = numpy.max(motifTsValues)
+    minValueMotif = numpy.min(motifTsValues)
+    deltaMotif = maxValueMotif - minValueMotif
+    minValueTs = numpy.min(excerptFullTsValues)
+    maxValueTs = numpy.max(excerptFullTsValues)
+    deltaTs = maxValueTs - minValueTs
+    # two steps towards visualization: (i) shift (tackle offset) and (ii) scaling (e.g., shrinking) wrt. min-max difference / span
+    # (i) shift
+    shift = numpy.median(motifTsValues) - numpy.median(excerptFullTsValues)  # is the distance of media
+    # (ii) scaling
+    scale = (motifTsValues - numpy.median(motifTsValues)) * deltaTs / deltaMotif # distance from median is scaled (stretched or compressed)
+    return motifTsValues - shift * 0.4 - scale * 0.6
 
 def mean_norm(nanResultValues):
     averageVal = numpy.mean(nanResultValues)
@@ -699,7 +721,9 @@ def debug_help_vis(distance_profile, minimaRelPeakWD, idxSortDistProfMinimaExc):
     numpy.savetxt("idxSotedProfExc.txt", idxSortDistProfMinimaExc, delimiter=',')
     return True
 
-def stumpy_print_z_normalized_labeled_2_axis(querySeriesValues, timeSeriesValues, timeSeriesTimes, idx, label, varName):
+
+
+def stumpy_print_z_normalized_labeled_2_axis(querySeriesValues, timeSeriesValues, idx, label, varName):
     """
     :param querySeries: a subsequence (motif), which is a subsequence of the full time series (like mass)
     :param timeSeries: a time series (full time series)  (like mass)
