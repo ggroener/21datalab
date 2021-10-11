@@ -326,12 +326,14 @@ def minerMass(functionNode):
     varNode = motifNode.get_child("variable").get_target()
     startTime = motifNode.get_child("startTime").get_value()
     endTime = motifNode.get_child("endTime").get_value()
+    actualMatches_before = 0
+    actualMatches_after = 0
     if functionNode.get_child("maxNumberOfMatches"):
         maxMatches = functionNode.get_child("maxNumberOfMatches").get_value()
     else:
         maxMatches = None
-    maxMatches_before = round(maxMatches * 1.2 /4)   # roughly 25 % of the matches will be in the pattern before the motif
-    maxMatches_after = round(maxMatches * 1.2 /4 * 3)     # the remaining matches are afterwards
+    maxMatches_before = round(maxMatches  /4)   # roughly 25 % of the matches will be in the pattern before the motif
+    maxMatches_after = round(maxMatches / 4 * 3)     # the remaining matches are afterwards
     queryTimeSeries = varNode.get_time_series(start=startTime, end=endTime)
     fullTimeSeries = varNode.get_time_series()
     queryTimeSeriesTimes = queryTimeSeries['__time']
@@ -353,6 +355,8 @@ def minerMass(functionNode):
     profile_after = numpy.where(profile_after < 0.05, maxValue_after, profile_after)
     peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 12), width = round(queryLength / 10), threshold=0.07)
     peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 12 ), width = round(queryLength / 10), threshold = 0.07)
+#    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 12), width = round(queryLength / 10))
+#    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 12 ), width = round(queryLength / 10))
     #  profile (before / after) peaks --> the profile values (at peak positions)
     profile_before_peaks = profile_before[peaks_before]
     profile_after_peaks = profile_after[peaks_after]
@@ -369,6 +373,7 @@ def minerMass(functionNode):
     matches_before = []
     last = 0
     for j in range(maxMatches_after):
+
         matches_after.append({
             "startTime": dates.epochToIsoString((timeSeriesRightTimes)[sorted_peaks_full_after[j]]),
             "endTime": dates.epochToIsoString((timeSeriesRightTimes)[sorted_peaks_full_after[j] + queryLength]),
@@ -425,8 +430,8 @@ def minerMass(functionNode):
     return True
 
 def stumpy_print_labeled_2_axis(querySeriesValues, timeSeriesValues, idx, label, varName):
-    plt.clf()
     fig, ax1  = plt.subplots()
+#    plt.clf()
     ax1.set_xlabel('Time', fontsize ='12')
     ax1.set_ylabel('Motif / query ', fontsize='12', color = 'blue')
     ax1.plot(querySeriesValues, lw=2, color="blue", label="Query z-norm")
@@ -440,6 +445,7 @@ def stumpy_print_labeled_2_axis(querySeriesValues, timeSeriesValues, idx, label,
     plt.savefig('C:/Users/viggroen/OneDrive - Carl Zeiss AG/41_ML_Projects/11_21data-lab_workbench_AnalyticTool/Tasks_AP-work/STUMPY/MASS/M_org_' + varName + '_' + label + '.png')
     plt.close(fig)
     plt.cla()
+    plt.clf()
     return True
 
 def show_timeseries_results(functionNode):
@@ -469,8 +475,8 @@ def show_timeseries_results(functionNode):
 #        firstValueMotif = resultValues[0]
         rangeMotifValues = numpy.max(resultValues) - numpy.min(resultValues)
         rangeExcerptTs = numpy.max(excerptFullTsValues) - numpy.min(excerptFullTsValues)
-        if (rangeExcerptTs < rangeMotifValues / 6.0 ):
-            continue
+#        if (rangeExcerptTs < rangeMotifValues / 6.0 ):
+#            continue
 #        stumpy_print_labeled_2_axis(resultValues, excerptFullTsValues, cnt, str(cnt), varName)
         resultValuesNorm = mixed_norm_cross(resultValues, excerptFullTsValues)
         resultValuesNormNan = resultValuesNorm.copy()
