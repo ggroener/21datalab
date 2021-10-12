@@ -353,10 +353,10 @@ def minerMass(functionNode):
     profile_before = numpy.where(profile_before < 0.05, maxValue_before, profile_before)
     maxValue_after = numpy.max(profile_after)
     profile_after = numpy.where(profile_after < 0.05, maxValue_after, profile_after)
-    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 12), width = round(queryLength / 10), threshold=0.07)
-    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 12 ), width = round(queryLength / 10), threshold = 0.07)
-#    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 12), width = round(queryLength / 10))
-#    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 12 ), width = round(queryLength / 10))
+#    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 12), width = round(queryLength / 10), threshold=0.07)
+#    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 12 ), width = round(queryLength / 10), threshold = 0.07)
+    peaks_before, _ = scy.signal.find_peaks(-profile_before, distance=round(queryLength / 12), width = round(queryLength / 10))
+    peaks_after, _ = scy.signal.find_peaks(-profile_after, distance=round(queryLength / 12 ), width = round(queryLength / 10))
     #  profile (before / after) peaks --> the profile values (at peak positions)
     profile_before_peaks = profile_before[peaks_before]
     profile_after_peaks = profile_after[peaks_after]
@@ -369,11 +369,12 @@ def minerMass(functionNode):
     for idx_short in range(len(sorted_peaks_after)):
         sorted_peaks_full_after.append(peaks_after[sorted_peaks_after[idx_short]])
     matches = []
+    actualMatches_before = len(sorted_peaks_before)
+    actualMatches_after = len(sorted_peaks_after)
     matches_after = []
     matches_before = []
     last = 0
-    for j in range(maxMatches_after):
-
+    for j in range(min(maxMatches_after, actualMatches_after)):
         matches_after.append({
             "startTime": dates.epochToIsoString((timeSeriesRightTimes)[sorted_peaks_full_after[j]]),
             "endTime": dates.epochToIsoString((timeSeriesRightTimes)[sorted_peaks_full_after[j] + queryLength]),
@@ -391,7 +392,7 @@ def minerMass(functionNode):
             last = progress
         if signal.get_value() == "stop":
             break
-    for j in range(maxMatches_before):
+    for j in range(min(maxMatches_before, actualMatches_before)):
         matches_before.append({
             "startTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j]]),
             "endTime": dates.epochToIsoString((timeSeriesLeftTimes)[sorted_peaks_full_before[j] + queryLength]),
@@ -470,13 +471,6 @@ def show_timeseries_results(functionNode):
         ### for each result
         excerptFullTs = varNode.get_time_series(start=result['startTime'], end=result['endTime'])
         excerptFullTsValues = (excerptFullTs['values'])[:-1]
-#        excerptFullTsTimes = (excerptFullTs['__time'])[:-1]
-#        firstValueFullTs = excerptFullTsValues[0]
-#        firstValueMotif = resultValues[0]
-        rangeMotifValues = numpy.max(resultValues) - numpy.min(resultValues)
-        rangeExcerptTs = numpy.max(excerptFullTsValues) - numpy.min(excerptFullTsValues)
-#        if (rangeExcerptTs < rangeMotifValues / 6.0 ):
-#            continue
 #        stumpy_print_labeled_2_axis(resultValues, excerptFullTsValues, cnt, str(cnt), varName)
         resultValuesNorm = mixed_norm_cross(resultValues, excerptFullTsValues)
         resultValuesNormNan = resultValuesNorm.copy()
@@ -518,7 +512,7 @@ def mixed_norm_cross(motifTsValues, excerptFullTsValues):
     shift = numpy.median(motifTsValues) - numpy.median(excerptFullTsValues)  # is the distance of media
     # (ii) scaling
     scale = (motifTsValues - numpy.median(motifTsValues)) * deltaTs / deltaMotif # distance from median is scaled (stretched or compressed)
-    return motifTsValues - shift * 0.4 - scale * 0.6
+    return motifTsValues - shift * 0.6 - scale * 0.6
 
 def mean_norm(nanResultValues):
     averageVal = numpy.mean(nanResultValues)
